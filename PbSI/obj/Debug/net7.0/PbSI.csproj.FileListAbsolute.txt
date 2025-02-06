@@ -1,0 +1,14 @@
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\bin\Debug\net7.0\PbSI.exe
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\bin\Debug\net7.0\PbSI.deps.json
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\bin\Debug\net7.0\PbSI.runtimeconfig.json
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\bin\Debug\net7.0\PbSI.dll
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\bin\Debug\net7.0\PbSI.pdb
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.AssemblyInfoInputs.cache
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.AssemblyInfo.cs
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.csproj.CoreCompileInputs.cache
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.dll
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\refint\PbSI.dll
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.pdb
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\PbSI.genruntimeconfig.cache
+C:\Users\annem\Documents\GitHub\PbSI\PbSI\obj\Debug\net7.0\ref\PbSI.dll

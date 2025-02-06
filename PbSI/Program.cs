@@ -1,12 +1,2 @@
-﻿using System;
-
-namespace PbSI
-{
-    class Program
-    {
-        static void Main()
-        {
-            Console.WriteLine("Hello from PbSI!");
-        }
-    }
-}
+﻿// See https://aka.ms/new-console-template for more information
+Console.WriteLine("Hello, World!");
