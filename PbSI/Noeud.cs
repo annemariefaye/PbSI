@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Noeud
+/*public class Noeud
 {
     // la classe noeud represente un membre du club de karate
     public int Id
@@ -29,3 +29,4 @@ public class Noeud
         return $"Membre {Id}";
     } 
 }
+*/

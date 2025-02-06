@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Lien
+/*public class Lien
 {
 	public Noeud Source
 	{
@@ -20,4 +20,4 @@ public class Lien
 		return $"{Source.Id} est connecte a {Destination.Id}";
 	}
 
-}
+}*/

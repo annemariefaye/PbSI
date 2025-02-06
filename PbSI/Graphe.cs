@@ -1,6 +1,7 @@
 ﻿using System;
 
-public class Graphe
+/*
+ public class Graphe
 {
 	public Dictionary <int, Noeud> Membres
 	{
@@ -43,3 +44,4 @@ public class Graphe
 		}
 	}
 }
+*/

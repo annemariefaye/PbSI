@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\lecturefichiers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:lecturefichiers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\relations.mtx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:relations.mtx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\graphe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:graphe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\lien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:lien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\noeud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:noeud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|c:\\users\\valen\\documents\\github\\pbsi\\pbsi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{237FBC24-9892-4630-ACA0-9E4EEEA88892}|PbSI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Lien.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Lien.cs",
+              "RelativeDocumentMoniker": "Lien.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Lien.cs",
+              "RelativeToolTip": "Lien.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAABYAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T10:00:02.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Noeud.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Noeud.cs",
+              "RelativeDocumentMoniker": "Noeud.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Noeud.cs",
+              "RelativeToolTip": "Noeud.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T09:59:48.916Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Graphe.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Graphe.cs",
+              "RelativeDocumentMoniker": "Graphe.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Graphe.cs",
+              "RelativeToolTip": "Graphe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T09:58:59.44Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "relations.mtx",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\relations.mtx",
+              "RelativeDocumentMoniker": "relations.mtx",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\relations.mtx",
+              "RelativeToolTip": "relations.mtx",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001794|",
+              "WhenOpened": "2025-02-06T09:53:19.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LectureFichiers.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\LectureFichiers.cs",
+              "RelativeDocumentMoniker": "LectureFichiers.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\LectureFichiers.cs",
+              "RelativeToolTip": "LectureFichiers.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwCoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T09:52:31.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T09:45:12.679Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

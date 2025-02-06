@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+13965ba87ef1f2ef4df064b84dd93809649a46a4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cde87080c877c54eaf3a3a91d806b8dc166550b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
