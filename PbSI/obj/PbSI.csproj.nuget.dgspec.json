@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\annem\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj": {}
+    "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\annem\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj": {
+    "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\annem\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj",
+        "projectUniqueName": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj",
         "projectName": "PbSI",
-        "projectPath": "C:\\Users\\annem\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj",
-        "packagesPath": "C:\\Users\\annem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\annem\\Documents\\GitHub\\PbSI\\PbSI\\obj\\",
+        "projectPath": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\PbSI.csproj",
+        "packagesPath": "C:\\Users\\valen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\valen\\Documents\\GitHub\\PbSI\\PbSI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\annem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\valen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,7 +38,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -55,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
