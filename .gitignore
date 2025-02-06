@@ -8,20 +8,6 @@
 *.userosscache
 *.sln.docstates
 
-# Build results
-[Dd]ebug/
-[Rr]elease/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
-x64/
-x86/
-
-# Visual Studio cache/options directory
-.vs/
-
 # Your code folder
 /PBSI/
 
@@ -44,15 +30,6 @@ project.fragment.lock.json
 *.snupkg
 **/[Pp]ackages/*
 !**/[Pp]ackages/build/
-
-# Files built by Visual Studio
-*.ilk
-*.obj
-*.pdb
-*.ipdb
-*.tmp
-*.log
-*.tlog
 
 # Backup & report files from converting an old project file
 _UpgradeReport_Files/
