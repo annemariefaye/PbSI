@@ -71,7 +71,12 @@ namespace PbSI
 
             foreach (var membre in Membres.Values)
             {
-                liste[membre.Id] = membre.Voisins.Select(v => v.Id).ToList();
+                var voisinsIds = new List<int>();
+                foreach (var voisin in membre.Voisins)
+                {
+                    voisinsIds.Add(voisin.Id);
+                }
+                liste[membre.Id] = voisinsIds;
             }
 
             return liste;
