@@ -1,23 +1,35 @@
+using PbSI;
+
 namespace Visuel
 {
     internal class Visualisation : Form
     {
-        private int[,] adjacencyMatrix = { { 0, 1, 0, 0, 0, 0, 0, 1, 0 },
-                                    { 1, 0, 1, 0, 0, 0, 0, 1, 0 },
-                                    { 0, 1, 0, 1, 0, 1, 0, 0, 1 },
-                                    { 0, 0, 1, 0, 1, 1, 0, 0, 0 },
-                                    { 0, 0, 0, 1, 0, 1, 0, 0, 0 },
-                                    { 0, 0, 1, 1, 1, 0, 1, 0, 0 },
-                                    { 0, 0, 0, 0, 0, 1, 0, 1, 1 },
-                                    { 1, 1, 0, 0, 0, 0, 1, 0, 1 },
-                                    { 0, 0, 1, 0, 0, 0, 1, 1, 0 } };
+        private int[,] adjacencyMatrix;
 
-        private string[] nodes = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+        private string[] nodes;
+
 
         public Visualisation()
         {
+            LectureFichiers relations = new LectureFichiers("relations.mtx");
+            Graphe graphe = new Graphe();
+            foreach (int[] i in relations.contenu)
+            {
+                graphe.AjouterRelation(i[0], i[1]);
+            }
+            adjacencyMatrix = graphe.MatriceAdjacence();
+
+            nodes = new string[graphe.Membres.Count];
+            int index = 0;
+
+            foreach(var membres in graphe.Membres)
+            {
+                nodes[index] = membres.Key.ToString();
+                index++;
+            }
+
             this.Text = "Graphe - Matrice d'Adjacence";
-            this.Size = new Size(500, 500);
+            this.Size = new Size(1000, 1000);
             this.Paint += new PaintEventHandler(DrawGraph);
         }
 
@@ -25,7 +37,7 @@ namespace Visuel
         {
             Graphics g = e.Graphics;
             int size = 40;  /// Taille des nœuds
-            int radius = 150; /// Rayon du cercle où sont placés les nœuds
+            int radius = 300; /// Rayon du cercle où sont placés les nœuds
             PointF[] positions = new PointF[nodes.Length];
 
             int centerX = this.ClientSize.Width / 2;
@@ -74,5 +86,7 @@ namespace Visuel
         {
             Application.Run(new Visualisation());
         }
+
+        
     }
 }

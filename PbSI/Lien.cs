@@ -1,23 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 
-/*public class Lien
+namespace PbSI
 {
-	public Noeud Source
-	{
-		get; set;
-	}
-	public Noeud Destination
-	{
-		get; set;
-	}
-	public Lien(Noeud source, Noeud destination)
-	{
-		Source = source;
-		Destination = destination;
-	}
-	public override string ToString()
-	{
-		return $"{Source.Id} est connecte a {Destination.Id}";
-	}
+    public class Lien
+    {
+        public Noeud Source
+        {
+            get; set;
+        }
+        public Noeud Destination
+        {
+            get; set;
+        }
+        public Lien(Noeud source, Noeud destination)
+        {
+            Source = source;
+            Destination = destination;
+        }
+        public override string ToString()
+        {
+            return $"{Source.Id} est connecte a {Destination.Id}";
+        }
 
-}*/
+    }
+}
