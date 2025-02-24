@@ -196,6 +196,50 @@ namespace PbSI
             return min_index;
         }
 
+        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit, on a ni le nombre ni la description des circuits
+        /// On reprend l'algo DFS mais juste dans la pile on ajoute le parent ce qui permet de voir si un node a déjà été visité par un autre chemin donc il y a une boucle
+        public bool ContientCycle(int[,] mat)
+        {
+            int nbNodes = mat.GetLength(0);
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                if (!dejaExplore[i])
+                {
+                    Stack<(int node, int parent)> stack = new Stack<(int node, int parent)>();
+                    stack.Push((i, -1)); 
+
+                    while (stack.Count > 0)
+                    {
+                        var (node, parent) = stack.Pop();
+
+                        /// Si on a true ça veut dire qu'il existe un autre chemin pour atteindre ce node donc il y a un cycle
+                        if (dejaExplore[node])
+                        {
+                            return true;
+                        }
+
+                        dejaExplore[node] = true;
+
+                        for (int j = 0; j < nbNodes; j++)
+                        {
+
+                            if (mat[node, j] == 1)
+                            {
+                                /// On ajoute le node en parent et on l'ajoute à la pile
+                                if (j != parent) 
+                                {
+                                    stack.Push((j, node));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         void AfficherSolution(int[] distances, int nbNodes)
         {
             Console.Write("Node	 Distance " + "depuis le départ\n");

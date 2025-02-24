@@ -8,7 +8,7 @@ namespace PbSI
     {
         public Dictionary<int, Noeud> Membres
         {
-            get; set; // listes des membres du club
+            get; set; /// listes des membres du club
         }
         public List<Lien> Liens { get; set; }
 
@@ -37,7 +37,7 @@ namespace PbSI
             Lien nouveauLien = new Lien(Membres[id1], Membres[id2]);
             Liens.Add(nouveauLien);
 
-            Membres[id1].AjouterVoisin(Membres[id2]); // ajoute une relation entre les deux
+            Membres[id1].AjouterVoisin(Membres[id2]); /// ajoute une relation entre les deux
         }
 
         public int[,] MatriceAdjacence()

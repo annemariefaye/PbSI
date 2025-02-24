@@ -22,10 +22,11 @@ namespace PbSI
 
             int[,] mat = graphe.MatriceAdjacence();
 
-
             RechercheChemin rechercheChemin = new RechercheChemin();
 
             rechercheChemin.BFS(mat, 4);
+
+            Console.WriteLine("Ce graphe contient au moins un cycle : " + rechercheChemin.ContientCycle(mat));
 
         }
     }
