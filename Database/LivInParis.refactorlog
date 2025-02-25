@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="14598836-0412-4305-92c0-b75990ddb526" ChangeDateTime="02/25/2025 22:55:10">
+    <Property Name="ElementName" Value="[dbo].[Utilisateur].[Adrees]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Utilisateur]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Adresse" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c734eb65-7089-49e2-b637-c9ec14381a64" ChangeDateTime="02/25/2025 23:04:54">
+    <Property Name="ElementName" Value="[dbo].[Plat].[DatePeremtion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Plat]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DatePeremption" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0beef3ec-06e7-4b0b-920c-bf8ea98f3605" ChangeDateTime="02/25/2025 23:09:08">
+    <Property Name="ElementName" Value="[dbo].[LigneDeCommande].[Qyantite]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LigneDeCommande]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Quantite" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3811f51b-e06a-413d-a004-af8ee6b264f5" ChangeDateTime="02/25/2025 23:11:22">
+    <Property Name="ElementName" Value="[dbo].[Livraison].[CuisinierID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Livraison]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CuisinierId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e6b83166-22a4-4d5d-875e-169c21ecad97" ChangeDateTime="02/25/2025 23:16:26">
+    <Property Name="ElementName" Value="[dbo].[LigneDeCommande].[CommandeID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LigneDeCommande]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CommandeId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c98c549b-26a5-4ba2-9403-7260de142e4e" ChangeDateTime="02/25/2025 23:16:29">
+    <Property Name="ElementName" Value="[dbo].[LigneDeCommande].[PlatID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LigneDeCommande]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PlatId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a1a6a155-476b-4354-9977-d99437b477bc" ChangeDateTime="02/25/2025 23:21:43">
+    <Property Name="ElementName" Value="[dbo].[Plat].[IdCuisinier]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Plat]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CuisinierId" />
+  </Operation>
+</Operations>
