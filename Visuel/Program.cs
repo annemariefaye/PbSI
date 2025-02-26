@@ -1,5 +1,29 @@
 using PbSI;
 
+/*Prompts :
+- visualisation de graphe c#
+- non avec drawing grace a une matrice d'adjacence
+- same code but for this : 
+        using System.Linq;
+        using System.Text;
+        using System.Threading.Tasks;
+        using static System.Net.Mime.MediaTypeNames;
+
+        namespace PbSI
+        {
+            internal class Visualisation
+            {
+S
+
+
+
+            }
+
+        }
+        }
+*/
+
+
 namespace Visuel
 {
     internal class Visualisation : Form
