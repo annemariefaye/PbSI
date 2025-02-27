@@ -196,48 +196,55 @@ namespace PbSI
             return min_index;
         }
 
-        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit, on a ni le nombre ni la description des circuits
+        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit et de le renvoyer
         /// On reprend l'algo DFS mais juste dans la pile on ajoute le parent ce qui permet de voir si un node a déjà été visité par un autre chemin donc il y a une boucle
-        public bool ContientCycle(int[,] mat)
+        public Stack<int> ContientCycle(int[,] mat)
         {
             int nbNodes = mat.GetLength(0);
             bool[] dejaExplore = new bool[nbNodes];
+            int[] parent = new int[nbNodes];
+            Array.Fill(parent, -1);
 
             for (int i = 0; i < nbNodes; i++)
             {
                 if (!dejaExplore[i])
                 {
                     Stack<(int node, int parent)> stack = new Stack<(int node, int parent)>();
-                    stack.Push((i, -1)); 
+                    stack.Push((i, -1));
 
                     while (stack.Count > 0)
                     {
-                        var (node, parent) = stack.Pop();
+                        var (node, parentNode) = stack.Pop();
 
-                        /// Si on a true ça veut dire qu'il existe un autre chemin pour atteindre ce node donc il y a un cycle
                         if (dejaExplore[node])
                         {
-                            return true;
+                            Stack<int> cycle = new Stack<int>();
+                            int courant = node;
+
+                            while (courant != -1)
+                            {
+                                cycle.Push(courant);
+                                if (courant == parentNode) break;
+                                courant = parent[courant];
+                            }
+                            cycle.Push(node); // On referme le cycle
+                            return cycle;
                         }
 
                         dejaExplore[node] = true;
+                        parent[node] = parentNode;
 
                         for (int j = 0; j < nbNodes; j++)
                         {
-
-                            if (mat[node, j] == 1)
+                            if (mat[node, j] == 1 && j != parentNode)
                             {
-                                /// On ajoute le node en parent et on l'ajoute à la pile
-                                if (j != parent) 
-                                {
-                                    stack.Push((j, node));
-                                }
+                                stack.Push((j, node));
                             }
                         }
                     }
                 }
             }
-            return false;
+            return new Stack<int>(); // Aucun cycle trouvé
         }
 
         void AfficherSolution(int[] distances, int nbNodes)
