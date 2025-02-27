@@ -56,7 +56,7 @@ BEGIN
         [Quantite] INT NOT NULL, 
         [DateLivraison] DATE NOT NULL, 
         [LieuLivraison] VARCHAR(50) NOT NULL,
-        FOREIGN KEY (CommandeId) REFERENCES Commande(Id),
+        FOREIGN KEY (CommandeId) REFERENCES Commande(Id) ON DELETE CASCADE,
         FOREIGN KEY (PlatId) REFERENCES Plat(Id) ON DELETE CASCADE
     )
 END
@@ -69,7 +69,7 @@ BEGIN
         [LigneCommandeId] INT NULL, 
         [CuisinierId] INT NULL, 
         [Statut] VARCHAR(50) CHECK (Statut IN ('En attente', 'En cours', 'Livrée')) DEFAULT 'En attente',
-        FOREIGN KEY (LigneCommandeId) REFERENCES LigneDeCommande(Id),
+        FOREIGN KEY (LigneCommandeId) REFERENCES LigneDeCommande(Id) ON DELETE CASCADE,
         FOREIGN KEY (CuisinierId) REFERENCES Utilisateur(Id) ON DELETE CASCADE
     )
 END
@@ -87,14 +87,15 @@ BEGIN
 END
 
 
-INSERT INTO Plat (Id, CuisinierId, Nom, Type, Personnes, DateFabrication, DatePeremption, Prix, Nationalité, Régime, Ingrédients, Photo)  
-VALUES (125, 6, N'Soupe à l''oignon', N'Entrée', 4, '2025-02-20', '2025-03-20', 8.50, N'Française', N'Végétarien', N'Oignons, Bouillon, Pain, Fromage', N'soupe_oignon.jpg');
 
 
-SELECT * FROM Plat;
-ALTER TABLE Utilisateur ADD MetroPlusProche VARCHAR(50);
+SELECT * FROM Utilisateur;
+
 
 INSERT INTO Utilisateur (Id, Nom, Prénom, Adresse, Téléphone, Email, MotDePasse, Cuisinier, Client)  
 VALUES (25, 'Dupont', 'Jeoan', '123 Rue de Paris', '0601020304', 'jean.dupont@email.com', 'motdepasse123', 1, 1);
 
-SELECT * FROM Utilisateur;
+SELECT * FROM Plat;
+
+INSERT INTO Plat (Id, CuisinierId, Nom, Type, Personnes, DateFabrication, DatePeremption, Prix, Nationalité, Régime, Ingrédients, Photo)  
+VALUES (125, 6, N'Soupe à l''oignon', N'Entrée', 4, '2025-02-20', '2025-03-20', 8.50, N'Française', N'Végétarien', N'Oignons, Bouillon, Pain, Fromage', N'soupe_oignon.jpg');

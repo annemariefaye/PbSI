@@ -56,12 +56,6 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Utilisateur.sql" />
-    <Build Include="Plat.sql" />
-    <Build Include="Livraison.sql" />
-    <Build Include="Transaction.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <RefactorLog Include="LivInParis.refactorlog" />
   </ItemGroup>
   <ItemGroup>

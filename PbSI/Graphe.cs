@@ -51,7 +51,7 @@ namespace PbSI
             {
                 for (int j = 0; j < taille; j++)
                 {
-                    if (tableauMembres[i].Voisins.Contains(tableauMembres[j]))
+                    if (tableauMembres[i].Voisins.Contains(tableauMembres[j])) 
                     {
                         matrice[i, j] = 1;
                     }
