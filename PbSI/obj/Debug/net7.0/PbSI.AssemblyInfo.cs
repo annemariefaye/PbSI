@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+875cb7e56d360f523ecc2446a62050bcb4fa1b18")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddc5294f413a6af332192e5baeb820ffd1ef39f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PbSI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
