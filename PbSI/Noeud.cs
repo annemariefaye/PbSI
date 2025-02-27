@@ -4,32 +4,53 @@ namespace PbSI
 {
     public class Noeud
     {
-        // la classe noeud represente un membre du club de karate
-        public int Id
-        {
-            get; set; // numero du membre
-        }
-        public List<Noeud> Voisins
-        {
-            get; set; // Liste des membres connectes
-        }
+        #region Attributs
+
+        private int id;
+        private List<Noeud> voisins;
+
+        #endregion
+
+        #region Constructeurs
+
         public Noeud(int id)
         {
-            Id = id;
-            Voisins = new List<Noeud>(); // Initialisation de la liste des voisins
+            this.id = id;
+            voisins = new List<Noeud>();
         }
+
+        #endregion
+
+        #region Propriétés
+
+        public int Id
+        {
+            get { return id; }
+        }
+
+        public List<Noeud> Voisins
+        {
+            get { return voisins; }
+        }
+
+        #endregion
+
+        #region Méthodes
+
         public void AjouterVoisin(Noeud voisin)
         {
-            if (!Voisins.Contains(voisin)) // eviter d'ajouter deux fois la mm personne
+            if (!voisins.Contains(voisin))
             {
-                Voisins.Add(voisin);
-                voisin.Voisins.Add(this);// ajoute aussi dans l'autre sens
+                voisins.Add(voisin);
+                voisin.Voisins.Add(this);
             }
         }
         public override string ToString()
         {
             return $"Membre {Id}";
         }
+
+        #endregion
     }
 
 }

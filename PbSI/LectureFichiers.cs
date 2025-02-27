@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PbSI
+﻿namespace PbSI
 {
     public class LectureFichiers
     {
+        #region Attributs
 
-        string path;
-        public List<int[]> contenu { get; set; }
+        private string path;
+        private List<int[]> contenu;
+
+        #endregion
+
+        #region Constructeurs
 
         public LectureFichiers(string path)
         {
-            path = "../../../" + path;
             this.path = path;
-
 
             string[] lines = File.ReadAllLines(this.path);
 
@@ -26,7 +22,6 @@ namespace PbSI
             string[] infos = new string[3];
             foreach (string line in lines)
             {
-                
                 if (line[0] != '%')
                 {
                     if (infos[0] == null)
@@ -43,6 +38,18 @@ namespace PbSI
             }
         }
 
+        #endregion
+
+        #region Propriétés
+
+        public List<int[]> Contenu
+        {
+            get { return contenu; }
+        }
+
+        #endregion
+
+        #region Méthodes
 
         public void AfficherContenu()
         {
@@ -52,5 +59,7 @@ namespace PbSI
                 Console.WriteLine($"{ligne[0]} {ligne[1]}");
             }
         }
+
+        #endregion
     }
 }

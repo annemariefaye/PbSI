@@ -1,51 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-namespace PbSI
+﻿namespace PbSI
 {
     public class Graphe
     {
-        public Dictionary<int, Noeud> Membres
-        {
-            get; set; /// listes des membres du club
-        }
-        public List<Lien> Liens { get; set; }
+        #region Attributs
+
+        private Dictionary<int, Noeud> membres;
+        private List<Lien> liens;
+
+        #endregion
+
+        #region Constructeurs
 
         public Graphe()
         {
-            Membres = new Dictionary<int, Noeud>();
-            Liens = new List<Lien>();
+            membres = new Dictionary<int, Noeud>();
+            liens = new List<Lien>();
         }
+
+        #endregion
+
+        #region Méthodes
+
         public void AjouterMembre(int id)
         {
-            if (!Membres.ContainsKey(id))
+            if (!membres.ContainsKey(id))
             {
-                Membres[id] = new Noeud(id);
+                membres[id] = new Noeud(id);
             }
         }
+
         public void AjouterRelation(int id1, int id2)
         {
-            if (!Membres.ContainsKey(id1))
+            if (!membres.ContainsKey(id1))
             {
                 AjouterMembre(id1);
             }
-            if (!Membres.ContainsKey(id2))
+            if (!membres.ContainsKey(id2))
             {
                 AjouterMembre(id2);
             }
-            Lien nouveauLien = new Lien(Membres[id1], Membres[id2]);
-            Liens.Add(nouveauLien);
+            Lien nouveauLien = new Lien(membres[id1], membres[id2]);
+            liens.Add(nouveauLien);
 
-            Membres[id1].AjouterVoisin(Membres[id2]); /// ajoute une relation entre les deux
+            membres[id1].AjouterVoisin(membres[id2]);
         }
 
         public int[,] MatriceAdjacence()
         {
-            int taille = Membres.Count;
+            int taille = membres.Count;
             int[,] matrice = new int[taille, taille];
 
-            var tableauMembres = Membres.Values.ToArray();
+            var tableauMembres = membres.Values.ToArray();
 
             for (int i = 0; i < taille; i++)
             {
@@ -69,7 +74,7 @@ namespace PbSI
         {
             var liste = new Dictionary<int, List<int>>();
 
-            foreach (var membre in Membres.Values)
+            foreach (var membre in membres.Values)
             {
                 var voisinsIds = new List<int>();
                 foreach (var voisin in membre.Voisins)
@@ -84,7 +89,7 @@ namespace PbSI
 
         public void AfficherGraphe()
         {
-            foreach (var membre in Membres.Values)
+            foreach (var membre in membres.Values)
             {
                 Console.Write($"Membre {membre.Id} est en relation avec : ");
                 foreach (var voisin in membre.Voisins)
@@ -94,6 +99,8 @@ namespace PbSI
                 Console.WriteLine();
             }
         }
+
+        #endregion
     }
 
 }

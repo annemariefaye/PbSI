@@ -11,7 +11,7 @@ namespace PbSI
             Graphe graphe = new Graphe();
             relations.AfficherContenu();
             Console.WriteLine();
-            foreach (int[] i in relations.contenu)
+            foreach (int[] i in relations.Contenu)
             {
                 graphe.AjouterRelation(i[0], i[1]);
             }
