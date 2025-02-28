@@ -55,9 +55,7 @@ namespace PbSI
             membres = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
             this.matriceAdjacence = matriceAdjacence;
-            this.listeAdjacence = null;
-
-            int index = 0;
+            
 
             for(int i = 0; i<matriceAdjacence.GetLength(0); i++)
             {
@@ -69,13 +67,15 @@ namespace PbSI
                     }
                 }
             }
+
+            this.listeAdjacence = GetListeAdjacence();
         }
         
         public Graphe(Dictionary<int, List<int>> listeAdjacence)
         {
             membres = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
-            this.matriceAdjacence = null;
+            
             this.listeAdjacence = listeAdjacence;
 
             foreach(var listeadj in this.listeAdjacence)
@@ -86,6 +86,8 @@ namespace PbSI
                     AjouterRelation(key, voisin);
                 }
             }
+
+            this.matriceAdjacence = GetMatriceAdjacence();
         }
 
 
@@ -160,27 +162,45 @@ namespace PbSI
             return liste;
         }
 
-        public void AfficherListeAdjacence(Dictionary<int, List<int>> graph)
+        public void AfficherListeAdjacence()
         {
-            Console.WriteLine("Liste d'adjacence :");
-            foreach (var kvp in graph)
+            
+            if(this.listeAdjacence != null)
             {
-                int nodeId = kvp.Key;
-                List<int> voisins = kvp.Value;
-                Console.WriteLine($"Noeud {nodeId} : [{string.Join(", ", voisins)}]");
+                Console.WriteLine("Liste d'adjacence :");
+                foreach (var kvp in this.listeAdjacence)
+                {
+                    int nodeId = kvp.Key;
+                    List<int> voisins = kvp.Value;
+                    Console.WriteLine($"Noeud {nodeId} : [{string.Join(", ", voisins)}]");
+                }
             }
+            else
+            {
+                Console.WriteLine("Liste d'adjacence null");
+            }
+            
         }
 
-        public void AfficherMatriceAdjacence(int[,] mat)
+        public void AfficherMatriceAdjacence()
         {
-            for (int i = 0; i < mat.GetLength(0); i++)
+            if(matriceAdjacence!= null)
             {
-                for (int j = 0; j < mat.GetLength(1); j++)
+                for (int i = 0; i < this.matriceAdjacence.GetLength(0); i++)
                 {
-                    Console.Write(mat[i, j] + " ");
+                    for (int j = 0; j < this.matriceAdjacence.GetLength(1); j++)
+                    {
+                        Console.Write(this.matriceAdjacence[i, j] + " ");
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
             }
+
+            else
+            {
+                Console.WriteLine("Matrice d'adjacence null");
+            }
+            
         }
 
         public void AfficherGraphe()

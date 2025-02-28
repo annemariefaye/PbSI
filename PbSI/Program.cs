@@ -1,5 +1,7 @@
 ﻿using System;
 using PbSI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PbSI
 {
@@ -8,8 +10,11 @@ namespace PbSI
         static void Main(string[] args)
         {
             LectureFichiers relations = new LectureFichiers("relations.mtx");
-            Graphe graphe = new Graphe();
+            List<int[]> tableauMembres = relations.Contenu;
             relations.AfficherContenu();
+
+            // Création graphe vierge
+            Graphe graphe = new Graphe();
             Console.WriteLine();
             foreach (int[] i in relations.Contenu)
             {
@@ -19,10 +24,20 @@ namespace PbSI
             graphe.AfficherGraphe();
             Console.WriteLine();
 
+            Graphe grapheL = InstantiationListe(tableauMembres);
+            Graphe grapheM = InstantiationMatrice(tableauMembres);
+
 
             int[,] mat = graphe.MatriceAdjacence;
-            Console.WriteLine(mat.GetLength(0));
             var liste = graphe.ListeAdjacence;
+
+            Console.WriteLine("\n");
+            grapheL.AfficherGraphe();
+
+
+            Console.WriteLine("\n");
+            grapheM.AfficherGraphe();
+
 
             RechercheChemin rechercheChemin = new RechercheChemin();
 
@@ -40,6 +55,55 @@ namespace PbSI
                 }
             }
 
+        }
+
+        static Graphe InstantiationMatrice(List<int[]> tableauMembres)
+        {
+            // Création graphe matrice : pb → comment avoir les noms des nodes et les id 
+            // Aplatir puis convertir en HashSet
+            HashSet<int> hashSet = new HashSet<int>(tableauMembres.SelectMany(x => x));
+
+            int taille = hashSet.Count;
+            int[,] matrice = new int[taille, taille];
+
+
+            foreach (int[] mini_tab in tableauMembres)
+            {
+                matrice[mini_tab[0] - 1, mini_tab[1] - 1] = 1;
+                matrice[mini_tab[1] - 1, mini_tab[0] - 1] = 1;
+            }
+
+
+
+            return new Graphe(matrice);
+        }
+
+        static Graphe InstantiationListe(List<int[]> tableauMembres)
+        {
+            // Création graphe liste
+            Dictionary<int, List<int>> listeAdj = new Dictionary<int, List<int>>();
+            foreach (int[] mini_tab in tableauMembres)
+            {
+                int key = mini_tab[0];
+                int value = mini_tab[1];
+
+                // Vérifier et initialiser la liste pour key
+                if (!listeAdj.ContainsKey(key))
+                {
+                    listeAdj[key] = new List<int>();
+                }
+
+                // Vérifier et initialiser la liste pour value
+                if (!listeAdj.ContainsKey(value))
+                {
+                    listeAdj[value] = new List<int>();
+                }
+
+                listeAdj[key].Add(value);
+                listeAdj[value].Add(key);
+            }
+
+            return new Graphe(listeAdj);
         }
     }
 }

@@ -6,20 +6,27 @@
 
         private Noeud source;
         private Noeud destination;
+        private double poids;
 
         #endregion
 
         #region Constructeurs
         
-        public Lien(Noeud source, Noeud destination)
+        public Lien(Noeud source, Noeud destination, double poids = 1)
         {
             this.source = source;
             this.destination = destination;
+            this.poids = poids;
         }
 
         #endregion
         
         #region Propriétés
+
+        public double Poids
+        {
+            get {return this.poids;}
+        }
 
         #endregion
 
