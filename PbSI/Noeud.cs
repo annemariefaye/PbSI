@@ -6,13 +6,24 @@ namespace PbSI
     {
         #region Attributs
 
-        private int id;
-        private List<Noeud> voisins;
+        /// <summary>
+        /// Identifiant du noeud
+        /// </summary>
+        private readonly int id;
+
+        /// <summary>
+        /// Liste des noeuds voisins
+        /// </summary>
+        private readonly List<Noeud> voisins;
 
         #endregion
 
         #region Constructeurs
 
+        /// <summary>
+        /// Constructeur par défaut
+        /// </summary>
+        /// <param name="id">Identifiant du noeud</param>
         public Noeud(int id)
         {
             this.id = id;
@@ -23,11 +34,17 @@ namespace PbSI
 
         #region Propriétés
 
+        /// <summary>
+        /// Retourne l'identifiant du noeud
+        /// </summary>
         public int Id
         {
             get { return id; }
         }
 
+        /// <summary>
+        /// Retourne la liste des noeuds voisins
+        /// </summary>
         public List<Noeud> Voisins
         {
             get { return voisins; }
@@ -37,6 +54,10 @@ namespace PbSI
 
         #region Méthodes
 
+        /// <summary>
+        /// Ajoute un voisin au noeud
+        /// </summary>
+        /// <param name="voisin">Noeud voisin à ajouter</param>
         public void AjouterVoisin(Noeud voisin)
         {
             if (!voisins.Contains(voisin))
@@ -45,6 +66,11 @@ namespace PbSI
                 voisin.Voisins.Add(this);
             }
         }
+
+        /// <summary>
+        /// Retourne une chaine de caractères représentant le noeud
+        /// </summary>
+        /// <returns>Chaine de caractères représentant le noeud</returns>
         public override string ToString()
         {
             return $"Membre {Id}";
@@ -52,5 +78,4 @@ namespace PbSI
 
         #endregion
     }
-
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using PbSI;
-
-namespace PbSI
+﻿namespace PbSI
 {
     class Program
     {
@@ -19,7 +16,6 @@ namespace PbSI
             graphe.AfficherGraphe();
             Console.WriteLine();
 
-
             int[,] mat = graphe.MatriceAdjacence();
 
             RechercheChemin rechercheChemin = new RechercheChemin();
@@ -36,7 +32,6 @@ namespace PbSI
                     Console.WriteLine(cycle.Pop());
                 }
             }
-
         }
     }
 }
