@@ -4,18 +4,22 @@
     {
         #region Attributs
 
-        private string path;
-        private List<int[]> contenu;
+        /// <summary>
+        /// Contenu du fichier
+        /// </summary>
+        private readonly List<int[]> contenu;
 
         #endregion
 
         #region Constructeurs
 
+        /// <summary>
+        /// Constructeur par défaut
+        /// </summary>
+        /// <param name="path">Chemin du fichier à lire</param>
         public LectureFichiers(string path)
         {
-            this.path = path;
-
-            string[] lines = File.ReadAllLines(this.path);
+            string[] lines = File.ReadAllLines(path);
 
             this.contenu = new List<int[]>();
 
@@ -27,12 +31,14 @@
                     if (infos[0] == null)
                     {
                         infos = line.Split(" ");
-                        string[,] relations = new string[Convert.ToInt32(infos[2]),2];
+                        string[,] relations = new string[Convert.ToInt32(infos[2]), 2];
                     }
                     else
                     {
                         string[] parts = line.Split(" ");
-                        this.contenu.Add(new int[] { Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]) });
+                        contenu.Add(
+                            new int[] { Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]) }
+                        );
                     }
                 }
             }
@@ -42,6 +48,9 @@
 
         #region Propriétés
 
+        /// <summary>
+        /// Retourne le contenu du fichier
+        /// </summary>
         public List<int[]> Contenu
         {
             get { return contenu; }
@@ -51,6 +60,9 @@
 
         #region Méthodes
 
+        /// <summary>
+        /// Affiche le contenu du fichier
+        /// </summary>
         public void AfficherContenu()
         {
             Console.WriteLine("Contenu du fichier :");

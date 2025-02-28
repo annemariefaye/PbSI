@@ -6,53 +6,46 @@ namespace PbSI
     {
         #region Attributs
 
-        private Dictionary<int, Noeud> membres;
-        private List<Lien> liens;
+        /// <summary>
+        /// Liste des noeuds du graphe
+        /// </summary>
+        private readonly Dictionary<int, Noeud> noeuds;
+
+        /// <summary>
+        /// Liste des liens du graphe
+        /// </summary>
+        private readonly List<Lien> liens;
+
+        /// <summary>
+        /// Matrice d'adjacence du graphe
+        /// </summary>
         private int[,]? matriceAdjacence;
+
+        /// <summary>
+        /// Liste d'adjacence du graphe
+        /// </summary>
         private Dictionary<int, List<int>>? listeAdjacence;
-
-        public Dictionary<int, Noeud> Membres
-        {
-            get { return membres; }
-        }
-
-        public int[,] MatriceAdjacence
-        {
-            get
-            {
-                if (this.matriceAdjacence == null)
-                {
-                    this.matriceAdjacence = GetMatriceAdjacence();
-                }
-                return this.matriceAdjacence;
-            }
-        }
-
-        public Dictionary<int, List<int>> ListeAdjacence
-        {
-            get
-            {
-                if (this.listeAdjacence == null)
-                {
-                    this.listeAdjacence = GetListeAdjacence();
-                }
-                return this.listeAdjacence;
-            }
-        }
 
         #endregion
 
         #region Constructeurs
 
+        /// <summary>
+        /// Constructeur par défaut
+        /// </summary>
         public Graphe()
         {
-            membres = new Dictionary<int, Noeud>();
+            noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
         }
 
+        /// <summary>
+        /// Constructeur avec matrice d'adjacence
+        /// </summary>
+        /// <param name="matriceAdjacence">Matrice d'adjacence du graphe</param>
         public Graphe(int[,] matriceAdjacence)
         {
-            membres = new Dictionary<int, Noeud>();
+            noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
             this.matriceAdjacence = matriceAdjacence;
             
@@ -61,27 +54,31 @@ namespace PbSI
             {
                 for (int j = 0; j < matriceAdjacence.GetLength(1); j++)
                 {
-                    if (this.matriceAdjacence[i,j] == 1)
+                    if (this.matriceAdjacence[i, j] == 1)
                     {
-                        AjouterRelation(i+1, j+1); //+1 car ca commence par 1 mais j'aime pas ça, c'est pas modulable, je veux ajouter un attribut name à noeud
+                        AjouterRelation(i + 1, j + 1); //+1 car ca commence par 1 mais j'aime pas ça, c'est pas modulable, je veux ajouter un attribut name à noeud
                     }
                 }
             }
 
             this.listeAdjacence = GetListeAdjacence();
         }
-        
+
+        /// <summary>
+        /// Constructeur avec liste d'adjacence
+        /// </summary>
+        /// <param name="listeAdjacence">Liste d'adjacence du graphe</param>
         public Graphe(Dictionary<int, List<int>> listeAdjacence)
         {
-            membres = new Dictionary<int, Noeud>();
+            noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
             
             this.listeAdjacence = listeAdjacence;
 
-            foreach(var listeadj in this.listeAdjacence)
+            foreach (var listeadj in this.listeAdjacence)
             {
                 int key = listeadj.Key;
-                foreach(int voisin in listeadj.Value)
+                foreach (int voisin in listeadj.Value)
                 {
                     AjouterRelation(key, voisin);
                 }
@@ -90,48 +87,101 @@ namespace PbSI
             this.matriceAdjacence = GetMatriceAdjacence();
         }
 
+        #endregion
 
+        #region Propriétés
+
+        /// <summary>
+        /// Retourne la liste des noeuds du graphe
+        /// </summary>
+        public Dictionary<int, Noeud> Noeuds
+        {
+            get { return noeuds; }
+        }
+
+        /// <summary>
+        /// Retourne la matrice d'adjacence du graphe
+        /// </summary>
+        public int[,] MatriceAdjacence
+        {
+            get
+            {
+                if (matriceAdjacence == null)
+                {
+                    matriceAdjacence = GetMatriceAdjacence();
+                }
+                return matriceAdjacence;
+            }
+        }
+
+        /// <summary>
+        /// Retourne la liste d'adjacence du graphe
+        /// </summary>
+        public Dictionary<int, List<int>> ListeAdjacence
+        {
+            get
+            {
+                if (listeAdjacence == null)
+                {
+                    listeAdjacence = GetListeAdjacence();
+                }
+                return listeAdjacence;
+            }
+        }
 
         #endregion
 
         #region Méthodes
 
+        /// <summary>
+        /// Ajoute un noeud au graphe
+        /// </summary>
+        /// <param name="id">Identifiant du noeud à ajouter</param>
         public void AjouterMembre(int id)
         {
-            if (!membres.ContainsKey(id))
+            if (!noeuds.ContainsKey(id))
             {
-                membres[id] = new Noeud(id);
+                noeuds[id] = new Noeud(id);
             }
         }
 
+        /// <summary>
+        /// Ajoute une relation entre deux noeuds
+        /// </summary>
+        /// <param name="id1">Identifiant du premier noeud</param>
+        /// <param name="id2">Identifiant du second noeud</param>
         public void AjouterRelation(int id1, int id2)
         {
-            if (!membres.ContainsKey(id1))
+            if (!noeuds.ContainsKey(id1))
             {
                 AjouterMembre(id1);
             }
-            if (!membres.ContainsKey(id2))
+            if (!noeuds.ContainsKey(id2))
             {
                 AjouterMembre(id2);
             }
-            Lien nouveauLien = new Lien(membres[id1], membres[id2]);
+            Lien nouveauLien = new Lien(noeuds[id1], noeuds[id2]);
             liens.Add(nouveauLien);
 
-            membres[id1].AjouterVoisin(membres[id2]);
+            noeuds[id1].AjouterVoisin(noeuds[id2]);
         }
 
+        /// <summary>
+        /// Construit et retourne la matrice d'adjacence du graphe
+        /// </summary>
+        /// <returns>Matrice d'adjacence du graphe</returns>
         private int[,] GetMatriceAdjacence()
         {
-            int taille = membres.Count;
+            int taille = noeuds.Count;
             int[,] matrice = new int[taille, taille];
 
-            var tableauMembres = membres.Values.ToArray();
+            var tableauMembres = noeuds.Values.ToArray();
 
             for (int i = 0; i < taille; i++)
             {
                 for (int j = 0; j < taille; j++)
                 {
-                    if (tableauMembres[i].Voisins.Contains(tableauMembres[j])) 
+                    if (tableauMembres[i].Voisins.Contains(tableauMembres[j]))
                     {
                         matrice[i, j] = 1;
                     }
@@ -145,11 +195,15 @@ namespace PbSI
             return matrice;
         }
 
+        /// <summary>
+        /// Construit et retourne la liste d'adjacence du graphe
+        /// </summary>
+        /// <returns>Liste d'adjacence du graphe</returns>
         private Dictionary<int, List<int>> GetListeAdjacence()
         {
             var liste = new Dictionary<int, List<int>>();
 
-            foreach (var membre in membres.Values)
+            foreach (var membre in noeuds.Values)
             {
                 var voisinsIds = new List<int>();
                 foreach (var voisin in membre.Voisins)
@@ -162,6 +216,10 @@ namespace PbSI
             return liste;
         }
 
+
+        /// <summary>
+        /// Affiche la liste d'adjacence du graphe
+        /// </summary>
         public void AfficherListeAdjacence()
         {
             
@@ -182,6 +240,9 @@ namespace PbSI
             
         }
 
+        /// <summary>
+        /// Affiche la matrice d'adjacence du graphe
+        /// </summary>
         public void AfficherMatriceAdjacence()
         {
             if(matriceAdjacence!= null)
@@ -203,9 +264,12 @@ namespace PbSI
             
         }
 
+        /// <summary>
+        /// Affiche le graphe
+        /// </summary>
         public void AfficherGraphe()
         {
-            foreach (var membre in membres.Values)
+            foreach (var membre in noeuds.Values)
             {
                 Console.Write($"Membre {membre.Id} est en relation avec : ");
                 foreach (var voisin in membre.Voisins)
@@ -218,5 +282,4 @@ namespace PbSI
 
         #endregion
     }
-
 }

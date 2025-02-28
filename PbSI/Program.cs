@@ -38,13 +38,10 @@ namespace PbSI
             Console.WriteLine("\n");
             grapheM.AfficherGraphe();
 
+            RechercheChemin.BFS(mat, 4, graphe);
+            RechercheChemin.BFS_Liste(liste, 4);
 
-            RechercheChemin rechercheChemin = new RechercheChemin();
-
-            rechercheChemin.BFS(mat, 4, graphe);
-            rechercheChemin.BFS_Liste(liste, 4);
-
-            Stack<int> cycle = rechercheChemin.ContientCycle(mat);
+            Stack<int> cycle = RechercheChemin.ContientCycle(mat);
             Console.WriteLine("Ce graphe contient au moins un cycle : " + (cycle.Count != 0));
             if (cycle.Count != 0)
             {
