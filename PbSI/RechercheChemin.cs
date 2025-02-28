@@ -7,6 +7,11 @@ namespace PbSI
 {
     public class RechercheChemin
     {
+        /// <summary>
+        /// Algorithme de Dijkstra pour trouver le plus court chemin entre un noeud de départ et tous les autres noeuds
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
         public void Dijkstra(int[,] graph, int depart)
         {
             int nbNodes = graph.GetLength(0);
@@ -50,6 +55,13 @@ namespace PbSI
             AfficherSolution(distances, nbNodes);
         }
 
+        /// <summary>
+        /// Retourne l'indice du noeud non exploré avec la distance minimale
+        /// </summary>
+        /// <param name="distances">Distances entre les noeuds</param>
+        /// <param name="dejaExplore">Tableau de booléens indiquant si un noeud a déjà été exploré</param>
+        /// <param name="nbNodes">Nombre de noeuds</param>
+        /// <returns>Indice du noeud non exploré avec la distance minimale</returns>
         private static int minimum_distance(int[] distances, bool[] dejaExplore, int nbNodes)
         {
             int min_distance = int.MaxValue;
@@ -70,9 +82,11 @@ namespace PbSI
             return min_index;
         }
 
-        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit, on a ni le nombre ni la description des circuits
-        /// On reprend l'algo DFS mais juste dans la pile on ajoute le parent ce qui permet de voir
-        /// si un node a déjà été visité par un autre chemin donc il y a une boucle
+        /// <summary>
+        /// Vérifie si un graphe contient un cycle
+        /// </summary>
+        /// <param name="mat">Matrice d'adjacence du graphe</param>
+        /// <returns>Un stack contenant les noeuds du cycle s'il existe, sinon un stack vide</returns>
         public static Stack<int> ContientCycle(int[,] mat)
         {
             int nbNodes = mat.GetLength(0);
@@ -103,7 +117,7 @@ namespace PbSI
                                     break;
                                 courant = parent[courant];
                             }
-                            cycle.Push(node); // On referme le cycle
+                            cycle.Push(node);
                             return cycle;
                         }
 
@@ -123,6 +137,11 @@ namespace PbSI
             return new Stack<int>(); // Aucun cycle trouvé
         }
 
+        /// <summary>
+        /// Affiche les distances depuis le noeud de départ
+        /// </summary>
+        /// <param name="distances">Distances depuis le noeud de départ</param>
+        /// <param name="nbNodes">Nombre de noeuds</param>
         public static void AfficherSolution(int[] distances, int nbNodes)
         {
             Console.Write("Node	 Distance " + "depuis le départ\n");
@@ -132,6 +151,12 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Algorithme de BFS pour parcourir un graphe
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
+        /// <param name="graphe">Graphe</param>
         public static void BFS(int[,] graph, int depart, Graphe graphe)
         {
             int nbNodes = graphe.Noeuds.Count;
@@ -194,6 +219,11 @@ namespace PbSI
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
         }
 
+        /// <summary>
+        /// Affiche les distances depuis le noeud de départ
+        /// </summary>
+        /// <param name="distances">Distances depuis le noeud de départ</param>
+        /// <param name="idToIndex">Dictionnaire associant les IDs à des indices</param>
         private static void AfficherSolution(int[] distances, Dictionary<int, int> idToIndex)
         {
             Console.WriteLine("Distances depuis le départ :");
@@ -206,6 +236,11 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Algorithme de BFS pour parcourir un graphe à partir d'une liste d'adjacence
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de liste d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
         public static void BFS_Liste(Dictionary<int, List<int>> graph, int depart)
         {
             int nbNodes = graph.Count;
@@ -258,6 +293,12 @@ namespace PbSI
             Console.WriteLine("Le graphe est connexe ? : " + connexe);
         }
 
+        /// <summary>
+        /// Algorithme de DFS pour parcourir un graphe
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
+        /// <param name="graphe">Graphe</param>
         public static void DFS(int[,] graph, int depart, Graphe graphe)
         {
             int nbNodes = graphe.Noeuds.Count;
@@ -320,6 +361,11 @@ namespace PbSI
             AfficherSolution(distances, idToIndex);
         }
 
+        /// <summary>
+        /// Algorithme de DFS pour parcourir un graphe à partir d'une liste d'adjacence
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
         public void DFS_Liste(Dictionary<int, List<int>> graph, int depart)
         {
             int nbNodes = graph.Count;
@@ -372,6 +418,11 @@ namespace PbSI
             AfficherSolutionListe(distances, graph);
         }
 
+        /// <summary>
+        /// Affiche les distances depuis le noeud de départ
+        /// </summary>
+        /// <param name="distances">Distances depuis le noeud de départ</param>
+        /// <param name="graph">Graphe sous forme de liste d'adjacence</param>
         public static void AfficherSolutionListe(int[] distances, Dictionary<int, List<int>> graph)
         {
             Console.WriteLine("Distances depuis le départ :");

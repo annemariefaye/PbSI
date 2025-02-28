@@ -48,9 +48,8 @@ namespace PbSI
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
             this.matriceAdjacence = matriceAdjacence;
-            
 
-            for(int i = 0; i<matriceAdjacence.GetLength(0); i++)
+            for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
             {
                 for (int j = 0; j < matriceAdjacence.GetLength(1); j++)
                 {
@@ -72,7 +71,7 @@ namespace PbSI
         {
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
-            
+
             this.listeAdjacence = listeAdjacence;
 
             foreach (var listeadj in this.listeAdjacence)
@@ -216,14 +215,12 @@ namespace PbSI
             return liste;
         }
 
-
         /// <summary>
         /// Affiche la liste d'adjacence du graphe
         /// </summary>
         public void AfficherListeAdjacence()
         {
-            
-            if(this.listeAdjacence != null)
+            if (this.listeAdjacence != null)
             {
                 Console.WriteLine("Liste d'adjacence :");
                 foreach (var kvp in this.listeAdjacence)
@@ -237,7 +234,6 @@ namespace PbSI
             {
                 Console.WriteLine("Liste d'adjacence null");
             }
-            
         }
 
         /// <summary>
@@ -245,7 +241,7 @@ namespace PbSI
         /// </summary>
         public void AfficherMatriceAdjacence()
         {
-            if(matriceAdjacence!= null)
+            if (matriceAdjacence != null)
             {
                 for (int i = 0; i < this.matriceAdjacence.GetLength(0); i++)
                 {
@@ -256,12 +252,10 @@ namespace PbSI
                     Console.WriteLine();
                 }
             }
-
             else
             {
                 Console.WriteLine("Matrice d'adjacence null");
             }
-            
         }
 
         /// <summary>

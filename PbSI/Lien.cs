@@ -19,9 +19,6 @@
         /// </summary>
         private double poids;
 
-        
-
-
         #endregion
 
         #region Constructeurs
@@ -43,6 +40,10 @@
         #endregion
 
         #region Propriétés
+
+        /// <summary>
+        /// Retourne le poids du lien
+        /// </summary>
         public double Poids
         {
             get { return this.poids; }

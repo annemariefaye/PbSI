@@ -1,7 +1,7 @@
 ﻿using System;
-using PbSI;
 using System.Collections.Generic;
 using System.Linq;
+using PbSI;
 
 namespace PbSI
 {
@@ -27,13 +27,11 @@ namespace PbSI
             Graphe grapheL = InstantiationListe(tableauMembres);
             Graphe grapheM = InstantiationMatrice(tableauMembres);
 
-
             int[,] mat = graphe.MatriceAdjacence;
             var liste = graphe.ListeAdjacence;
 
             Console.WriteLine("\n");
             grapheL.AfficherGraphe();
-
 
             Console.WriteLine("\n");
             grapheM.AfficherGraphe();
@@ -51,26 +49,22 @@ namespace PbSI
                     Console.WriteLine(cycle.Pop());
                 }
             }
-
         }
 
         static Graphe InstantiationMatrice(List<int[]> tableauMembres)
         {
-            // Création graphe matrice : pb → comment avoir les noms des nodes et les id 
+            // Création graphe matrice : pb → comment avoir les noms des nodes et les id
             // Aplatir puis convertir en HashSet
             HashSet<int> hashSet = new HashSet<int>(tableauMembres.SelectMany(x => x));
 
             int taille = hashSet.Count;
             int[,] matrice = new int[taille, taille];
 
-
             foreach (int[] mini_tab in tableauMembres)
             {
                 matrice[mini_tab[0] - 1, mini_tab[1] - 1] = 1;
                 matrice[mini_tab[1] - 1, mini_tab[0] - 1] = 1;
             }
-
-
 
             return new Graphe(matrice);
         }
