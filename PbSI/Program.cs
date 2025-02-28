@@ -16,13 +16,14 @@
             graphe.AfficherGraphe();
             Console.WriteLine();
 
-            int[,] mat = graphe.MatriceAdjacence();
+            int[,] mat = graphe.MatriceAdjacence;
+            Console.WriteLine(mat.GetLength(0));
+            var liste = graphe.ListeAdjacence;
 
-            RechercheChemin rechercheChemin = new RechercheChemin();
+            RechercheChemin.BFS(mat, 4, graphe);
+            RechercheChemin.BFS_Liste(liste, 4);
 
-            rechercheChemin.BFS(mat, 4);
-
-            Stack<int> cycle = rechercheChemin.ContientCycle(mat);
+            Stack<int> cycle = RechercheChemin.ContientCycle(mat);
             Console.WriteLine("Ce graphe contient au moins un cycle : " + (cycle.Count != 0));
             if (cycle.Count != 0)
             {

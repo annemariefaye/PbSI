@@ -1,11 +1,13 @@
-﻿namespace PbSI
+﻿using System;
+
+namespace PbSI
 {
     public class Graphe
     {
         #region Attributs
 
         /// <summary>
-        /// Dictionnaire des noeuds du graphe
+        /// Liste des noeuds du graphe
         /// </summary>
         private readonly Dictionary<int, Noeud> noeuds;
 
@@ -13,6 +15,16 @@
         /// Liste des liens du graphe
         /// </summary>
         private readonly List<Lien> liens;
+
+        /// <summary>
+        /// Matrice d'adjacence du graphe
+        /// </summary>
+        private int[,]? matriceAdjacence;
+
+        /// <summary>
+        /// Liste d'adjacence du graphe
+        /// </summary>
+        private Dictionary<int, List<int>>? listeAdjacence;
 
         #endregion
 
@@ -25,6 +37,92 @@
         {
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
+        }
+
+        /// <summary>
+        /// Constructeur avec matrice d'adjacence
+        /// </summary>
+        /// <param name="matriceAdjacence">Matrice d'adjacence du graphe</param>
+        public Graphe(int[,] matriceAdjacence)
+        {
+            noeuds = new Dictionary<int, Noeud>();
+            liens = new List<Lien>();
+            this.matriceAdjacence = matriceAdjacence;
+            this.listeAdjacence = null;
+
+            for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
+            {
+                for (int j = 0; j < matriceAdjacence.GetLength(1); j++)
+                {
+                    if (this.matriceAdjacence[i, j] == 1)
+                    {
+                        AjouterRelation(i + 1, j + 1); //+1 car ca commence par 1 mais j'aime pas ça, c'est pas modulable, je veux ajouter un attribut name à noeud
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Constructeur avec liste d'adjacence
+        /// </summary>
+        /// <param name="listeAdjacence">Liste d'adjacence du graphe</param>
+        public Graphe(Dictionary<int, List<int>> listeAdjacence)
+        {
+            noeuds = new Dictionary<int, Noeud>();
+            liens = new List<Lien>();
+            this.matriceAdjacence = null;
+            this.listeAdjacence = listeAdjacence;
+
+            foreach (var listeadj in this.listeAdjacence)
+            {
+                int key = listeadj.Key;
+                foreach (int voisin in listeadj.Value)
+                {
+                    AjouterRelation(key, voisin);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Propriétés
+
+        /// <summary>
+        /// Retourne la liste des noeuds du graphe
+        /// </summary>
+        public Dictionary<int, Noeud> Noeuds
+        {
+            get { return noeuds; }
+        }
+
+        /// <summary>
+        /// Retourne la matrice d'adjacence du graphe
+        /// </summary>
+        public int[,] MatriceAdjacence
+        {
+            get
+            {
+                if (matriceAdjacence == null)
+                {
+                    matriceAdjacence = GetMatriceAdjacence();
+                }
+                return matriceAdjacence;
+            }
+        }
+
+        /// <summary>
+        /// Retourne la liste d'adjacence du graphe
+        /// </summary>
+        public Dictionary<int, List<int>> ListeAdjacence
+        {
+            get
+            {
+                if (listeAdjacence == null)
+                {
+                    listeAdjacence = GetListeAdjacence();
+                }
+                return listeAdjacence;
+            }
         }
 
         #endregion
@@ -65,10 +163,10 @@
         }
 
         /// <summary>
-        /// Retourne la matrice d'adjacence du graphe
+        /// Construit et retourne la matrice d'adjacence du graphe
         /// </summary>
         /// <returns>Matrice d'adjacence du graphe</returns>
-        public int[,] MatriceAdjacence()
+        private int[,] GetMatriceAdjacence()
         {
             int taille = noeuds.Count;
             int[,] matrice = new int[taille, taille];
@@ -93,7 +191,11 @@
             return matrice;
         }
 
-        public Dictionary<int, List<int>> ListeAdjacence()
+        /// <summary>
+        /// Construit et retourne la liste d'adjacence du graphe
+        /// </summary>
+        /// <returns>Liste d'adjacence du graphe</returns>
+        private Dictionary<int, List<int>> GetListeAdjacence()
         {
             var liste = new Dictionary<int, List<int>>();
 
@@ -108,6 +210,35 @@
             }
 
             return liste;
+        }
+
+        /// <summary>
+        /// Affiche la liste d'adjacence du graphe
+        /// </summary>
+        public void AfficherListeAdjacence()
+        {
+            Console.WriteLine("Liste d'adjacence :");
+            foreach (var kvp in listeAdjacence)
+            {
+                int nodeId = kvp.Key;
+                List<int> voisins = kvp.Value;
+                Console.WriteLine($"Noeud {nodeId} : [{string.Join(", ", voisins)}]");
+            }
+        }
+
+        /// <summary>
+        /// Affiche la matrice d'adjacence du graphe
+        /// </summary>
+        public void AfficherMatriceAdjacence()
+        {
+            for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
+            {
+                for (int j = 0; j < matriceAdjacence.GetLength(1); j++)
+                {
+                    Console.Write(matriceAdjacence[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
 
         /// <summary>

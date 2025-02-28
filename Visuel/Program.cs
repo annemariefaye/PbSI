@@ -3,7 +3,7 @@ using PbSI;
 /*Prompts :
 - visualisation de graphe c#
 - non avec drawing grace a une matrice d'adjacence
-- same code but for this : 
+- same code but for this :
         using System.Linq;
         using System.Text;
         using System.Threading.Tasks;
@@ -22,8 +22,8 @@ using PbSI;
         }
         }
   - y a pas moyen de regrouper les nodes de maniere intelligente pour que ce soit visible
-  - est ce que ya moyen que les ligne soit plus courbé pour améliorer la visibilité
-  - c'est toujours pas clairs, tu peux d'inspirer de graphiz stv (sans utiliser la bibliothèque)
+  - est ce que ya moyen que les ligne soit plus courbï¿½ pour amï¿½liorer la visibilitï¿½
+  - c'est toujours pas clairs, tu peux d'inspirer de graphiz stv (sans utiliser la bibliothï¿½que)
   - fait en sorte que les lignes se croisent le moins possible
   - tu peux faire deux lignes a la place de ca avec des lignes droites
   
@@ -38,21 +38,21 @@ namespace Visuel
 
         private string[] nodes;
 
-
         public Visualisation()
         {
-            LectureFichiers relations = new LectureFichiers("relations.mtx");
+            // dire a EUH que son truc de dossier marche pas et bien le gronder
+            LectureFichiers relations = new LectureFichiers("../../../relations.mtx");
             Graphe graphe = new Graphe();
-            foreach (int[] i in relations.contenu)
+            foreach (int[] i in relations.Contenu)
             {
                 graphe.AjouterRelation(i[0], i[1]);
             }
-            adjacencyMatrix = graphe.MatriceAdjacence();
+            adjacencyMatrix = graphe.MatriceAdjacence;
 
-            nodes = new string[graphe.Membres.Count];
+            nodes = new string[graphe.Noeuds.Count];
             int index = 0;
 
-            foreach(var membres in graphe.Membres)
+            foreach (var membres in graphe.Noeuds)
             {
                 nodes[index] = membres.Key.ToString();
                 index++;
@@ -60,23 +60,25 @@ namespace Visuel
 
             this.Text = "Graphe - Matrice d'Adjacence";
             this.Size = new Size(1500, 1000);
-            this.Paint += new PaintEventHandler(DrawGraphLines);
+            this.Paint += new PaintEventHandler(DrawGraphOptimized);
         }
 
         private void DrawGraphLines(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40;  // Taille des nœuds
-            int spacing = 45; // Espacement horizontal entre les nœuds
+            int size = 40; // Taille des nï¿½uds
+            int spacing = 45; // Espacement horizontal entre les nï¿½uds
             PointF[] positions = new PointF[nodes.Length];
 
-            int centerY = this.ClientSize.Height / 2; // Centre vertical de la fenêtre
+            int centerY = this.ClientSize.Height / 2; // Centre vertical de la fenï¿½tre
 
-            // Calculer les positions des nœuds en deux lignes, face à face
+            // Calculer les positions des nï¿½uds en deux lignes, face ï¿½ face
             for (int i = 0; i < nodes.Length; i++)
             {
-                float x = (i / 2) * spacing + (this.ClientSize.Width / 2 - (spacing * (nodes.Length / 4))); // Centrer les nœuds
-                float y = (i % 2 == 0) ? centerY - 50 : centerY + 50; // Ligne supérieure ou inférieure
+                float x =
+                    (i / 2) * spacing
+                    + (this.ClientSize.Width / 2 - (spacing * (nodes.Length / 4))); // Centrer les nï¿½uds
+                float y = (i % 2 == 0) ? centerY - 50 : centerY + 50; // Ligne supï¿½rieure ou infï¿½rieure
                 positions[i] = new PointF(x, y);
             }
 
@@ -84,20 +86,20 @@ namespace Visuel
             Font font = new Font("Arial", 12);
             Brush textBrush = Brushes.Black;
 
-            // Dessiner les arêtes
+            // Dessiner les arï¿½tes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
                     if (adjacencyMatrix[i, j] == 1)
                     {
-                        // Dessiner une ligne droite entre les nœuds
+                        // Dessiner une ligne droite entre les nï¿½uds
                         g.DrawLine(edgePen, positions[i], positions[j]);
                     }
                 }
             }
 
-            // Dessiner les nœuds
+            // Dessiner les nï¿½uds
             for (int i = 0; i < nodes.Length; i++)
             {
                 float x = positions[i].X - size / 2;
@@ -111,8 +113,10 @@ namespace Visuel
         private void DrawGraphCircle(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40;  /// Taille des nœuds
-            int radius = 300; /// Rayon du cercle où sont placés les nœuds
+            int size = 40;
+            /// Taille des nï¿½uds
+            int radius = 300;
+            /// Rayon du cercle oï¿½ sont placï¿½s les nï¿½uds
             PointF[] positions = new PointF[nodes.Length];
 
             int centerX = this.ClientSize.Width / 2;
@@ -133,7 +137,7 @@ namespace Visuel
             Brush brush = Brushes.White;
             Brush textBrush = Brushes.Black;
 
-            /// Dessiner les arêtes
+            /// Dessiner les arï¿½tes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
@@ -146,18 +150,17 @@ namespace Visuel
             }
         }
 
-
         private void DrawGraphWeighted(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40;  // Taille des nœuds
-            int radius = 100; // Rayon pour les nœuds
+            int size = 40; // Taille des nï¿½uds
+            int radius = 100; // Rayon pour les nï¿½uds
             PointF[] positions = new PointF[nodes.Length];
 
             int centerX = this.ClientSize.Width / 2;
             int centerY = this.ClientSize.Height / 2;
 
-            // Calculer le degré de chaque nœud
+            // Calculer le degrï¿½ de chaque nï¿½ud
             int[] degrees = new int[nodes.Length];
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
@@ -170,15 +173,15 @@ namespace Visuel
                 }
             }
 
-            // Normaliser les degrés pour les positions
+            // Normaliser les degrï¿½s pour les positions
             float maxDegree = degrees.Max();
             float[] normalizedDegrees = degrees.Select(d => d / maxDegree).ToArray();
 
-            // Calculer les positions des sommets selon leur degré
+            // Calculer les positions des sommets selon leur degrï¿½
             for (int i = 0; i < nodes.Length; i++)
             {
                 float angle = (float)(i * 2 * Math.PI / nodes.Length);
-                float dynamicRadius = radius * (1 + normalizedDegrees[i]); // Ajustement en fonction du degré
+                float dynamicRadius = radius * (1 + normalizedDegrees[i]); // Ajustement en fonction du degrï¿½
                 positions[i] = new PointF(
                     centerX + (float)(dynamicRadius * Math.Cos(angle)),
                     centerY + (float)(dynamicRadius * Math.Sin(angle))
@@ -190,7 +193,7 @@ namespace Visuel
             Brush brush = Brushes.White;
             Brush textBrush = Brushes.Black;
 
-            // Dessiner les arêtes
+            // Dessiner les arï¿½tes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
@@ -202,7 +205,7 @@ namespace Visuel
                 }
             }
 
-            // Dessiner les nœuds
+            // Dessiner les nï¿½uds
             for (int i = 0; i < nodes.Length; i++)
             {
                 float x = positions[i].X - size / 2;
@@ -213,18 +216,17 @@ namespace Visuel
             }
         }
 
-
         private void DrawGraphWeightedCurved(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40;  // Taille des nœuds
-            int radius = 200; // Rayon pour les nœuds
+            int size = 40; // Taille des nï¿½uds
+            int radius = 200; // Rayon pour les nï¿½uds
             PointF[] positions = new PointF[nodes.Length];
 
             int centerX = this.ClientSize.Width / 2;
             int centerY = this.ClientSize.Height / 2;
 
-            // Calculer le degré de chaque nœud
+            // Calculer le degrï¿½ de chaque nï¿½ud
             int[] degrees = new int[nodes.Length];
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
@@ -237,15 +239,15 @@ namespace Visuel
                 }
             }
 
-            // Normaliser les degrés pour les positions
+            // Normaliser les degrï¿½s pour les positions
             float maxDegree = degrees.Max();
             float[] normalizedDegrees = degrees.Select(d => d / maxDegree).ToArray();
 
-            // Calculer les positions des sommets selon leur degré
+            // Calculer les positions des sommets selon leur degrï¿½
             for (int i = 0; i < nodes.Length; i++)
             {
                 float angle = (float)(i * 2 * Math.PI / nodes.Length);
-                float dynamicRadius = radius * (1 + normalizedDegrees[i]); // Ajustement en fonction du degré
+                float dynamicRadius = radius * (1 + normalizedDegrees[i]); // Ajustement en fonction du degrï¿½
                 positions[i] = new PointF(
                     centerX + (float)(dynamicRadius * Math.Cos(angle)),
                     centerY + (float)(dynamicRadius * Math.Sin(angle))
@@ -257,33 +259,39 @@ namespace Visuel
             Brush brush = Brushes.White;
             Brush textBrush = Brushes.Black;
 
-            // Dessiner les arêtes en courbes
+            // Dessiner les arï¿½tes en courbes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
                     if (adjacencyMatrix[i, j] == 1)
                     {
-                        // Calculer le point de contrôle pour la courbe
+                        // Calculer le point de contrï¿½le pour la courbe
                         PointF midPoint = new PointF(
                             (positions[i].X + positions[j].X) / 2,
                             (positions[i].Y + positions[j].Y) / 2
                         );
 
-                        // Ajuster le point de contrôle pour créer une courbe
+                        // Ajuster le point de contrï¿½le pour crï¿½er une courbe
                         float controlPointOffset = 50; // Ajuster cette valeur pour modifier la courbure
                         PointF controlPoint = new PointF(
                             midPoint.X,
                             midPoint.Y - controlPointOffset
                         );
 
-                        // Dessiner la courbe Bézier
-                        g.DrawBezier(edgePen, positions[i], controlPoint, controlPoint, positions[j]);
+                        // Dessiner la courbe Bï¿½zier
+                        g.DrawBezier(
+                            edgePen,
+                            positions[i],
+                            controlPoint,
+                            controlPoint,
+                            positions[j]
+                        );
                     }
                 }
             }
 
-            // Dessiner les nœuds
+            // Dessiner les nï¿½uds
             for (int i = 0; i < nodes.Length; i++)
             {
                 float x = positions[i].X - size / 2;
@@ -294,11 +302,10 @@ namespace Visuel
             }
         }
 
-
         private void DrawGraphOptimizedOld(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 20;  // Taille des nœuds
+            int size = 20; // Taille des nï¿½uds
             PointF[] positions = ForceDirectedLayout();
 
             Pen edgePen = new Pen(Color.Black, 2);
@@ -306,25 +313,31 @@ namespace Visuel
             Brush brush = Brushes.White;
             Brush textBrush = Brushes.White;
 
-            // Dessiner les arêtes en courbes
+            // Dessiner les arï¿½tes en courbes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
                     if (adjacencyMatrix[i, j] == 1)
                     {
-                        // Déplacer légèrement le point de contrôle pour éviter les lignes droites
+                        // Dï¿½placer lï¿½gï¿½rement le point de contrï¿½le pour ï¿½viter les lignes droites
                         PointF controlPoint = new PointF(
                             (positions[i].X + positions[j].X) / 2 + 30,
                             (positions[i].Y + positions[j].Y) / 2 - 30
                         );
 
-                        g.DrawBezier(edgePen, positions[i], controlPoint, controlPoint, positions[j]);
+                        g.DrawBezier(
+                            edgePen,
+                            positions[i],
+                            controlPoint,
+                            controlPoint,
+                            positions[j]
+                        );
                     }
                 }
             }
 
-            // Dessiner les nœuds
+            // Dessiner les nï¿½uds
             for (int i = 0; i < nodes.Length; i++)
             {
                 float x = positions[i].X - size / 2;
@@ -335,25 +348,25 @@ namespace Visuel
             }
         }
 
-        // Algorithme de force-directed layout pour organiser les nœuds
+        // Algorithme de force-directed layout pour organiser les nï¿½uds
         private PointF[] ForceDirectedLayout()
         {
             Random rand = new Random();
             PointF[] positions = new PointF[nodes.Length];
 
-            // Initialisation des positions aléatoires
+            // Initialisation des positions alï¿½atoires
             for (int i = 0; i < nodes.Length; i++)
             {
                 positions[i] = new PointF(rand.Next(100, 900), rand.Next(100, 900));
             }
 
             int iterations = 100;
-            float attractionFactor = 0.01f;  // Force d'attraction
-            float repulsionFactor = 40000f;   // Force de répulsion
+            float attractionFactor = 0.01f; // Force d'attraction
+            float repulsionFactor = 40000f; // Force de rï¿½pulsion
 
             for (int iter = 0; iter < iterations; iter++)
             {
-                // Calcul des forces de répulsion entre tous les nœuds
+                // Calcul des forces de rï¿½pulsion entre tous les nï¿½uds
                 for (int i = 0; i < nodes.Length; i++)
                 {
                     for (int j = 0; j < nodes.Length; j++)
@@ -371,7 +384,7 @@ namespace Visuel
                     }
                 }
 
-                // Calcul des forces d'attraction pour les arêtes existantes
+                // Calcul des forces d'attraction pour les arï¿½tes existantes
                 for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
@@ -395,20 +408,32 @@ namespace Visuel
             return positions;
         }
 
-
-
         private void DrawGraphOptimized(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40;  // Taille des nœuds
+            int baseSize = 30; // Taille de base des nï¿½uds
             PointF[] positions = ForceDirectedLayoutMinCrossings();
 
-            Pen edgePen = new Pen(Color.Black, 2);
-            Font font = new Font("Arial", 12);
-            Brush brush = Brushes.White;
-            Brush textBrush = Brushes.White;
+            // Calculer le degrï¿½ de chaque nï¿½ud
+            int[] degrees = new int[nodes.Length];
+            for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+                {
+                    if (adjacencyMatrix[i, j] == 1)
+                    {
+                        degrees[i]++;
+                    }
+                }
+            }
 
-            // Dessiner les arêtes en courbes pour minimiser les chevauchements
+            // Trouver le degrï¿½ maximum pour normaliser les tailles et couleurs
+            int maxDegree = degrees.Max();
+
+            Font font = new Font("Arial", 12);
+            Brush textBrush = Brushes.Black;
+
+            // Dessiner les arï¿½tes avec des couleurs diffï¿½rentes selon le degrï¿½ des nï¿½uds
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
@@ -416,20 +441,63 @@ namespace Visuel
                     if (adjacencyMatrix[i, j] == 1)
                     {
                         PointF controlPoint = GetCurvedControlPoint(positions[i], positions[j]);
-                        g.DrawBezier(edgePen, positions[i], controlPoint, controlPoint, positions[j]);
+                        Color edgeColor = GetColorFromDegrees(degrees[i], degrees[j], maxDegree);
+                        using (Pen edgePen = new Pen(edgeColor, 2))
+                        {
+                            g.DrawBezier(
+                                edgePen,
+                                positions[i],
+                                controlPoint,
+                                controlPoint,
+                                positions[j]
+                            );
+                        }
                     }
                 }
             }
 
-            // Dessiner les nœuds
+            // Dessiner les nï¿½uds
             for (int i = 0; i < nodes.Length; i++)
             {
-                float x = positions[i].X - size / 2;
-                float y = positions[i].Y - size / 2;
-                g.FillEllipse(Brushes.Blue, x, y, size, size);
+                float x = positions[i].X - baseSize / 2;
+                float y = positions[i].Y - baseSize / 2;
+
+                // Dï¿½terminer la taille et la couleur du nï¿½ud
+                int size = baseSize + degrees[i] * 5; // Augmenter la taille en fonction des connexions
+                Color nodeColor = GetColorFromDegree(degrees[i], maxDegree);
+
+                // Dessiner le nï¿½ud
+                using (Brush nodeBrush = new SolidBrush(nodeColor))
+                {
+                    g.FillEllipse(nodeBrush, x, y, size, size);
+                }
                 g.DrawEllipse(Pens.Black, x, y, size, size);
                 g.DrawString(nodes[i], font, textBrush, x + size / 3, y + size / 3);
             }
+        }
+
+        // Fonction pour obtenir la couleur des arï¿½tes en fonction des degrï¿½s des nï¿½uds
+        private Color GetColorFromDegrees(int degreeA, int degreeB, int maxDegree)
+        {
+            float ratioA = (float)degreeA / maxDegree;
+            float ratioB = (float)degreeB / maxDegree;
+
+            // Combine les ratios pour dï¿½terminer la couleur de l'arï¿½te
+            int red = (int)(255 * (1 - Math.Max(ratioA, ratioB))); // Rouge basï¿½ sur le plus grand degrï¿½
+            int green = (int)(255 * Math.Max(ratioA, ratioB)); // Vert diminue avec l'augmentation du degrï¿½
+
+            return Color.FromArgb(red, green, 0); // Pas de bleu pour les arï¿½tes
+        }
+
+        // Fonction pour obtenir la couleur en fonction du degrï¿½
+        private Color GetColorFromDegree(int degree, int maxDegree)
+        {
+            float ratio = (float)degree / maxDegree;
+            int red = (int)(255 * (1 - ratio)); // Rouge diminue avec l'augmentation du degrï¿½
+            int green = (int)(255 * ratio); // Vert augmente avec l'augmentation du degrï¿½
+            int blue = 0; // Bleu est constant ï¿½ 0
+
+            return Color.FromArgb(red, green, blue);
         }
 
         // Algorithme force-directed avec heuristique de croisement minimal
@@ -438,7 +506,7 @@ namespace Visuel
             Random rand = new Random();
             PointF[] positions = new PointF[nodes.Length];
 
-            // Initialisation des positions avec un algorithme de type Kamada-Kawai (placement initial basé sur les distances)
+            // Initialisation des positions avec un algorithme de type Kamada-Kawai (placement initial basï¿½ sur les distances)
             for (int i = 0; i < nodes.Length; i++)
             {
                 positions[i] = new PointF(rand.Next(100, 900), rand.Next(100, 900));
@@ -451,7 +519,7 @@ namespace Visuel
 
             for (int iter = 0; iter < iterations; iter++)
             {
-                // Force de répulsion entre nœuds
+                // Force de rï¿½pulsion entre nï¿½uds
                 for (int i = 0; i < nodes.Length; i++)
                 {
                     for (int j = 0; j < nodes.Length; j++)
@@ -469,7 +537,7 @@ namespace Visuel
                     }
                 }
 
-                // Attraction entre les nœuds connectés
+                // Attraction entre les nï¿½uds connectï¿½s
                 for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
@@ -489,7 +557,7 @@ namespace Visuel
                     }
                 }
 
-                // Éviter le croisement des arêtes en poussant les nœuds s'ils provoquent un croisement
+                // ï¿½viter le croisement des arï¿½tes en poussant les nï¿½uds s'ils provoquent un croisement
                 for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
@@ -502,12 +570,21 @@ namespace Visuel
                                 {
                                     if (adjacencyMatrix[k, l] == 1 && (i != k || j != l))
                                     {
-                                        if (EdgesCross(positions[i], positions[j], positions[k], positions[l]))
+                                        if (
+                                            EdgesCross(
+                                                positions[i],
+                                                positions[j],
+                                                positions[k],
+                                                positions[l]
+                                            )
+                                        )
                                         {
                                             float dx = positions[i].X - positions[k].X;
                                             float dy = positions[i].Y - positions[k].Y;
-                                            float distance = (float)Math.Sqrt(dx * dx + dy * dy) + 0.1f;
-                                            float force = crossingAvoidanceFactor / (distance * distance);
+                                            float distance =
+                                                (float)Math.Sqrt(dx * dx + dy * dy) + 0.1f;
+                                            float force =
+                                                crossingAvoidanceFactor / (distance * distance);
 
                                             positions[i].X += (dx / distance) * force;
                                             positions[i].Y += (dy / distance) * force;
@@ -545,11 +622,12 @@ namespace Visuel
             return positions;
         }
 
-        // Vérifie si deux arêtes se croisent
+        // Vï¿½rifie si deux arï¿½tes se croisent
         private bool EdgesCross(PointF a, PointF b, PointF c, PointF d)
         {
             float denominator = (b.X - a.X) * (d.Y - c.Y) - (b.Y - a.Y) * (d.X - c.X);
-            if (denominator == 0) return false; // Les segments sont parallèles
+            if (denominator == 0)
+                return false; // Les segments sont parallï¿½les
 
             float ua = ((c.X - a.X) * (d.Y - c.Y) - (c.Y - a.Y) * (d.X - c.X)) / denominator;
             float ub = ((c.X - a.X) * (b.Y - a.Y) - (c.Y - a.Y) * (b.X - a.X)) / denominator;
@@ -557,7 +635,7 @@ namespace Visuel
             return (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1);
         }
 
-        // Calcule un point de contrôle pour éviter les lignes droites
+        // Calcule un point de contrï¿½le pour ï¿½viter les lignes droites
         private PointF GetCurvedControlPoint(PointF p1, PointF p2)
         {
             float midX = (p1.X + p2.X) / 2;
@@ -567,14 +645,10 @@ namespace Visuel
             return new PointF(midX + offset, midY - offset);
         }
 
-
-
         [STAThread]
         static void Main()
         {
             Application.Run(new Visualisation());
         }
-
-        
     }
 }
