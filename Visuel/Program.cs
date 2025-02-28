@@ -41,13 +41,14 @@ namespace Visuel
 
         public Visualisation()
         {
-            LectureFichiers relations = new LectureFichiers("relations.mtx");
+            // dire a EUH que son truc de dossier marche pas et bien le gronder
+            LectureFichiers relations = new LectureFichiers("../../../relations.mtx");
             Graphe graphe = new Graphe();
-            foreach (int[] i in relations.contenu)
+            foreach (int[] i in relations.Contenu)
             {
                 graphe.AjouterRelation(i[0], i[1]);
             }
-            adjacencyMatrix = graphe.MatriceAdjacence();
+            adjacencyMatrix = graphe.MatriceAdjacence;
 
             nodes = new string[graphe.Membres.Count];
             int index = 0;
@@ -60,7 +61,7 @@ namespace Visuel
 
             this.Text = "Graphe - Matrice d'Adjacence";
             this.Size = new Size(1500, 1000);
-            this.Paint += new PaintEventHandler(DrawGraphLines);
+            this.Paint += new PaintEventHandler(DrawGraphOptimized);
         }
 
         private void DrawGraphLines(object sender, PaintEventArgs e)
@@ -398,39 +399,90 @@ namespace Visuel
 
 
         private void DrawGraphOptimized(object sender, PaintEventArgs e)
+{
+    Graphics g = e.Graphics;
+    int baseSize = 30;  // Taille de base des nœuds
+    PointF[] positions = ForceDirectedLayoutMinCrossings();
+
+    // Calculer le degré de chaque nœud
+    int[] degrees = new int[nodes.Length];
+    for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
+    {
+        for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
         {
-            Graphics g = e.Graphics;
-            int size = 40;  // Taille des nœuds
-            PointF[] positions = ForceDirectedLayoutMinCrossings();
-
-            Pen edgePen = new Pen(Color.Black, 2);
-            Font font = new Font("Arial", 12);
-            Brush brush = Brushes.White;
-            Brush textBrush = Brushes.White;
-
-            // Dessiner les arêtes en courbes pour minimiser les chevauchements
-            for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
+            if (adjacencyMatrix[i, j] == 1)
             {
-                for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
-                {
-                    if (adjacencyMatrix[i, j] == 1)
-                    {
-                        PointF controlPoint = GetCurvedControlPoint(positions[i], positions[j]);
-                        g.DrawBezier(edgePen, positions[i], controlPoint, controlPoint, positions[j]);
-                    }
-                }
-            }
-
-            // Dessiner les nœuds
-            for (int i = 0; i < nodes.Length; i++)
-            {
-                float x = positions[i].X - size / 2;
-                float y = positions[i].Y - size / 2;
-                g.FillEllipse(Brushes.Blue, x, y, size, size);
-                g.DrawEllipse(Pens.Black, x, y, size, size);
-                g.DrawString(nodes[i], font, textBrush, x + size / 3, y + size / 3);
+                degrees[i]++;
             }
         }
+    }
+
+    // Trouver le degré maximum pour normaliser les tailles et couleurs
+    int maxDegree = degrees.Max();
+
+    Font font = new Font("Arial", 12);
+    Brush textBrush = Brushes.Black;
+
+    // Dessiner les arêtes avec des couleurs différentes selon le degré des nœuds
+    for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
+    {
+        for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
+        {
+            if (adjacencyMatrix[i, j] == 1)
+            {
+                PointF controlPoint = GetCurvedControlPoint(positions[i], positions[j]);
+                Color edgeColor = GetColorFromDegrees(degrees[i], degrees[j], maxDegree);
+                using (Pen edgePen = new Pen(edgeColor, 2))
+                {
+                    g.DrawBezier(edgePen, positions[i], controlPoint, controlPoint, positions[j]);
+                }
+            }
+        }
+    }
+
+    // Dessiner les nœuds
+    for (int i = 0; i < nodes.Length; i++)
+    {
+        float x = positions[i].X - baseSize / 2;
+        float y = positions[i].Y - baseSize / 2;
+
+        // Déterminer la taille et la couleur du nœud
+        int size = baseSize + degrees[i] * 5; // Augmenter la taille en fonction des connexions
+        Color nodeColor = GetColorFromDegree(degrees[i], maxDegree);
+
+        // Dessiner le nœud
+        using (Brush nodeBrush = new SolidBrush(nodeColor))
+        {
+            g.FillEllipse(nodeBrush, x, y, size, size);
+        }
+        g.DrawEllipse(Pens.Black, x, y, size, size);
+        g.DrawString(nodes[i], font, textBrush, x + size / 3, y + size / 3);
+    }
+}
+
+// Fonction pour obtenir la couleur des arêtes en fonction des degrés des nœuds
+private Color GetColorFromDegrees(int degreeA, int degreeB, int maxDegree)
+{
+    float ratioA = (float)degreeA / maxDegree;
+    float ratioB = (float)degreeB / maxDegree;
+
+    // Combine les ratios pour déterminer la couleur de l'arête
+    int red = (int)(255 * (1-Math.Max(ratioA, ratioB))); // Rouge basé sur le plus grand degré
+    int green = (int)(255 * Math.Max(ratioA, ratioB)); // Vert diminue avec l'augmentation du degré
+
+    return Color.FromArgb(red, green, 0); // Pas de bleu pour les arêtes
+}
+
+// Fonction pour obtenir la couleur en fonction du degré
+private Color GetColorFromDegree(int degree, int maxDegree)
+{
+    float ratio = (float)degree / maxDegree;
+    int red = (int)(255 * (1 - ratio)); // Rouge diminue avec l'augmentation du degré
+    int green = (int)(255 * ratio);     // Vert augmente avec l'augmentation du degré
+    int blue = 0;                        // Bleu est constant à 0
+
+    return Color.FromArgb(red, green, blue);
+}
 
         // Algorithme force-directed avec heuristique de croisement minimal
         private PointF[] ForceDirectedLayoutMinCrossings()

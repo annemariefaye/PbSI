@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PbSI
 {
@@ -8,6 +9,8 @@ namespace PbSI
     {
         /// Pour les graphes pondérés sans coordonnées (pour plus tard)
         public void Dijkstra(int[,] graph, int depart)
+
+
         {
             int nbNodes = graph.GetLength(0);
 
@@ -61,122 +64,6 @@ namespace PbSI
             AfficherSolution(distances, nbNodes);
         }
 
-        public void BFS(int[,] graph, int depart)
-        {
-            int nbNodes = graph.GetLength(0);
-
-            /// On initialise un tableau de distances pour stocker toutes les distances 
-            int[] distances = new int[nbNodes];
-
-            /// On regarde si le node à déjà été exploré
-            bool[] dejaExplore = new bool[nbNodes];
-
-            /// On initialise les 2 tableaux précédents 
-            for (int i = 0; i < nbNodes; i++)
-            {
-                distances[i] = int.MaxValue;
-                dejaExplore[i] = false;
-
-            }
-
-            /// Le noeud de départ est déjà exploré
-            dejaExplore[depart] = true;
-
-            /// La distance entre le départ et le départ est de 0
-            distances[depart] = 0;
-
-            Console.WriteLine("On visite à partir du node " + depart + ":");
-
-            /// On gère les nodes à explorer avec queue
-            Queue<int> queue = new Queue<int>();
-            /// On initialise la queue avec le node de départ
-            queue.Enqueue(depart);
-
-            /// Tant qu'il reste des nodes à explorer
-            while (queue.Count > 0)
-            {
-                int enCours = queue.Dequeue();
-                Console.Write(enCours + " ");
-
-                /// Pour chaque node
-                for (int i = 0; i < nbNodes; i++)
-                {
-                    /// On parcours les noeuds voisins, donc si la valeur est de 1 qu'ils ont pas déja été visité
-                    if (graph[enCours, i] == 1 && !dejaExplore[i])
-                    {
-                        dejaExplore[i] = true;
-                        distances[i] = distances[enCours] + 1; /// On ajoute 1 à la distance car le graphe n'est pas pondéré
-                        queue.Enqueue(i); /// On va ajouter le node voisin à la queue
-                    }
-                }
-            }
-
-            bool connexe = dejaExplore.All(x => x);
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            AfficherSolution(distances, nbNodes);
-            Console.WriteLine("Le graphe est connexe ? :" + connexe);
-
-        }
-
-        public void DFS(int[,] graph, int depart)
-        {
-            int nbNodes = graph.GetLength(0);
-
-            /// On initialise un tableau de distances pour stocker toutes les distances 
-            int[] distances = new int[nbNodes];
-
-            /// On regarde si le node a déjà été exploré
-            bool[] dejaExplore = new bool[nbNodes];
-
-            /// On initialise les deux tableaux précédents 
-            for (int i = 0; i < nbNodes; i++)
-            {
-                distances[i] = int.MaxValue;
-                dejaExplore[i] = false;
-            }
-
-            /// Le node de départ est déjà exploré
-            dejaExplore[depart] = true;
-
-            /// La distance entre le départ et le départ est de 0
-            distances[depart] = 0;
-
-            Console.WriteLine("On visite à partir du node " + depart + ":");
-
-            /// On utilise une pile pour gérer les nodes à explorer
-            Stack<int> stack = new Stack<int>();
-            /// On initialise la pile avec le node de départ
-            stack.Push(depart);
-
-            /// Tant que la pile n'est pas vide
-            while (stack.Count > 0)
-            {
-                /// On prend le dernier élément de la pile
-                int nodeToVisit = stack.Pop();
-
-                Console.Write(nodeToVisit + " ");
-
-                /// Pour chaque node
-                for (int i = 0; i < nbNodes; i++)
-                {
-                    /// On parcours les noeuds voisins, donc si la valeur est de 1 et qu'ils ont déjà pas été visité
-                    if (graph[nodeToVisit, i] == 1 && !dejaExplore[i])
-                    {
-                        dejaExplore[i] = true;
-                        distances[i] = distances[nodeToVisit] + 1; /// MAJ distance
-                        stack.Push(i); /// On ajoute le voisin à la pile
-                    }
-                }
-            }
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            AfficherSolution(distances, nbNodes);
-        }
 
         private int minimum_distance(int[] distances, bool[] dejaExplore, int nbNodes)
         {
@@ -196,8 +83,9 @@ namespace PbSI
             return min_index;
         }
 
-        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit et de le renvoyer
-        /// On reprend l'algo DFS mais juste dans la pile on ajoute le parent ce qui permet de voir si un node a déjà été visité par un autre chemin donc il y a une boucle
+        /// L'objectif est simplement de détecter s'il y a au moins 1 circuit, on a ni le nombre ni la description des circuits
+        /// On reprend l'algo DFS mais juste dans la pile on ajoute le parent ce qui permet de voir 
+        /// si un node a déjà été visité par un autre chemin donc il y a une boucle
         public Stack<int> ContientCycle(int[,] mat)
         {
             int nbNodes = mat.GetLength(0);
@@ -247,6 +135,7 @@ namespace PbSI
             return new Stack<int>(); // Aucun cycle trouvé
         }
 
+
         void AfficherSolution(int[] distances, int nbNodes)
         {
             Console.Write("Node	 Distance " + "depuis le départ\n");
@@ -256,8 +145,264 @@ namespace PbSI
             }
         }
 
+        public void BFS(int[,] graph, int depart, Graphe graphe)
+        {
+            int nbNodes = graphe.Membres.Count;
+
+            /// Création d'un dictionnaire pour associer les IDs à des indices
+            Dictionary<int, int> idToIndex = new Dictionary<int, int>();
+            int index = 0;
+            foreach (var membre in graphe.Membres.Keys)
+            {
+                idToIndex[membre] = index++;
+            }
+
+            if (!idToIndex.ContainsKey(depart))
+            {
+                Console.WriteLine("Erreur: Le noeud de départ n'existe pas dans le graphe.");
+                return;
+            }
+
+            /// Initialisation des tableaux
+            int[] distances = new int[nbNodes];
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                distances[i] = int.MaxValue;
+                dejaExplore[i] = false;
+            }
+
+            int startIndex = idToIndex[depart];
+            dejaExplore[startIndex] = true;
+            distances[startIndex] = 0;
+
+            Console.WriteLine($"On visite à partir du node {depart} :");
+
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(startIndex);
+
+            while (queue.Count > 0)
+            {
+                int enCoursIndex = queue.Dequeue();
+                int enCoursId = graphe.Membres.Keys.ElementAt(enCoursIndex);
+
+                Console.Write($"{enCoursId} ");
+
+                for (int i = 0; i < nbNodes; i++)
+                {
+                    if (graph[enCoursIndex, i] == 1 && !dejaExplore[i])
+                    {
+                        dejaExplore[i] = true;
+                        distances[i] = distances[enCoursIndex] + 1;
+                        queue.Enqueue(i);
+                    }
+                }
+            }
+
+            Console.WriteLine("\n");
+            AfficherSolution(distances, graphe, idToIndex);
+
+            bool connexe = dejaExplore.All(x => x);
+            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+        }
+
+        private void AfficherSolution(int[] distances, Graphe graphe, Dictionary<int, int> idToIndex)
+        {
+            Console.WriteLine("Distances depuis le départ :");
+            foreach (var kvp in idToIndex)
+            {
+                int nodeId = kvp.Key;
+                int nodeIndex = kvp.Value;
+                string distance = distances[nodeIndex].ToString();
+                Console.WriteLine($"Noeud {nodeId}: {distance}");
+            }
+        }
+
+        public void BFS_Liste(Dictionary<int, List<int>> graph, int depart)
+        {
+            int nbNodes = graph.Count;
+
+            int[] distances = new int[nbNodes];
+
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                distances[i] = int.MaxValue;
+                dejaExplore[i] = false;
+            }
+
+            dejaExplore[depart - 1] = true; 
+
+            distances[depart - 1] = 0; 
+
+            Console.WriteLine("On visite à partir du node " + depart + ":");
+
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(depart);
+
+            while (queue.Count > 0)
+            {
+                int enCours = queue.Dequeue();
+
+                Console.Write(enCours + " ");
+
+                if (graph.ContainsKey(enCours))
+                {
+                    foreach (int voisin in graph[enCours])
+                    {
+                        if (!dejaExplore[voisin - 1]) 
+                        {
+                            dejaExplore[voisin - 1] = true; 
+                            distances[voisin - 1] = distances[enCours - 1] + 1; 
+                            queue.Enqueue(voisin);
+                        }
+                    }
+                }
+            }
+
+           
+            bool connexe = dejaExplore.All(x => x);
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            AfficherSolutionListe(distances, graph);
+            Console.WriteLine("Le graphe est connexe ? : " + connexe);
+        }
+
+        public void DFS(int[,] graph, int depart, Graphe graphe)
+        {
+            int nbNodes = graphe.Membres.Count;
+
+            Dictionary<int, int> idToIndex = new Dictionary<int, int>();
+            int index = 0;
+            foreach (var membre in graphe.Membres.Keys)
+            {
+                idToIndex[membre] = index++;
+            }
+
+            if (!idToIndex.ContainsKey(depart))
+            {
+                Console.WriteLine("Erreur: Le noeud de départ n'existe pas dans le graphe.");
+                return;
+            }
+
+            int[] distances = new int[nbNodes];
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                distances[i] = int.MaxValue;
+                dejaExplore[i] = false;
+            }
+
+            int startIndex = idToIndex[depart];
+            dejaExplore[startIndex] = true;
+            distances[startIndex] = 0;
+
+            Console.WriteLine("On visite à partir du node " + depart + ":");
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(startIndex);
+
+            while (stack.Count > 0)
+            {
+
+                int nodeToVisitIndex = stack.Pop();
+                int nodeToVisitId = graphe.Membres.Keys.ElementAt(nodeToVisitIndex); 
+
+
+                Console.Write(nodeToVisitId + " ");
+
+                for (int i = 0; i < nbNodes; i++)
+                {
+
+                    if (graph[nodeToVisitIndex, i] == 1 && !dejaExplore[i])
+                    {
+                        dejaExplore[i] = true;
+                        distances[i] = distances[nodeToVisitIndex] + 1;
+                        stack.Push(i);
+                    }
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            bool connexe = dejaExplore.All(x => x);
+            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+
+            AfficherSolution(distances, graphe, idToIndex);
+        }
+
+        public void DFS_Liste(Dictionary<int, List<int>> graph, int depart)
+        {
+            int nbNodes = graph.Count;
+
+            int[] distances = new int[nbNodes];
+
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                distances[i] = int.MaxValue;
+                dejaExplore[i] = false;
+            }
+
+            dejaExplore[depart - 1] = true; 
+
+            distances[depart - 1] = 0; 
+
+            Console.WriteLine("On visite à partir du node " + depart + ":");
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(depart);
+
+            while (stack.Count > 0)
+            {
+                int nodeToVisit = stack.Pop();
+
+                Console.Write(nodeToVisit + " ");
+
+                if (graph.ContainsKey(nodeToVisit))
+                {
+                    foreach (int voisin in graph[nodeToVisit])
+                    {
+                        if (!dejaExplore[voisin - 1])
+                        {
+                            dejaExplore[voisin - 1] = true; 
+                            distances[voisin - 1] = distances[nodeToVisit - 1] + 1; 
+                            stack.Push(voisin); 
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            bool connexe = dejaExplore.All(x => x);
+            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+
+            AfficherSolutionListe(distances, graph);
+        }
+
+
+
+        public void AfficherSolutionListe(int[] distances, Dictionary<int, List<int>> graph)
+        {
+            Console.WriteLine("Distances depuis le départ :");
+            foreach (var kvp in graph)
+            {
+                int nodeId = kvp.Key;
+                int nodeIndex = nodeId - 1;
+                string distance = distances[nodeIndex].ToString();
+                Console.WriteLine($"Noeud {nodeId}: {distance}");
+            }
+        }
 
     }
-
 
 }
