@@ -333,7 +333,7 @@ namespace PbSI
         /// <summary>
         /// Met à jour les propriétés du graphe
         /// </summary>
-        private void UpdateProprietes()
+        public void UpdateProprietes()
         {
             this.ordre = this.noeuds.Count;
             this.taille = this.liens.Count;
