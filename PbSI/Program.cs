@@ -13,13 +13,15 @@ namespace PbSI
             List<int[]> tableauMembres = relations.Contenu;
             //relations.AfficherContenu();
 
-            // Création graphe vierge
             Graphe graphe = new Graphe();
+
             Console.WriteLine();
+
             foreach (int[] i in relations.Contenu)
             {
                 graphe.AjouterRelation(i[0], i[1]);
             }
+
             Console.WriteLine();
 
             Graphe grapheL = InstantiationListe(tableauMembres);
@@ -42,8 +44,6 @@ namespace PbSI
 
         static Graphe InstantiationMatrice(List<int[]> tableauMembres)
         {
-            // Création graphe matrice : pb → comment avoir les noms des nodes et les id
-            // Aplatir puis convertir en HashSet
             HashSet<int> hashSet = new HashSet<int>(tableauMembres.SelectMany(x => x));
 
             int taille = hashSet.Count;
