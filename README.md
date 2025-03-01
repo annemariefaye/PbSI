@@ -82,13 +82,6 @@ Cette classe est une fenêtre de formulaire qui visualise le graphe à partir de
   - `bool EdgesCross(PointF a, PointF b, PointF c, PointF d)`: Vérifie si deux arêtes se croisent.
   - `PointF GetCurvedControlPoint(PointF p1, PointF p2)`: Retourne le point de contrôle pour dessiner une arête courbée.
 
-### 7. `Main`
-
-La méthode `Main` exécute l'application Windows Forms.
-
-- **Méthode :**
-  - `static void Main()`: Point d'entrée de l'application qui lance la visualisation du graphe.
-
 ## Installation
 
 1. Clonez le dépôt sur votre machine locale :
