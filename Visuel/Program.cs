@@ -29,7 +29,7 @@ namespace Visuel
             }
 
             this.Text = "Graphe - Matrice d'Adjacence";
-            this.Size = new Size(1500, 1000);
+            this.Size = new Size(1500, 1500);
             this.Paint += new PaintEventHandler(DrawGraphOptimized);
         }
 
