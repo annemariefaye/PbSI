@@ -1,35 +1,5 @@
 using PbSI;
 
-/*Prompts :
-- visualisation de graphe c#
-- non avec drawing grace a une matrice d'adjacence
-- same code but for this :
-        using System.Linq;
-        using System.Text;
-        using System.Threading.Tasks;
-        using static System.Net.Mime.MediaTypeNames;
-
-        namespace PbSI
-        {
-            internal class Visualisation
-            {
-
-
-
-
-            }
-
-        }
-        }
-  - y a pas moyen de regrouper les nodes de maniere intelligente pour que ce soit visible
-  - est ce que ya moyen que les ligne soit plus courb� pour am�liorer la visibilit�
-  - c'est toujours pas clairs, tu peux d'inspirer de graphiz stv (sans utiliser la biblioth�que)
-  - fait en sorte que les lignes se croisent le moins possible
-  - tu peux faire deux lignes a la place de ca avec des lignes droites
-  - pour les nodes avec le plus de connections mets les plus rouges et fait un gradent de rouge vers vert en passant par le jaune et change les taille en fontion du nb de connections
-  
-*/
-
 
 namespace Visuel
 {
@@ -41,7 +11,7 @@ namespace Visuel
 
         public Visualisation()
         {
-            LectureFichiers relations = new LectureFichiers("../../../relations.mtx");
+            LectureFichiers relations = new LectureFichiers("relations.mtx");
             Graphe graphe = new Graphe();
             foreach (int[] i in relations.Contenu)
             {
@@ -59,7 +29,7 @@ namespace Visuel
             }
 
             this.Text = "Graphe - Matrice d'Adjacence";
-            this.Size = new Size(1500, 1000);
+            this.Size = new Size(1500, 1500);
             this.Paint += new PaintEventHandler(DrawGraphOptimized);
         }
 
