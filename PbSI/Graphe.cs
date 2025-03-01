@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace PbSI
 {
@@ -44,11 +45,8 @@ namespace PbSI
         {
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
-            this.matriceAdjacence = GetMatriceAdjacence();
-            this.listeAdjacence = GetListeAdjacence();
+
             UpdateProprietes();
-
-
         }
 
         /// <summary>
@@ -121,11 +119,11 @@ namespace PbSI
         {
             get
             {
-                if (matriceAdjacence == null)
+                if (this.matriceAdjacence == null || !this.proprietesCalculees)
                 {
-                    matriceAdjacence = GetMatriceAdjacence();
+                    this.matriceAdjacence = GetMatriceAdjacence();
                 }
-                return matriceAdjacence;
+                return this.matriceAdjacence;
             }
         }
 
@@ -136,11 +134,11 @@ namespace PbSI
         {
             get
             {
-                if (listeAdjacence == null)
+                if (this.listeAdjacence == null || !this.proprietesCalculees)
                 {
-                    listeAdjacence = GetListeAdjacence();
+                    this.listeAdjacence = GetListeAdjacence();
                 }
-                return listeAdjacence;
+                return this.listeAdjacence;
             }
         }
 
@@ -229,6 +227,7 @@ namespace PbSI
 
             noeuds[id1].AjouterVoisin(noeuds[id2]);
             this.proprietesCalculees = false;
+
         }
 
         /// <summary>
@@ -256,7 +255,6 @@ namespace PbSI
                     }
                 }
             }
-
             return matrice;
         }
 
@@ -294,7 +292,8 @@ namespace PbSI
         {
             if (this.matriceAdjacence == null)
             {
-                this.matriceAdjacence = GetMatriceAdjacence();
+                //Console.WriteLine("La matrice n'a pas encore été initialisée");
+                return false;
             }
 
             for (int i = 0; i < this.matriceAdjacence.GetLength(0); i++)
@@ -314,9 +313,15 @@ namespace PbSI
 
         private double GetDensite()
         {
+
+            if (this.ordre < 2)
+            {
+                return 0.0d;
+            }
+            
             if (this.estOriente)
             {
-                return (2*this.taille)/(this.ordre*(this.ordre-1));
+                return (2 * this.taille) / (this.ordre * (this.ordre - 1));
             }
 
             else

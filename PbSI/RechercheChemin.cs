@@ -34,7 +34,7 @@ namespace PbSI
 
                 dejaExplore[indexMinDistance] = true;
 
-                Console.WriteLine($"On visite à partir du node {indexMinDistance} : ");
+                Console.WriteLine($"On visite à partir du noeud {indexMinDistance} : ");
 
                 for (int n = 0; n < nbNodes; n++)
                 {
@@ -189,7 +189,7 @@ namespace PbSI
             dejaExplore[startIndex] = true;
             distances[startIndex] = 0;
 
-            Console.WriteLine($"On visite à partir du node {depart} :");
+            Console.WriteLine($"On visite à partir du noeud {depart} :");
 
             Queue<int> queue = new Queue<int>();
             queue.Enqueue(startIndex);
@@ -259,7 +259,7 @@ namespace PbSI
 
             distances[depart - 1] = 0;
 
-            Console.WriteLine("On visite à partir du node " + depart + ":");
+            Console.WriteLine("On visite à partir du noeud " + depart + ":");
 
             Queue<int> queue = new Queue<int>();
             queue.Enqueue(depart);
@@ -329,7 +329,7 @@ namespace PbSI
             dejaExplore[startIndex] = true;
             distances[startIndex] = 0;
 
-            Console.WriteLine("On visite à partir du node " + depart + ":");
+            Console.WriteLine("On visite à partir du noeud " + depart + ":");
 
             Stack<int> stack = new Stack<int>();
             stack.Push(startIndex);
@@ -366,7 +366,7 @@ namespace PbSI
         /// </summary>
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public void DFS_Liste(Dictionary<int, List<int>> graph, int depart)
+        public static void DFS_Liste(Dictionary<int, List<int>> graph, int depart)
         {
             int nbNodes = graph.Count;
 
@@ -384,7 +384,7 @@ namespace PbSI
 
             distances[depart - 1] = 0;
 
-            Console.WriteLine("On visite à partir du node " + depart + ":");
+            Console.WriteLine("On visite à partir du noeud " + depart + ":");
 
             Stack<int> stack = new Stack<int>();
             stack.Push(depart);

@@ -11,7 +11,7 @@ namespace PbSI
         {
             LectureFichiers relations = new LectureFichiers("relations.mtx");
             List<int[]> tableauMembres = relations.Contenu;
-            relations.AfficherContenu();
+            //relations.AfficherContenu();
 
             // Création graphe vierge
             Graphe graphe = new Graphe();
@@ -20,26 +20,15 @@ namespace PbSI
             {
                 graphe.AjouterRelation(i[0], i[1]);
             }
-
-            graphe.AfficherGraphe();
             Console.WriteLine();
 
             Graphe grapheL = InstantiationListe(tableauMembres);
             Graphe grapheM = InstantiationMatrice(tableauMembres);
 
-            int[,] mat = graphe.MatriceAdjacence;
-            var liste = graphe.ListeAdjacence;
+            RechercheChemin.DFS(graphe.MatriceAdjacence, 4, graphe);
+            RechercheChemin.DFS_Liste(graphe.ListeAdjacence, 4);
 
-            Console.WriteLine("\n");
-            grapheL.AfficherGraphe();
-
-            Console.WriteLine("\n");
-            grapheM.AfficherGraphe();
-
-            RechercheChemin.BFS(mat, 4, graphe);
-            RechercheChemin.BFS_Liste(liste, 4);
-
-            Stack<int> cycle = RechercheChemin.ContientCycle(mat);
+            Stack<int> cycle = RechercheChemin.ContientCycle(graphe.MatriceAdjacence);
             Console.WriteLine("Ce graphe contient au moins un cycle : " + (cycle.Count != 0));
             if (cycle.Count != 0)
             {
