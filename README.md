@@ -106,7 +106,7 @@ La méthode `Main` exécute l'application Windows Forms.
 
 ## Utilisation de l'IA Générative
 
-Pour créer la classe `Visualisation`, des prompts ont été utilisés avec une IA générative afin d'optimiser la conception et l'affichage des graphes. Voici les prompts initiaux reformulés pour une clarté professionnelle :
+Pour créer la classe `Visualisation`, des prompts ont été utilisés avec une IA générative afin d'optimiser la conception et l'affichage des graphes :
 
 - Créer une visualisation de graphe en C# en utilisant un système de dessin basé sur une matrice d'adjacence.
   
