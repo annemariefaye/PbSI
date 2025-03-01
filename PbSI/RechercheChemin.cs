@@ -12,7 +12,7 @@ namespace PbSI
         /// </summary>
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public void Dijkstra(int[,] graph, int depart)
+        public static void Dijkstra(int[,] graph, int depart)
         {
             int nbNodes = graph.GetLength(0);
 

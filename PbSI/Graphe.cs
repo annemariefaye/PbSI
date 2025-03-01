@@ -26,6 +26,13 @@ namespace PbSI
         /// </summary>
         private Dictionary<int, List<int>>? listeAdjacence;
 
+
+        private int ordre;
+        private int taille;
+        private bool estOriente;
+        private double densite;
+        private bool proprietesCalculees = false;
+
         #endregion
 
         #region Constructeurs
@@ -37,6 +44,11 @@ namespace PbSI
         {
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
+            this.matriceAdjacence = GetMatriceAdjacence();
+            this.listeAdjacence = GetListeAdjacence();
+            UpdateProprietes();
+
+
         }
 
         /// <summary>
@@ -61,6 +73,8 @@ namespace PbSI
             }
 
             this.listeAdjacence = GetListeAdjacence();
+            UpdateProprietes();
+
         }
 
         /// <summary>
@@ -84,6 +98,8 @@ namespace PbSI
             }
 
             this.matriceAdjacence = GetMatriceAdjacence();
+            UpdateProprietes();
+
         }
 
         #endregion
@@ -128,6 +144,54 @@ namespace PbSI
             }
         }
 
+        public int Ordre
+        {
+            get
+            {
+                if (!this.proprietesCalculees)
+                {
+                    UpdateProprietes();
+                }
+                return this.ordre;
+            }
+        }
+
+        public int Taille
+        {
+            get
+            {
+                if (!this.proprietesCalculees)
+                {
+                    UpdateProprietes();
+                }
+                return this.taille;
+            }
+        }
+
+        public bool EstOriente
+        {
+            get
+            {
+                if (!this.proprietesCalculees)
+                {
+                    UpdateProprietes();
+                }
+                return this.estOriente;
+            }
+        }
+
+        public double Densite
+        {
+            get
+            {
+                if (!this.proprietesCalculees)
+                {
+                    UpdateProprietes();
+                }
+                return this.densite;
+            }
+        }
+
         #endregion
 
         #region Méthodes
@@ -141,6 +205,7 @@ namespace PbSI
             if (!noeuds.ContainsKey(id))
             {
                 noeuds[id] = new Noeud(id);
+                this.proprietesCalculees = false;
             }
         }
 
@@ -163,6 +228,7 @@ namespace PbSI
             liens.Add(nouveauLien);
 
             noeuds[id1].AjouterVoisin(noeuds[id2]);
+            this.proprietesCalculees = false;
         }
 
         /// <summary>
@@ -213,6 +279,58 @@ namespace PbSI
             }
 
             return liste;
+        }
+
+        public void UpdateProprietes()
+        {
+            this.ordre = this.noeuds.Count;
+            this.taille = this.liens.Count;
+            this.estOriente = GetEstOriente();
+            this.densite = GetDensite();
+            this.proprietesCalculees = true;
+        }
+
+        private bool GetEstOriente()
+        {
+            if (this.matriceAdjacence == null)
+            {
+                this.matriceAdjacence = GetMatriceAdjacence();
+            }
+
+            for (int i = 0; i < this.matriceAdjacence.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.matriceAdjacence.GetLength(1); j++)
+                {
+                    if (this.matriceAdjacence[i, j] == this.matriceAdjacence[j, i])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        private double GetDensite()
+        {
+            if (this.estOriente)
+            {
+                return (2*this.taille)/(this.ordre*(this.ordre-1));
+            }
+
+            else
+            {
+                return (this.taille) / (this.ordre * (this.ordre - 1));
+            }
+        }
+
+        public void AfficherProprietes()
+        {
+            Console.WriteLine($"Ordre du graphe : {this.ordre}");
+            Console.WriteLine($"Taille du graphe : {this.taille}");
+            Console.WriteLine($"Type : {(this.estOriente ? "Orienté" : "Non orienté")}");
+            Console.WriteLine($"Densité : {this.densite:F2}");
         }
 
         /// <summary>
