@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PbSI
+﻿namespace PbSI
 {
     public class Noeud
     {

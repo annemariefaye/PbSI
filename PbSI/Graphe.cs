@@ -27,12 +27,34 @@ namespace PbSI
         /// </summary>
         private Dictionary<int, List<int>>? listeAdjacence;
 
-
+        /// <summary>
+        /// Ordre du graphe (nombre de noeuds)
+        /// </summary>
         private int ordre;
+
+        /// <summary>
+        /// Taille du graphe (nombre de liens)
+        /// </summary>
         private int taille;
+
+        /// <summary>
+        /// Indique si le graphe est orienté
+        /// </summary>
         private bool estOriente;
+
+        /// <summary>
+        /// Indique si le graphe est pondéré
+        /// </summary>
         private bool estPondere;
+
+        /// <summary>
+        /// Densité du graphe
+        /// </summary>
         private double densite;
+
+        /// <summary>
+        /// Indique si les propriétés du graphe ont été calculées
+        /// </summary>
         private bool proprietesCalculees = false;
 
         #endregion
@@ -46,7 +68,6 @@ namespace PbSI
         {
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
-
         }
 
         /// <summary>
@@ -65,14 +86,13 @@ namespace PbSI
                 {
                     if (this.matriceAdjacence[i, j] == 1)
                     {
-                        AjouterRelation(i + 1, j + 1); //+1 car ca commence par 1 mais j'aime pas ça, c'est pas modulable, je veux ajouter un attribut name à noeud
+                        AjouterRelation(i + 1, j + 1);
                     }
                 }
             }
 
             this.listeAdjacence = GetListeAdjacence();
             UpdateProprietes();
-
         }
 
         /// <summary>
@@ -97,7 +117,6 @@ namespace PbSI
 
             this.matriceAdjacence = GetMatriceAdjacence();
             UpdateProprietes();
-
         }
 
         #endregion
@@ -142,6 +161,9 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Retourne l'ordre du graphe (nombre de noeuds)
+        /// </summary>
         public int Ordre
         {
             get
@@ -154,6 +176,9 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Retourne la taille du graphe (nombre de liens)
+        /// </summary>
         public int Taille
         {
             get
@@ -166,6 +191,9 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Retourne si le graphe est orienté
+        /// </summary>
         public bool EstOriente
         {
             get
@@ -178,6 +206,9 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Retourne si le graphe est pondéré
+        /// </summary>
         public bool EstPondere
         {
             get
@@ -190,6 +221,9 @@ namespace PbSI
             }
         }
 
+        /// <summary>
+        /// Retourne la densité du graphe
+        /// </summary>
         public double Densite
         {
             get
@@ -226,16 +260,18 @@ namespace PbSI
         /// <param name="id2">Identifiant du second noeud</param>
         public void AjouterRelation(int id1, int id2)
         {
-
             AjouterMembre(id1);
             AjouterMembre(id2);
-
 
             var source = noeuds[id1];
             var destination = noeuds[id2];
 
-            if (!liens.Any(l => (l.Source == source && l.Destination == destination) ||
-                                (l.Source == destination && l.Destination == source)))
+            if (
+                !liens.Any(l =>
+                    (l.Source == source && l.Destination == destination)
+                    || (l.Source == destination && l.Destination == source)
+                )
+            )
             {
                 Lien nouveauLien = new Lien(source, destination);
                 liens.Add(nouveauLien);
@@ -243,7 +279,6 @@ namespace PbSI
             }
 
             this.proprietesCalculees = false;
-
         }
 
         /// <summary>
@@ -295,22 +330,28 @@ namespace PbSI
             return liste;
         }
 
-        public void UpdateProprietes()
+        /// <summary>
+        /// Met à jour les propriétés du graphe
+        /// </summary>
+        private void UpdateProprietes()
         {
             this.ordre = this.noeuds.Count;
             this.taille = this.liens.Count;
             this.estOriente = GetEstOriente();
-            this.estPondere= GetEstPondere();
+            this.estPondere = GetEstPondere();
             this.densite = GetDensite();
             this.proprietesCalculees = true;
         }
 
-
+        /// <summary>
+        /// Détermine si le graphe est pondéré
+        /// </summary>
+        /// <returns>true si le graphe est pondéré, false sinon</returns>
         private bool GetEstPondere()
         {
-            foreach(Lien lien in this.liens)
+            foreach (Lien lien in this.liens)
             {
-                if(lien.Poids != 0 && lien.Poids != 1)
+                if (lien.Poids != 0 && lien.Poids != 1)
                 {
                     return true;
                 }
@@ -318,9 +359,12 @@ namespace PbSI
             return false;
         }
 
+        /// <summary>
+        /// Détermine si le graphe est orienté
+        /// </summary>
+        /// <returns>true si le graphe est orienté, false sinon</returns>
         private bool GetEstOriente()
         {
-
             if (this.matriceAdjacence == null)
             {
                 //Console.WriteLine("La matrice n'a pas encore été initialisée");
@@ -341,27 +385,30 @@ namespace PbSI
             return false;
         }
 
-
+        /// <summary>
+        /// Calcule la densité du graphe
+        /// </summary>
+        /// <returns>Densité du graphe</returns>
         private double GetDensite()
         {
-
             if (this.ordre < 2)
             {
                 return 0.0d;
             }
-            
+
             if (!this.estOriente)
             {
                 return (double)(2 * this.taille) / (this.ordre * (this.ordre - 1));
             }
-
             else
             {
-                
                 return (double)(this.taille) / (this.ordre * (this.ordre - 1));
             }
         }
 
+        /// <summary>
+        /// Affiche les propriétés du graphe
+        /// </summary>
         public void AfficherProprietes()
         {
             UpdateProprietes();

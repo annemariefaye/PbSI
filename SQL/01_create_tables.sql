@@ -2,16 +2,15 @@ DROP DATABASE IF EXISTS LivInParis;
 CREATE DATABASE LivInParis;
 USE LivInParis;
 
--- Création des tables
+CREATE TABLE Client(
+    IdClient INT AUTO_INCREMENT PRIMARY KEY,
+    NomEntreprise VARCHAR (255),
+    MotDePasse VARCHAR(255) NOT NULL   
+);
 
-	  CREATE TABLE Client(
-	IdClient INT AUTO_INCREMENT PRIMARY KEY,
-	NomEntreprise VARCHAR (255),
-	MotDePasse VARCHAR(255) NOT NULL   
-	);
-	CREATE TABLE Cuisinier(
-	IdCuisinier INT AUTO_INCREMENT PRIMARY KEY,
-	MotDePasse VARCHAR(255) NOT NULL   
+CREATE TABLE Cuisinier(
+    IdCuisinier INT AUTO_INCREMENT PRIMARY KEY,
+    MotDePasse VARCHAR(255) NOT NULL   
 );
 
 CREATE TABLE Station (

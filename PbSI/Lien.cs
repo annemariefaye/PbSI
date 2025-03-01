@@ -17,7 +17,7 @@
         /// <summary>
         /// Poids du lien
         /// </summary>
-        private double poids;
+        private readonly double poids;
 
         #endregion
 
@@ -49,16 +49,21 @@
             get { return this.poids; }
         }
 
+        /// <summary>
+        /// Retourne le noeud source du lien
+        /// </summary>
         public Noeud Source
         {
             get { return this.source; }
         }
 
+        /// <summary>
+        /// Retourne le noeud destination du lien
+        /// </summary>
         public Noeud Destination
         {
             get { return this.destination; }
         }
-
 
         #endregion
 

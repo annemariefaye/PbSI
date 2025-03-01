@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PbSI;
-
-namespace PbSI
+﻿namespace PbSI
 {
     class Program
     {
@@ -42,9 +37,15 @@ namespace PbSI
             }
 
             graphe.AfficherProprietes();
-            
         }
 
+        #region Méthodes d'instanciation
+
+        /// <summary>
+        /// Instancie un graphe à partir d'une liste de membres
+        /// </summary>
+        /// <param name="tableauMembres">Liste de membres</param>
+        /// <returns>Un graphe</returns>
         static Graphe InstantiationMatrice(List<int[]> tableauMembres)
         {
             HashSet<int> hashSet = new HashSet<int>(tableauMembres.SelectMany(x => x));
@@ -61,22 +62,24 @@ namespace PbSI
             return new Graphe(matrice);
         }
 
+        /// <summary>
+        /// Instancie un graphe à partir d'une liste de membres
+        /// </summary>
+        /// <param name="tableauMembres">Liste de membres</param>
+        /// <returns>Un graphe</returns>
         static Graphe InstantiationListe(List<int[]> tableauMembres)
         {
-            // Création graphe liste
             Dictionary<int, List<int>> listeAdj = new Dictionary<int, List<int>>();
             foreach (int[] mini_tab in tableauMembres)
             {
                 int key = mini_tab[0];
                 int value = mini_tab[1];
 
-                // Vérifier et initialiser la liste pour key
                 if (!listeAdj.ContainsKey(key))
                 {
                     listeAdj[key] = new List<int>();
                 }
 
-                // Vérifier et initialiser la liste pour value
                 if (!listeAdj.ContainsKey(value))
                 {
                     listeAdj[value] = new List<int>();
@@ -88,5 +91,7 @@ namespace PbSI
 
             return new Graphe(listeAdj);
         }
+
+        #endregion
     }
 }

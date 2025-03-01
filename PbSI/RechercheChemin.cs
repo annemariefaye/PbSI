@@ -1,155 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace PbSI
+﻿namespace PbSI
 {
-    public class RechercheChemin
+    public static class RechercheChemin
     {
-        /// <summary>
-        /// Algorithme de Dijkstra pour trouver le plus court chemin entre un noeud de départ et tous les autres noeuds
-        /// </summary>
-        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
-        /// <param name="depart">Noeud de départ</param>
-        public static void Dijkstra(int[,] graph, int depart)
-        {
-            int nbNodes = graph.GetLength(0);
-
-            int[] distances = new int[nbNodes];
-
-            bool[] dejaExplore = new bool[nbNodes];
-
-            for (int i = 0; i < nbNodes; i++)
-            {
-                distances[i] = int.MaxValue;
-                dejaExplore[i] = false;
-            }
-
-            distances[depart] = 0;
-
-            for (int count = 0; count < nbNodes - 1; count++)
-            {
-                int indexMinDistance = minimum_distance(distances, dejaExplore, nbNodes);
-
-                dejaExplore[indexMinDistance] = true;
-
-                Console.WriteLine($"On visite à partir du noeud {indexMinDistance} : ");
-
-                for (int n = 0; n < nbNodes; n++)
-                {
-                    if (
-                        !dejaExplore[n]
-                        && graph[indexMinDistance, n] != 0
-                        && distances[indexMinDistance] != int.MaxValue
-                        && distances[indexMinDistance] + graph[indexMinDistance, n] < distances[n]
-                    )
-                    {
-                        Console.WriteLine("Node : " + n);
-                        distances[n] = distances[indexMinDistance] + graph[indexMinDistance, n];
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            AfficherSolution(distances, nbNodes);
-        }
-
-        /// <summary>
-        /// Retourne l'indice du noeud non exploré avec la distance minimale
-        /// </summary>
-        /// <param name="distances">Distances entre les noeuds</param>
-        /// <param name="dejaExplore">Tableau de booléens indiquant si un noeud a déjà été exploré</param>
-        /// <param name="nbNodes">Nombre de noeuds</param>
-        /// <returns>Indice du noeud non exploré avec la distance minimale</returns>
-        private static int minimum_distance(int[] distances, bool[] dejaExplore, int nbNodes)
-        {
-            int min_distance = int.MaxValue;
-            /// On met une valeur très grande pour être sur que la distance sera inférieure
-            int min_index = -1;
-            /// Valeur arbitraire qui se fera écraser
-
-            /// Cette boucle sert à trouver la distance minimale dans le tableau en évitant les sommets déjà explorés
-            for (int n = 0; n < nbNodes; n++)
-            {
-                if (!dejaExplore[n] && distances[n] <= min_distance)
-                {
-                    min_distance = distances[n];
-                    min_index = n;
-                }
-            }
-
-            return min_index;
-        }
-
-        /// <summary>
-        /// Vérifie si un graphe contient un cycle
-        /// </summary>
-        /// <param name="mat">Matrice d'adjacence du graphe</param>
-        /// <returns>Un stack contenant les noeuds du cycle s'il existe, sinon un stack vide</returns>
-        public static Stack<int> ContientCycle(int[,] mat)
-        {
-            int nbNodes = mat.GetLength(0);
-            bool[] dejaExplore = new bool[nbNodes];
-            int[] parent = new int[nbNodes];
-            Array.Fill(parent, -1);
-
-            for (int i = 0; i < nbNodes; i++)
-            {
-                if (!dejaExplore[i])
-                {
-                    Stack<(int node, int parent)> stack = new Stack<(int node, int parent)>();
-                    stack.Push((i, -1));
-
-                    while (stack.Count > 0)
-                    {
-                        var (node, parentNode) = stack.Pop();
-
-                        if (dejaExplore[node])
-                        {
-                            Stack<int> cycle = new Stack<int>();
-                            int courant = node;
-
-                            while (courant != -1)
-                            {
-                                cycle.Push(courant);
-                                if (courant == parentNode)
-                                    break;
-                                courant = parent[courant];
-                            }
-                            cycle.Push(node);
-                            return cycle;
-                        }
-
-                        dejaExplore[node] = true;
-                        parent[node] = parentNode;
-
-                        for (int j = 0; j < nbNodes; j++)
-                        {
-                            if (mat[node, j] == 1 && j != parentNode)
-                            {
-                                stack.Push((j, node));
-                            }
-                        }
-                    }
-                }
-            }
-            return new Stack<int>(); // Aucun cycle trouvé
-        }
-
-        /// <summary>
-        /// Affiche les distances depuis le noeud de départ
-        /// </summary>
-        /// <param name="distances">Distances depuis le noeud de départ</param>
-        /// <param name="nbNodes">Nombre de noeuds</param>
-        public static void AfficherSolution(int[] distances, int nbNodes)
-        {
-            Console.Write("Node	 Distance " + "depuis le départ\n");
-            for (int i = 0; i < nbNodes; i++)
-            {
-                Console.Write(i + " \t\t " + distances[i] + "\n");
-            }
-        }
+        #region Parcours
 
         /// <summary>
         /// Algorithme de BFS pour parcourir un graphe
@@ -161,7 +14,6 @@ namespace PbSI
         {
             int nbNodes = graphe.Noeuds.Count;
 
-            /// Création d'un dictionnaire pour associer les IDs à des indices
             Dictionary<int, int> idToIndex = new Dictionary<int, int>();
             int index = 0;
             foreach (var membre in graphe.Noeuds.Keys)
@@ -175,7 +27,6 @@ namespace PbSI
                 return;
             }
 
-            /// Initialisation des tableaux
             int[] distances = new int[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
 
@@ -217,23 +68,6 @@ namespace PbSI
 
             bool connexe = dejaExplore.All(x => x);
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
-        }
-
-        /// <summary>
-        /// Affiche les distances depuis le noeud de départ
-        /// </summary>
-        /// <param name="distances">Distances depuis le noeud de départ</param>
-        /// <param name="idToIndex">Dictionnaire associant les IDs à des indices</param>
-        private static void AfficherSolution(int[] distances, Dictionary<int, int> idToIndex)
-        {
-            Console.WriteLine("Distances depuis le départ :");
-            foreach (var kvp in idToIndex)
-            {
-                int nodeId = kvp.Key;
-                int nodeIndex = kvp.Value;
-                string distance = distances[nodeIndex].ToString();
-                Console.WriteLine($"Noeud {nodeId}: {distance}");
-            }
         }
 
         /// <summary>
@@ -418,12 +252,182 @@ namespace PbSI
             AfficherSolutionListe(distances, graph);
         }
 
+        #endregion
+
+        #region Plus court chemin
+
+        /// <summary>
+        /// Algorithme de Dijkstra pour trouver le plus court chemin entre un noeud de départ et tous les autres noeuds
+        /// </summary>
+        /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
+        /// <param name="depart">Noeud de départ</param>
+        public static void Dijkstra(int[,] graph, int depart)
+        {
+            int nbNodes = graph.GetLength(0);
+
+            int[] distances = new int[nbNodes];
+
+            bool[] dejaExplore = new bool[nbNodes];
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                distances[i] = int.MaxValue;
+                dejaExplore[i] = false;
+            }
+
+            distances[depart] = 0;
+
+            for (int count = 0; count < nbNodes - 1; count++)
+            {
+                int indexMinDistance = minimum_distance(distances, dejaExplore, nbNodes);
+
+                dejaExplore[indexMinDistance] = true;
+
+                Console.WriteLine($"On visite à partir du noeud {indexMinDistance} : ");
+
+                for (int n = 0; n < nbNodes; n++)
+                {
+                    if (
+                        !dejaExplore[n]
+                        && graph[indexMinDistance, n] != 0
+                        && distances[indexMinDistance] != int.MaxValue
+                        && distances[indexMinDistance] + graph[indexMinDistance, n] < distances[n]
+                    )
+                    {
+                        Console.WriteLine("Node : " + n);
+                        distances[n] = distances[indexMinDistance] + graph[indexMinDistance, n];
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            AfficherSolution(distances, nbNodes);
+        }
+
+        /// <summary>
+        /// Retourne l'indice du noeud non exploré avec la distance minimale
+        /// </summary>
+        /// <param name="distances">Distances entre les noeuds</param>
+        /// <param name="dejaExplore">Tableau de booléens indiquant si un noeud a déjà été exploré</param>
+        /// <param name="nbNodes">Nombre de noeuds</param>
+        /// <returns>Indice du noeud non exploré avec la distance minimale</returns>
+        private static int minimum_distance(int[] distances, bool[] dejaExplore, int nbNodes)
+        {
+            int min_distance = int.MaxValue;
+            int min_index = -1;
+
+            for (int n = 0; n < nbNodes; n++)
+            {
+                if (!dejaExplore[n] && distances[n] <= min_distance)
+                {
+                    min_distance = distances[n];
+                    min_index = n;
+                }
+            }
+
+            return min_index;
+        }
+
+        #endregion
+
+        #region Cycle
+
+        /// <summary>
+        /// Vérifie si un graphe contient un cycle
+        /// </summary>
+        /// <param name="mat">Matrice d'adjacence du graphe</param>
+        /// <returns>Un stack contenant les noeuds du cycle s'il existe, sinon un stack vide</returns>
+        public static Stack<int> ContientCycle(int[,] mat)
+        {
+            int nbNodes = mat.GetLength(0);
+            bool[] dejaExplore = new bool[nbNodes];
+            int[] parent = new int[nbNodes];
+            Array.Fill(parent, -1);
+
+            for (int i = 0; i < nbNodes; i++)
+            {
+                if (!dejaExplore[i])
+                {
+                    Stack<(int node, int parent)> stack = new Stack<(int node, int parent)>();
+                    stack.Push((i, -1));
+
+                    while (stack.Count > 0)
+                    {
+                        var (node, parentNode) = stack.Pop();
+
+                        if (dejaExplore[node])
+                        {
+                            Stack<int> cycle = new Stack<int>();
+                            int courant = node;
+
+                            while (courant != -1)
+                            {
+                                cycle.Push(courant);
+                                if (courant == parentNode)
+                                    break;
+                                courant = parent[courant];
+                            }
+                            cycle.Push(node);
+                            return cycle;
+                        }
+
+                        dejaExplore[node] = true;
+                        parent[node] = parentNode;
+
+                        for (int j = 0; j < nbNodes; j++)
+                        {
+                            if (mat[node, j] == 1 && j != parentNode)
+                            {
+                                stack.Push((j, node));
+                            }
+                        }
+                    }
+                }
+            }
+            return new Stack<int>();
+        }
+
+        #endregion
+
+        #region Affichage
+
+        /// <summary>
+        /// Affiche les distances depuis le noeud de départ
+        /// </summary>
+        /// <param name="distances">Distances depuis le noeud de départ</param>
+        /// <param name="nbNodes">Nombre de noeuds</param>
+        private static void AfficherSolution(int[] distances, int nbNodes)
+        {
+            Console.Write("Node	 Distance " + "depuis le départ\n");
+            for (int i = 0; i < nbNodes; i++)
+            {
+                Console.Write(i + " \t\t " + distances[i] + "\n");
+            }
+        }
+
+        /// <summary>
+        /// Affiche les distances depuis le noeud de départ
+        /// </summary>
+        /// <param name="distances">Distances depuis le noeud de départ</param>
+        /// <param name="idToIndex">Dictionnaire associant les IDs à des indices</param>
+        private static void AfficherSolution(int[] distances, Dictionary<int, int> idToIndex)
+        {
+            Console.WriteLine("Distances depuis le départ :");
+            foreach (var kvp in idToIndex)
+            {
+                int nodeId = kvp.Key;
+                int nodeIndex = kvp.Value;
+                string distance = distances[nodeIndex].ToString();
+                Console.WriteLine($"Noeud {nodeId}: {distance}");
+            }
+        }
+
         /// <summary>
         /// Affiche les distances depuis le noeud de départ
         /// </summary>
         /// <param name="distances">Distances depuis le noeud de départ</param>
         /// <param name="graph">Graphe sous forme de liste d'adjacence</param>
-        public static void AfficherSolutionListe(int[] distances, Dictionary<int, List<int>> graph)
+        private static void AfficherSolutionListe(int[] distances, Dictionary<int, List<int>> graph)
         {
             Console.WriteLine("Distances depuis le départ :");
             foreach (var kvp in graph)
@@ -434,5 +438,7 @@ namespace PbSI
                 Console.WriteLine($"Noeud {nodeId}: {distance}");
             }
         }
+
+        #endregion
     }
 }
