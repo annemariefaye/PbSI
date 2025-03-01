@@ -26,6 +26,7 @@ using PbSI;
   - c'est toujours pas clairs, tu peux d'inspirer de graphiz stv (sans utiliser la biblioth�que)
   - fait en sorte que les lignes se croisent le moins possible
   - tu peux faire deux lignes a la place de ca avec des lignes droites
+  - pour les nodes avec le plus de connections mets les plus rouges et fait un gradent de rouge vers vert en passant par le jaune et change les taille en fontion du nb de connections
   
 */
 
@@ -40,7 +41,6 @@ namespace Visuel
 
         public Visualisation()
         {
-            // dire a EUH que son truc de dossier marche pas et bien le gronder
             LectureFichiers relations = new LectureFichiers("../../../relations.mtx");
             Graphe graphe = new Graphe();
             foreach (int[] i in relations.Contenu)
@@ -66,7 +66,7 @@ namespace Visuel
         private void DrawGraphLines(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40; // Taille des n�uds
+            int size = 40; // Taille des noeuds
             int spacing = 45; // Espacement horizontal entre les n�uds
             PointF[] positions = new PointF[nodes.Length];
 
@@ -348,7 +348,7 @@ namespace Visuel
             }
         }
 
-        // Algorithme de force-directed layout pour organiser les n�uds
+        // Algorithme de force-directed layout pour organiser les noeuds
         private PointF[] ForceDirectedLayout()
         {
             Random rand = new Random();
@@ -495,9 +495,8 @@ namespace Visuel
             float ratio = (float)degree / maxDegree;
             int red = (int)(255 * (1 - ratio)); // Rouge diminue avec l'augmentation du degr�
             int green = (int)(255 * ratio); // Vert augmente avec l'augmentation du degr�
-            int blue = 0; // Bleu est constant � 0
 
-            return Color.FromArgb(red, green, blue);
+            return Color.FromArgb(red, green, 0);
         }
 
         // Algorithme force-directed avec heuristique de croisement minimal
