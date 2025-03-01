@@ -40,6 +40,9 @@ namespace PbSI
                     Console.WriteLine(cycle.Pop());
                 }
             }
+
+            graphe.AfficherProprietes();
+            
         }
 
         static Graphe InstantiationMatrice(List<int[]> tableauMembres)

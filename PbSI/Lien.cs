@@ -48,6 +48,18 @@
         {
             get { return this.poids; }
         }
+
+        public Noeud Source
+        {
+            get { return this.source; }
+        }
+
+        public Noeud Destination
+        {
+            get { return this.destination; }
+        }
+
+
         #endregion
 
         #region Méthodes

@@ -31,6 +31,7 @@ namespace PbSI
         private int ordre;
         private int taille;
         private bool estOriente;
+        private bool estPondere;
         private double densite;
         private bool proprietesCalculees = false;
 
@@ -46,7 +47,6 @@ namespace PbSI
             noeuds = new Dictionary<int, Noeud>();
             liens = new List<Lien>();
 
-            UpdateProprietes();
         }
 
         /// <summary>
@@ -178,6 +178,18 @@ namespace PbSI
             }
         }
 
+        public bool EstPondere
+        {
+            get
+            {
+                if (!this.proprietesCalculees)
+                {
+                    UpdateProprietes();
+                }
+                return this.estPondere;
+            }
+        }
+
         public double Densite
         {
             get
@@ -222,8 +234,17 @@ namespace PbSI
             {
                 AjouterMembre(id2);
             }
-            Lien nouveauLien = new Lien(noeuds[id1], noeuds[id2]);
-            liens.Add(nouveauLien);
+
+            bool lienExistant = liens.Any(lien =>
+                (lien.Source == noeuds[id1] && lien.Destination == noeuds[id2]) ||
+                (lien.Source == noeuds[id2] && lien.Destination == noeuds[id1])
+            );
+
+            if (!lienExistant)
+            {
+                Lien nouveauLien = new Lien(noeuds[id1], noeuds[id2]);
+                liens.Add(nouveauLien);
+            }
 
             noeuds[id1].AjouterVoisin(noeuds[id2]);
             this.proprietesCalculees = false;
@@ -284,12 +305,27 @@ namespace PbSI
             this.ordre = this.noeuds.Count;
             this.taille = this.liens.Count;
             this.estOriente = GetEstOriente();
+            this.estPondere= GetEstPondere();
             this.densite = GetDensite();
             this.proprietesCalculees = true;
         }
 
+
+        private bool GetEstPondere()
+        {
+            foreach(Lien lien in this.liens)
+            {
+                if(lien.Poids != 0 && lien.Poids != 1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool GetEstOriente()
         {
+
             if (this.matriceAdjacence == null)
             {
                 //Console.WriteLine("La matrice n'a pas encore été initialisée");
@@ -300,7 +336,7 @@ namespace PbSI
             {
                 for (int j = 0; j < this.matriceAdjacence.GetLength(1); j++)
                 {
-                    if (this.matriceAdjacence[i, j] == this.matriceAdjacence[j, i])
+                    if (this.matriceAdjacence[i, j] != this.matriceAdjacence[j, i])
                     {
                         return true;
                     }
@@ -319,23 +355,26 @@ namespace PbSI
                 return 0.0d;
             }
             
-            if (this.estOriente)
+            if (!this.estOriente)
             {
-                return (2 * this.taille) / (this.ordre * (this.ordre - 1));
+                return (double)(2 * this.taille) / (this.ordre * (this.ordre - 1));
             }
 
             else
             {
-                return (this.taille) / (this.ordre * (this.ordre - 1));
+                
+                return (double)(this.taille) / (this.ordre * (this.ordre - 1));
             }
         }
 
         public void AfficherProprietes()
         {
+            UpdateProprietes();
             Console.WriteLine($"Ordre du graphe : {this.ordre}");
             Console.WriteLine($"Taille du graphe : {this.taille}");
             Console.WriteLine($"Type : {(this.estOriente ? "Orienté" : "Non orienté")}");
-            Console.WriteLine($"Densité : {this.densite:F2}");
+            Console.WriteLine($"Type : {(this.estPondere ? "Pondéré" : "Non pondéré")}");
+            Console.WriteLine($"Densité : {GetDensite():F2}");
         }
 
         /// <summary>

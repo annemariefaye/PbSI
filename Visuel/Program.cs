@@ -86,7 +86,7 @@ namespace Visuel
             Font font = new Font("Arial", 12);
             Brush textBrush = Brushes.Black;
 
-            // Dessiner les ar�tes
+            // Dessiner les arêtes
             for (int i = 0; i < adjacencyMatrix.GetLength(0); i++)
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
