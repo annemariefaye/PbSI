@@ -82,16 +82,7 @@ Cette classe est une fenêtre de formulaire qui visualise le graphe à partir de
   - `bool EdgesCross(PointF a, PointF b, PointF c, PointF d)`: Vérifie si deux arêtes se croisent.
   - `PointF GetCurvedControlPoint(PointF p1, PointF p2)`: Retourne le point de contrôle pour dessiner une arête courbée.
 
-### 7. `Test1`
-
-Cette classe contient des tests unitaires pour vérifier le bon fonctionnement des classes `Graphe` et `RechercheChemin`.
-
-- **Tests :**
-  - `TestMethod1()`: Vérifie si le graphe contient un cycle.
-  - `TestMethod2()`: Vérifie la matrice d'adjacence du graphe.
-  - `TestMethod3()`: Vérifie la liste d'adjacence du graphe.
-
-### 8. `Main`
+### 7. `Main`
 
 La méthode `Main` exécute l'application Windows Forms.
 
@@ -123,4 +114,42 @@ Pour créer la classe `Visualisation`, des prompts ont été utilisés avec une 
 - Pour les nœuds avec le plus de connexions, appliquer un dégradé de couleur allant du rouge au vert, en passant par le jaune, et ajuster la taille des nœuds en fonction du nombre de connexions.
 
 Ces prompts ont été essentiels pour orienter le développement de la visualisation et assurer une expérience utilisateur fluide et agréable.
+
+## Tests Unitaires
+
+### LienTest.cs
+
+Ce fichier contient des tests unitaires pour la classe `Lien`. Les tests incluent :
+
+1. **TestConstructor** : Vérifie que le constructeur initialise correctement les propriétés `Source`, `Destination` et `Poids`.
+2. **TestPoidsProperty** : Vérifie la propriété `Poids`.
+3. **TestSourceProperty** : Vérifie la propriété `Source`.
+4. **TestDestinationProperty** : Vérifie la propriété `Destination`.
+5. **TestToString** : Vérifie la méthode `ToString` pour s'assurer qu'elle retourne la chaîne attendue.
+
+### GrapheTest.cs
+
+Ce fichier contient des tests unitaires pour la classe `Graphe`. Les tests incluent :
+
+1. **TestDefaultConstructor** : Vérifie que le constructeur par défaut initialise correctement les propriétés.
+2. **TestConstructorWithAdjacencyMatrix** : Vérifie le constructeur avec une matrice d'adjacence pour s'assurer qu'il initialise les noeuds correctement.
+3. **TestConstructorWithAdjacencyList** : Vérifie le constructeur avec une liste d'adjacence pour s'assurer qu'il initialise les noeuds correctement.
+4. **TestAjouterMembre** : Vérifie l'ajout d'un membre dans le graphe.
+5. **TestAjouterRelation** : Vérifie l'ajout d'une relation entre deux noeuds.
+6. **TestGetMatriceAdjacence** : Vérifie la récupération de la matrice d'adjacence.
+7. **TestGetListeAdjacence** : Vérifie la récupération de la liste d'adjacence.
+8. **TestUpdateProprietes** : Vérifie la mise à jour des propriétés du graphe.
+
+### NoeudTest.cs
+
+Ce fichier contient des tests unitaires pour la classe `Noeud`. Les tests incluent :
+
+1. **TestConstructor** : Vérifie que le constructeur initialise correctement l'identifiant et la liste des voisins.
+2. **TestAjouterVoisin** : Vérifie l'ajout d'un voisin dans la liste des voisins.
+3. **TestToString** : Vérifie la méthode `ToString` pour s'assurer qu'elle retourne la chaîne attendue.
+
+### Exécution des Tests
+
+Pour exécuter les tests unitaires, utilisez le framework de test intégré dans Visual Studio ou une ligne de commande appropriée. Assurez-vous que tous les fichiers de test sont bien configurés dans votre projet.
+
 
