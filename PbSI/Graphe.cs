@@ -226,27 +226,22 @@ namespace PbSI
         /// <param name="id2">Identifiant du second noeud</param>
         public void AjouterRelation(int id1, int id2)
         {
-            if (!noeuds.ContainsKey(id1))
-            {
-                AjouterMembre(id1);
-            }
-            if (!noeuds.ContainsKey(id2))
-            {
-                AjouterMembre(id2);
-            }
 
-            bool lienExistant = liens.Any(lien =>
-                (lien.Source == noeuds[id1] && lien.Destination == noeuds[id2]) ||
-                (lien.Source == noeuds[id2] && lien.Destination == noeuds[id1])
-            );
+            AjouterMembre(id1);
+            AjouterMembre(id2);
 
-            if (!lienExistant)
+
+            var source = noeuds[id1];
+            var destination = noeuds[id2];
+
+            if (!liens.Any(l => (l.Source == source && l.Destination == destination) ||
+                                (l.Source == destination && l.Destination == source)))
             {
-                Lien nouveauLien = new Lien(noeuds[id1], noeuds[id2]);
+                Lien nouveauLien = new Lien(source, destination);
                 liens.Add(nouveauLien);
+                source.AjouterVoisin(destination);
             }
 
-            noeuds[id1].AjouterVoisin(noeuds[id2]);
             this.proprietesCalculees = false;
 
         }

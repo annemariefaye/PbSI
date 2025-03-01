@@ -12,9 +12,9 @@ namespace PbSI
         private readonly int id;
 
         /// <summary>
-        /// Liste des noeuds voisins
+        /// Hashset des noeuds voisins
         /// </summary>
-        private readonly List<Noeud> voisins;
+        private readonly HashSet<Noeud> voisins;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace PbSI
         public Noeud(int id)
         {
             this.id = id;
-            voisins = new List<Noeud>();
+            voisins = new HashSet<Noeud>();
         }
 
         #endregion
@@ -45,7 +45,7 @@ namespace PbSI
         /// <summary>
         /// Retourne la liste des noeuds voisins
         /// </summary>
-        public List<Noeud> Voisins
+        public HashSet<Noeud> Voisins
         {
             get { return voisins; }
         }
