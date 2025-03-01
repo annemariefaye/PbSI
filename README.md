@@ -140,9 +140,3 @@ Ce fichier contient des tests unitaires pour la classe `Noeud`. Les tests inclue
 1. **TestConstructor** : Vérifie que le constructeur initialise correctement l'identifiant et la liste des voisins.
 2. **TestAjouterVoisin** : Vérifie l'ajout d'un voisin dans la liste des voisins.
 3. **TestToString** : Vérifie la méthode `ToString` pour s'assurer qu'elle retourne la chaîne attendue.
-
-### Exécution des Tests
-
-Pour exécuter les tests unitaires, utilisez le framework de test intégré dans Visual Studio ou une ligne de commande appropriée. Assurez-vous que tous les fichiers de test sont bien configurés dans votre projet.
-
-
