@@ -1,4 +1,4 @@
-# Projet de Visualisation de Graphe
+# Problème scientifique et informatique
 
 ## Description
 
