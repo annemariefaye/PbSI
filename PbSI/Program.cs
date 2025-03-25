@@ -19,17 +19,14 @@
             double[,] m = graphe.MatriceAdjacence;
             var l = graphe.ListeAdjacence;
             
-            graphe.AfficherMatriceAdjacence();
-            graphe.AfficherListeAdjacence();
+            //graphe.AfficherMatriceAdjacence();
+            //graphe.AfficherListeAdjacence();
 
 
-            //Graphe grapheL = InstantiationListe(tableauMembres);
-            //Graphe grapheM = InstantiationMatrice(tableauMembres);
+            RechercheChemin<int>.DFS_Matrice(graphe, 4);
+            RechercheChemin<int>.DFS_Liste(graphe, 4);
 
-            /*RechercheChemin.DFS(graphe.MatriceAdjacence, 4, graphe);
-            RechercheChemin.DFS_Liste(graphe.ListeAdjacence, 4);
-
-            Stack<int> cycle = RechercheChemin.ContientCycle(graphe.MatriceAdjacence);
+            Stack<int> cycle = RechercheChemin<int>.ContientCycle(graphe.MatriceAdjacence, graphe.MapIdIndex);
             Console.WriteLine("Ce graphe contient au moins un cycle : " + (cycle.Count != 0));
             if (cycle.Count != 0)
             {
@@ -38,7 +35,7 @@
                 {
                     Console.WriteLine(cycle.Pop());
                 }
-            }*/
+            }
 
             //graphe.AfficherProprietes();
             

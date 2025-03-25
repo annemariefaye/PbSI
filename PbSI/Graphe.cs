@@ -12,7 +12,7 @@ namespace PbSI
         /// </summary>
         private readonly Dictionary<int, Noeud<T>> noeuds;
 
-
+        // TODO: Update dynamically mapIdIndex with update proprietes
         private readonly Dictionary<T, int> mapIdIndex;
 
         /// <summary>
@@ -190,6 +190,11 @@ namespace PbSI
                 }
                 return this.listeAdjacence;
             }
+        }
+
+        public Dictionary<T, int> MapIdIndex
+        {
+            get { return this.mapIdIndex;}
         }
 
         /// <summary>
