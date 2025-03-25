@@ -37,6 +37,8 @@
                 }
             }
 
+            RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 4, 34, graphe.MapIdIndex);
+
             //graphe.AfficherProprietes();
             
         }

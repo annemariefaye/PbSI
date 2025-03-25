@@ -260,47 +260,52 @@
         /// </summary>
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public static void Dijkstra(int[,] graph, int depart)
+        public static void Dijkstra(double[,] matriceAdjacence, T depart, T arrivee, Dictionary<T, int> mapIdIndex)
         {
-            int nbNodes = graph.GetLength(0);
+            int nbNodes = matriceAdjacence.GetLength(0);
 
-            int[] distances = new int[nbNodes];
-
+            double[] distances = new double[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
+            int[] parents = new int[nbNodes];
 
             for (int i = 0; i < nbNodes; i++)
             {
-                distances[i] = int.MaxValue;
+                distances[i] = double.MaxValue;
                 dejaExplore[i] = false;
+                parents[i] = -1;
             }
 
-            distances[depart] = 0;
+            int departIndex = mapIdIndex[depart];
+            int arriveeIndex = mapIdIndex[arrivee];
+
+            distances[departIndex] = 0;
 
             for (int count = 0; count < nbNodes - 1; count++)
             {
                 int indexMinDistance = minimum_distance(distances, dejaExplore, nbNodes);
-
                 dejaExplore[indexMinDistance] = true;
 
-                Console.WriteLine($"On visite à partir du noeud {indexMinDistance} : ");
+                Console.WriteLine($"On visite à partir du noeud {mapIdIndex.FirstOrDefault(x => x.Value == indexMinDistance).Key} : ");
 
                 for (int n = 0; n < nbNodes; n++)
                 {
-                    if (
-                        !dejaExplore[n]
-                        && graph[indexMinDistance, n] != 0
-                        && distances[indexMinDistance] != int.MaxValue
-                        && distances[indexMinDistance] + graph[indexMinDistance, n] < distances[n]
-                    )
+                    if (!dejaExplore[n] && matriceAdjacence[indexMinDistance, n] != 0)
                     {
-                        Console.WriteLine("Node : " + n);
-                        distances[n] = distances[indexMinDistance] + graph[indexMinDistance, n];
+                        double newDist = distances[indexMinDistance] + matriceAdjacence[indexMinDistance, n];
+
+                        if (newDist < distances[n])
+                        {
+                            distances[n] = newDist;
+                            parents[n] = indexMinDistance;
+                            Console.WriteLine($"Node : {mapIdIndex.FirstOrDefault(x => x.Value == n).Key}, Poids : {matriceAdjacence[indexMinDistance, n]}, Distance totale : {distances[n]}");
+                        }
                     }
                 }
                 Console.WriteLine();
             }
 
-            //AfficherSolutionMatrice(distances, nbNodes);
+            AfficherChemin(parents, departIndex, arriveeIndex, mapIdIndex);
+            Console.WriteLine($"Poids total du chemin de {depart} à {arrivee} : {distances[arriveeIndex]}");
         }
 
         /// <summary>
@@ -310,9 +315,9 @@
         /// <param name="dejaExplore">Tableau de booléens indiquant si un noeud a déjà été exploré</param>
         /// <param name="nbNodes">Nombre de noeuds</param>
         /// <returns>Indice du noeud non exploré avec la distance minimale</returns>
-        private static int minimum_distance(int[] distances, bool[] dejaExplore, int nbNodes)
+        private static int minimum_distance(double[] distances, bool[] dejaExplore, int nbNodes)
         {
-            int min_distance = int.MaxValue;
+            double min_distance = double.MaxValue;
             int min_index = -1;
 
             for (int n = 0; n < nbNodes; n++)
@@ -429,6 +434,28 @@
                    
             }
         }
+
+
+        private static void AfficherChemin(int[] parents, int departIndex, int arriveeIndex, Dictionary<T, int> mapIdIndex)
+        {
+            Stack<T> chemin = new Stack<T>();
+            for (int courant = arriveeIndex; courant != -1; courant = parents[courant])
+            {
+                chemin.Push(mapIdIndex.FirstOrDefault(x => x.Value == courant).Key);
+            }
+
+            Console.Write("Chemin de " + mapIdIndex.FirstOrDefault(x => x.Value == departIndex).Key + " à " + mapIdIndex.FirstOrDefault(x => x.Value == arriveeIndex).Key + ": ");
+            while (chemin.Count > 0)
+            {
+                Console.Write(chemin.Pop());
+                if (chemin.Count > 0)
+                {
+                    Console.Write(" -> ");
+                }
+            }
+            Console.WriteLine();
+        }
+
 
         #endregion
     }
