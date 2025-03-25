@@ -10,7 +10,7 @@
 
             Graphe graphe = new Graphe();
 
-            Console.WriteLine();
+            Console.WriteLine("d");
 
             foreach (int[] i in relations.Contenu)
             {
