@@ -1,18 +1,18 @@
 ﻿namespace PbSI
 {
-    public class Lien
+    public class Lien<T> where T : notnull
     {
         #region Attributs
 
         /// <summary>
         /// Noeud source du lien
         /// </summary>
-        private readonly Noeud source;
+        private readonly Noeud<T> source;
 
         /// <summary>
         /// Noeud destination du lien
         /// </summary>
-        private readonly Noeud destination;
+        private readonly Noeud<T> destination;
 
         /// <summary>
         /// Poids du lien
@@ -30,7 +30,7 @@
         /// <param name="destination">Noeud destination du lien</param>
         /// <param name="poids">Poids du lien</param>
 
-        public Lien(Noeud source, Noeud destination, double poids = 1)
+        public Lien(Noeud<T> source, Noeud<T> destination, double poids = 1)
         {
             this.source = source;
             this.destination = destination;
@@ -52,7 +52,7 @@
         /// <summary>
         /// Retourne le noeud source du lien
         /// </summary>
-        public Noeud Source
+        public Noeud<T> Source
         {
             get { return this.source; }
         }
@@ -60,7 +60,7 @@
         /// <summary>
         /// Retourne le noeud destination du lien
         /// </summary>
-        public Noeud Destination
+        public Noeud<T> Destination
         {
             get { return this.destination; }
         }

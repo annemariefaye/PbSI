@@ -8,24 +8,25 @@
             List<int[]> tableauMembres = relations.Contenu;
             //relations.AfficherContenu();
 
-            Graphe graphe = new Graphe();
+            Graphe<int> graphe = new Graphe<int>();
 
-            Console.WriteLine();
-
-            foreach (int[] i in relations.Contenu)
+            foreach (int[] relation in tableauMembres)
             {
-                graphe.AjouterRelation(i[0], i[1]);
+                graphe.AjouterRelation(relation[0], relation[1]);
+                graphe.AjouterRelation(relation[1], relation[0]);
             }
 
-            Console.WriteLine();
+            double[,] m = graphe.MatriceAdjacence;
+            var l = graphe.ListeAdjacence;
+            
+            //graphe.AfficherMatriceAdjacence();
+            //graphe.AfficherListeAdjacence();
 
-            Graphe grapheL = InstantiationListe(tableauMembres);
-            Graphe grapheM = InstantiationMatrice(tableauMembres);
 
-            RechercheChemin.DFS(graphe.MatriceAdjacence, 4, graphe);
-            RechercheChemin.DFS_Liste(graphe.ListeAdjacence, 4);
+            RechercheChemin<int>.DFS_Matrice(graphe, 4);
+            RechercheChemin<int>.DFS_Liste(graphe, 4);
 
-            Stack<int> cycle = RechercheChemin.ContientCycle(graphe.MatriceAdjacence);
+            Stack<int> cycle = RechercheChemin<int>.ContientCycle(graphe.MatriceAdjacence, graphe.MapIdIndex);
             Console.WriteLine("Ce graphe contient au moins un cycle : " + (cycle.Count != 0));
             if (cycle.Count != 0)
             {
@@ -36,10 +37,13 @@
                 }
             }
 
-            graphe.AfficherProprietes();
+            RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 4, 34, graphe.MapIdIndex);
+
+            //graphe.AfficherProprietes();
+            
         }
 
-        #region Méthodes d'instanciation
+        /*#region Méthodes d'instanciation
 
         /// <summary>
         /// Instancie un graphe à partir d'une liste de membres
@@ -92,6 +96,6 @@
             return new Graphe(listeAdj);
         }
 
-        #endregion
+        #endregion*/
     }
 }
