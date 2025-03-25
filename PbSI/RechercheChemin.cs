@@ -1,6 +1,6 @@
 ﻿namespace PbSI
 {
-    public static class RechercheChemin
+    /*public static class RechercheChemin
     {
         #region Parcours
 
@@ -440,5 +440,5 @@
         }
 
         #endregion
-    }
+    }*/
 }

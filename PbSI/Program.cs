@@ -8,21 +8,25 @@
             List<int[]> tableauMembres = relations.Contenu;
             //relations.AfficherContenu();
 
-            Graphe graphe = new Graphe();
+            Graphe<int> graphe = new Graphe<int>();
 
-            Console.WriteLine();
-
-            foreach (int[] i in relations.Contenu)
+            foreach (int[] relation in tableauMembres)
             {
-                graphe.AjouterRelation(i[0], i[1]);
+                graphe.AjouterRelation(relation[0], relation[1]);
+                graphe.AjouterRelation(relation[1], relation[0]);
             }
 
-            Console.WriteLine();
+            double[,] m = graphe.MatriceAdjacence;
+            var l = graphe.ListeAdjacence;
+            
+            graphe.AfficherMatriceAdjacence();
+            graphe.AfficherListeAdjacence();
 
-            Graphe grapheL = InstantiationListe(tableauMembres);
-            Graphe grapheM = InstantiationMatrice(tableauMembres);
 
-            RechercheChemin.DFS(graphe.MatriceAdjacence, 4, graphe);
+            //Graphe grapheL = InstantiationListe(tableauMembres);
+            //Graphe grapheM = InstantiationMatrice(tableauMembres);
+
+            /*RechercheChemin.DFS(graphe.MatriceAdjacence, 4, graphe);
             RechercheChemin.DFS_Liste(graphe.ListeAdjacence, 4);
 
             Stack<int> cycle = RechercheChemin.ContientCycle(graphe.MatriceAdjacence);
@@ -34,12 +38,13 @@
                 {
                     Console.WriteLine(cycle.Pop());
                 }
-            }
+            }*/
 
-            graphe.AfficherProprietes();
+            //graphe.AfficherProprietes();
+            
         }
 
-        #region Méthodes d'instanciation
+        /*#region Méthodes d'instanciation
 
         /// <summary>
         /// Instancie un graphe à partir d'une liste de membres
@@ -92,6 +97,6 @@
             return new Graphe(listeAdj);
         }
 
-        #endregion
+        #endregion*/
     }
 }
