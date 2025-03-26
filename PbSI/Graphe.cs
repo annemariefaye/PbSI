@@ -298,7 +298,7 @@ namespace PbSI
         /// <param name="id1">Identifiant du premier noeud</param>
         /// <param name="id2">Identifiant du second noeud</param>
         public void AjouterRelation(T id1, T id2, double poids=1)
-        {
+        { 
             AjouterMembre(id1);
             AjouterMembre(id2);
 
@@ -339,10 +339,21 @@ namespace PbSI
         /// Construit et retourne la liste d'adjacence du graphe
         /// </summary>
         /// <returns>Liste d'adjacence du graphe</returns>
+     
         private Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> GetListeAdjacence()
         {
             var liste = new Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>>();
 
+            // Ajouter tous les nœuds à la liste d'adjacence
+            foreach (var noeud in noeuds.Values)
+            {
+                if (!liste.ContainsKey(noeud))
+                {
+                    liste[noeud] = new List<(Noeud<T>, double poids)>();
+                }
+            }
+
+            // Ajouter les liens aux nœuds correspondants
             foreach (Lien<T> lien in liens)
             {
                 Noeud<T> source = lien.Source;
@@ -358,6 +369,7 @@ namespace PbSI
 
             return liste;
         }
+
 
         /// <summary>
         /// Met à jour les propriétés du graphe

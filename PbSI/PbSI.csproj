@@ -9,4 +9,8 @@
     <RunWorkingDirectory>$(MSBuildThisFileDirectory)</RunWorkingDirectory>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.7.0" />
+  </ItemGroup>
+
 </Project>

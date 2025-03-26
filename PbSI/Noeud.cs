@@ -25,7 +25,7 @@
         public Noeud(T id)
         {
             this.id = id;
-            voisins = new HashSet<Noeud<T>>();
+            this.voisins = new HashSet<Noeud<T>>();
         }
 
         #endregion
@@ -40,12 +40,13 @@
             get { return id; }
         }
 
+
         /// <summary>
         /// Retourne la liste des noeuds voisins
         /// </summary>
         public HashSet<Noeud<T>> Voisins
         {
-            get { return voisins; }
+            get { return this.voisins; }
         }
 
         #endregion
@@ -58,9 +59,9 @@
         /// <param name="voisin">Noeud voisin à ajouter</param>
         public void AjouterVoisin(Noeud<T> voisin)
         {
-            if (!voisins.Contains(voisin))
+            if (!this.voisins.Contains(voisin))
             {
-                voisins.Add(voisin);
+                this.voisins.Add(voisin);
             }
         }
 

@@ -285,7 +285,7 @@
                 int indexMinDistance = minimum_distance(distances, dejaExplore, nbNodes);
                 dejaExplore[indexMinDistance] = true;
 
-                Console.WriteLine($"On visite à partir du noeud {mapIdIndex.FirstOrDefault(x => x.Value == indexMinDistance).Key} : ");
+                //Console.WriteLine($"On visite à partir du noeud {mapIdIndex.FirstOrDefault(x => x.Value == indexMinDistance).Key} : ");
 
                 for (int n = 0; n < nbNodes; n++)
                 {
@@ -301,7 +301,7 @@
                         }
                     }
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
 
             AfficherChemin(parents, departIndex, arriveeIndex, mapIdIndex);
