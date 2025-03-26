@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            LectureFichiers relations = new LectureFichiers("relations.mtx");
+            /*LectureFichiers relations = new LectureFichiers("relations.mtx");
             List<int[]> tableauMembres = relations.Contenu;
             //relations.AfficherContenu();
 
@@ -39,8 +39,22 @@
 
             RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 4, 34, graphe.MapIdIndex);
 
-            //graphe.AfficherProprietes();
-            
+            //graphe.AfficherProprietes();*/
+
+            ReseauMetro reseau = new ReseauMetro("MetroParis.xlsx");
+            Graphe<int> graphe = reseau.Graphe;
+
+            double[,] m = graphe.MatriceAdjacence;
+            var l = graphe.ListeAdjacence;
+            //graphe.AfficherGraphe();
+            //graphe.AfficherListeAdjacence();
+
+            RechercheChemin<int>.DFS_Liste(graphe, 1);
+            RechercheChemin<int>.DFS_Matrice(graphe, 1);
+            RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 1, 300, graphe.MapIdIndex);
+
+
+
         }
 
         /*#region Méthodes d'instanciation

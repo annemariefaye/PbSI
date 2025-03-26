@@ -5,18 +5,16 @@ namespace Visuel
 {
     internal class Visualisation : Form
     {
-        private int[,] adjacencyMatrix;
+        private double[,] adjacencyMatrix;
 
         private string[] nodes;
 
         public Visualisation()
         {
-            LectureFichiers relations = new LectureFichiers("relations.mtx");
-            Graphe graphe = new Graphe();
-            foreach (int[] i in relations.Contenu)
-            {
-                graphe.AjouterRelation(i[0], i[1]);
-            }
+            ReseauMetro reseau = new ReseauMetro("MetroParis.xlsx");
+            
+            Graphe<int> graphe = reseau.Graphe;
+            
             adjacencyMatrix = graphe.MatriceAdjacence;
 
             nodes = new string[graphe.Noeuds.Count];
@@ -30,7 +28,7 @@ namespace Visuel
 
             this.Text = "Graphe - Matrice d'Adjacence";
             this.Size = new Size(1500, 1500);
-            this.Paint += new PaintEventHandler(DrawGraphOptimized);
+            this.Paint += new PaintEventHandler(DrawGraphWeighted);
         }
 
         private void DrawGraphLines(object sender, PaintEventArgs e)
@@ -61,7 +59,7 @@ namespace Visuel
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         // Dessiner une ligne droite entre les n�uds
                         g.DrawLine(edgePen, positions[i], positions[j]);
@@ -85,7 +83,7 @@ namespace Visuel
             Graphics g = e.Graphics;
             int size = 40;
             /// Taille des n�uds
-            int radius = 300;
+            int radius = 500;
             /// Rayon du cercle o� sont plac�s les n�uds
             PointF[] positions = new PointF[nodes.Length];
 
@@ -103,7 +101,7 @@ namespace Visuel
             }
 
             Pen edgePen = new Pen(Color.Black, 2);
-            Font font = new Font("Arial", 12);
+            Font font = new Font("Arial", 5);
             Brush brush = Brushes.White;
             Brush textBrush = Brushes.Black;
 
@@ -112,7 +110,7 @@ namespace Visuel
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         g.DrawLine(edgePen, positions[i], positions[j]);
                     }
@@ -123,8 +121,8 @@ namespace Visuel
         private void DrawGraphWeighted(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int size = 40; // Taille des n�uds
-            int radius = 100; // Rayon pour les n�uds
+            int size =5; // Taille des n�uds
+            int radius = 200; // Rayon pour les n�uds
             PointF[] positions = new PointF[nodes.Length];
 
             int centerX = this.ClientSize.Width / 2;
@@ -136,7 +134,7 @@ namespace Visuel
             {
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         degrees[i]++;
                     }
@@ -168,7 +166,7 @@ namespace Visuel
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         g.DrawLine(edgePen, positions[i], positions[j]);
                     }
@@ -381,7 +379,7 @@ namespace Visuel
         private void DrawGraphOptimized(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            int baseSize = 30; // Taille de base des n�uds
+            int baseSize = 5; // Taille de base des n�uds
             PointF[] positions = ForceDirectedLayoutMinCrossings();
 
             // Calculer le degr� de chaque n�ud
@@ -390,7 +388,7 @@ namespace Visuel
             {
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         degrees[i]++;
                     }
@@ -400,7 +398,7 @@ namespace Visuel
             // Trouver le degr� maximum pour normaliser les tailles et couleurs
             int maxDegree = degrees.Max();
 
-            Font font = new Font("Arial", 12);
+            Font font = new Font("Arial", 8);
             Brush textBrush = Brushes.Black;
 
             // Dessiner les ar�tes avec des couleurs diff�rentes selon le degr� des n�uds
@@ -408,7 +406,7 @@ namespace Visuel
             {
                 for (int j = i + 1; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] != 0)
                     {
                         PointF controlPoint = GetCurvedControlPoint(positions[i], positions[j]);
                         Color edgeColor = GetColorFromDegrees(degrees[i], degrees[j], maxDegree);
@@ -482,9 +480,9 @@ namespace Visuel
             }
 
             int iterations = 200;
-            float attractionFactor = 0.05f;
-            float repulsionFactor = 100000f;
-            float crossingAvoidanceFactor = 5000f;
+            float attractionFactor = 0.5f;
+            float repulsionFactor = 1000f;
+            float crossingAvoidanceFactor = 50f;
 
             for (int iter = 0; iter < iterations; iter++)
             {
@@ -511,7 +509,7 @@ namespace Visuel
                 {
                     for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                     {
-                        if (adjacencyMatrix[i, j] == 1)
+                        if (adjacencyMatrix[i, j] != 0)
                         {
                             float dx = positions[j].X - positions[i].X;
                             float dy = positions[j].Y - positions[i].Y;
@@ -537,7 +535,7 @@ namespace Visuel
                             {
                                 for (int l = 0; l < adjacencyMatrix.GetLength(1); l++)
                                 {
-                                    if (adjacencyMatrix[k, l] == 1 && (i != k || j != l))
+                                    if (adjacencyMatrix[k, l] != 0 && (i != k || j != l))
                                     {
                                         if (
                                             EdgesCross(
