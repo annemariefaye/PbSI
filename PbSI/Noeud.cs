@@ -1,18 +1,18 @@
 ﻿namespace PbSI
 {
-    public class Noeud
+    public class Noeud<T> where T : notnull
     {
         #region Attributs
 
         /// <summary>
         /// Identifiant du noeud
         /// </summary>
-        private readonly int id;
+        private readonly T id;
 
         /// <summary>
         /// Hashset des noeuds voisins
         /// </summary>
-        private readonly HashSet<Noeud> voisins;
+        private readonly HashSet<Noeud<T>> voisins;
 
         #endregion
 
@@ -22,10 +22,10 @@
         /// Constructeur par défaut
         /// </summary>
         /// <param name="id">Identifiant du noeud</param>
-        public Noeud(int id)
+        public Noeud(T id)
         {
             this.id = id;
-            voisins = new HashSet<Noeud>();
+            this.voisins = new HashSet<Noeud<T>>();
         }
 
         #endregion
@@ -35,17 +35,18 @@
         /// <summary>
         /// Retourne l'identifiant du noeud
         /// </summary>
-        public int Id
+        public T Id
         {
             get { return id; }
         }
 
+
         /// <summary>
         /// Retourne la liste des noeuds voisins
         /// </summary>
-        public HashSet<Noeud> Voisins
+        public HashSet<Noeud<T>> Voisins
         {
-            get { return voisins; }
+            get { return this.voisins; }
         }
 
         #endregion
@@ -56,12 +57,11 @@
         /// Ajoute un voisin au noeud
         /// </summary>
         /// <param name="voisin">Noeud voisin à ajouter</param>
-        public void AjouterVoisin(Noeud voisin)
+        public void AjouterVoisin(Noeud<T> voisin)
         {
-            if (!voisins.Contains(voisin))
+            if (!this.voisins.Contains(voisin))
             {
-                voisins.Add(voisin);
-                voisin.Voisins.Add(this);
+                this.voisins.Add(voisin);
             }
         }
 

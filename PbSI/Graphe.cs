@@ -3,29 +3,32 @@ using System.Drawing;
 
 namespace PbSI
 {
-    public class Graphe
+    public class Graphe<T> where T : notnull
     {
         #region Attributs
 
         /// <summary>
         /// Liste des noeuds du graphe
         /// </summary>
-        private readonly Dictionary<int, Noeud> noeuds;
+        private readonly Dictionary<int, Noeud<T>> noeuds;
+
+        // TODO: Update dynamically mapIdIndex with update proprietes
+        private readonly Dictionary<T, int> mapIdIndex;
 
         /// <summary>
         /// Liste des liens du graphe
         /// </summary>
-        private readonly List<Lien> liens;
+        private readonly HashSet<Lien<T>> liens;
 
         /// <summary>
         /// Matrice d'adjacence du graphe
         /// </summary>
-        private int[,]? matriceAdjacence;
+        private double[,]? matriceAdjacence;
 
         /// <summary>
         /// Liste d'adjacence du graphe
         /// </summary>
-        private Dictionary<int, List<int>>? listeAdjacence;
+        private Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>>? listeAdjacence;
 
         /// <summary>
         /// Ordre du graphe (nombre de noeuds)
@@ -66,27 +69,46 @@ namespace PbSI
         /// </summary>
         public Graphe()
         {
-            noeuds = new Dictionary<int, Noeud>();
-            liens = new List<Lien>();
+            noeuds = new Dictionary<int, Noeud<T>>();
+            liens = new HashSet<Lien<T>>();
+            mapIdIndex = new Dictionary<T, int>();
         }
 
         /// <summary>
         /// Constructeur avec matrice d'adjacence
         /// </summary>
         /// <param name="matriceAdjacence">Matrice d'adjacence du graphe</param>
-        public Graphe(int[,] matriceAdjacence)
+        public Graphe(double[,] matriceAdjacence, Dictionary<T, int> mapIdIndex)
         {
-            noeuds = new Dictionary<int, Noeud>();
-            liens = new List<Lien>();
+            noeuds = new Dictionary<int, Noeud<T>>();
+            liens = new HashSet<Lien<T>>();
+            this.mapIdIndex = mapIdIndex;
             this.matriceAdjacence = matriceAdjacence;
+
+            int n = this.mapIdIndex.Count;
+            T[] nodeIds = new T[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                foreach (var kvp in this.mapIdIndex)
+                {
+                    if (kvp.Value == i)
+                    {
+                        nodeIds[i] = kvp.Key;
+                        break;
+                    }
+                }
+            }
 
             for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
             {
+                noeuds[i] = new Noeud<T>(nodeIds[i]);
+
                 for (int j = 0; j < matriceAdjacence.GetLength(1); j++)
                 {
-                    if (this.matriceAdjacence[i, j] == 1)
+                    if (this.matriceAdjacence[i, j] != 0)
                     {
-                        AjouterRelation(i + 1, j + 1);
+                        AjouterRelation(nodeIds[i], nodeIds[j], this.matriceAdjacence[i, j]);
                     }
                 }
             }
@@ -99,19 +121,28 @@ namespace PbSI
         /// Constructeur avec liste d'adjacence
         /// </summary>
         /// <param name="listeAdjacence">Liste d'adjacence du graphe</param>
-        public Graphe(Dictionary<int, List<int>> listeAdjacence)
+        public Graphe(Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> listeAdjacence)
         {
-            noeuds = new Dictionary<int, Noeud>();
-            liens = new List<Lien>();
+            noeuds = new Dictionary<int, Noeud<T>>();
+            liens = new HashSet<Lien<T>>();
+            mapIdIndex = new Dictionary<T, int>();
 
             this.listeAdjacence = listeAdjacence;
 
-            foreach (var listeadj in this.listeAdjacence)
+            foreach (var noeud in this.listeAdjacence)
             {
-                int key = listeadj.Key;
-                foreach (int voisin in listeadj.Value)
+                Noeud<T> source = noeud.Key; 
+                int sourceIndex = noeuds.Count;
+                noeuds[sourceIndex] = source; 
+
+                mapIdIndex[source.Id] = sourceIndex;
+
+                foreach (var voisin in noeud.Value)
                 {
-                    AjouterRelation(key, voisin);
+                    Noeud<T> destination = voisin.Item1; 
+                    double poids = voisin.Item2; 
+
+                    AjouterRelation(source.Id, destination.Id, poids);
                 }
             }
 
@@ -126,7 +157,7 @@ namespace PbSI
         /// <summary>
         /// Retourne la liste des noeuds du graphe
         /// </summary>
-        public Dictionary<int, Noeud> Noeuds
+        public Dictionary<int, Noeud<T>> Noeuds
         {
             get { return noeuds; }
         }
@@ -134,7 +165,7 @@ namespace PbSI
         /// <summary>
         /// Retourne la matrice d'adjacence du graphe
         /// </summary>
-        public int[,] MatriceAdjacence
+        public double[,] MatriceAdjacence
         {
             get
             {
@@ -149,7 +180,7 @@ namespace PbSI
         /// <summary>
         /// Retourne la liste d'adjacence du graphe
         /// </summary>
-        public Dictionary<int, List<int>> ListeAdjacence
+        public Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> ListeAdjacence
         {
             get
             {
@@ -159,6 +190,11 @@ namespace PbSI
                 }
                 return this.listeAdjacence;
             }
+        }
+
+        public Dictionary<T, int> MapIdIndex
+        {
+            get { return this.mapIdIndex;}
         }
 
         /// <summary>
@@ -244,13 +280,16 @@ namespace PbSI
         /// Ajoute un noeud au graphe
         /// </summary>
         /// <param name="id">Identifiant du noeud à ajouter</param>
-        public void AjouterMembre(int id)
+        public void AjouterMembre(T id)
         {
-            if (!noeuds.ContainsKey(id))
+            if (!mapIdIndex.ContainsKey(id))
             {
-                noeuds[id] = new Noeud(id);
+                int index = noeuds.Count;
+                noeuds[index] = new Noeud<T>(id);
+                mapIdIndex[id] = index;
                 this.proprietesCalculees = false;
             }
+
         }
 
         /// <summary>
@@ -258,54 +297,41 @@ namespace PbSI
         /// </summary>
         /// <param name="id1">Identifiant du premier noeud</param>
         /// <param name="id2">Identifiant du second noeud</param>
-        public void AjouterRelation(int id1, int id2)
-        {
+        public void AjouterRelation(T id1, T id2, double poids=1)
+        { 
             AjouterMembre(id1);
             AjouterMembre(id2);
 
-            var source = noeuds[id1];
-            var destination = noeuds[id2];
+            var source = noeuds[mapIdIndex[id1]];
+            var destination = noeuds[mapIdIndex[id2]];
 
-            if (
-                !liens.Any(l =>
-                    (l.Source == source && l.Destination == destination)
-                    || (l.Source == destination && l.Destination == source)
-                )
-            )
+            var lien = new Lien<T>(source, destination, poids);
+
+            if (liens.Add(lien))
             {
-                Lien nouveauLien = new Lien(source, destination);
-                liens.Add(nouveauLien);
                 source.AjouterVoisin(destination);
+                this.proprietesCalculees = false;
             }
-
-            this.proprietesCalculees = false;
         }
 
         /// <summary>
         /// Construit et retourne la matrice d'adjacence du graphe
         /// </summary>
         /// <returns>Matrice d'adjacence du graphe</returns>
-        private int[,] GetMatriceAdjacence()
+        private double[,] GetMatriceAdjacence()
         {
             int taille = noeuds.Count;
-            int[,] matrice = new int[taille, taille];
+            double[,] matrice = new double[taille, taille];
 
-            var tableauMembres = noeuds.Values.ToArray();
-
-            for (int i = 0; i < taille; i++)
+            foreach(Lien<T> lien in liens)
             {
-                for (int j = 0; j < taille; j++)
-                {
-                    if (tableauMembres[i].Voisins.Contains(tableauMembres[j]))
-                    {
-                        matrice[i, j] = 1;
-                    }
-                    else
-                    {
-                        matrice[i, j] = 0;
-                    }
-                }
+                int sourceKey = mapIdIndex[lien.Source.Id];
+                int destinationKey = mapIdIndex[lien.Destination.Id];
+
+                matrice[sourceKey, destinationKey] = lien.Poids;
+
             }
+
             return matrice;
         }
 
@@ -313,22 +339,37 @@ namespace PbSI
         /// Construit et retourne la liste d'adjacence du graphe
         /// </summary>
         /// <returns>Liste d'adjacence du graphe</returns>
-        private Dictionary<int, List<int>> GetListeAdjacence()
+     
+        private Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> GetListeAdjacence()
         {
-            var liste = new Dictionary<int, List<int>>();
+            var liste = new Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>>();
 
-            foreach (var membre in noeuds.Values)
+            // Ajouter tous les nœuds à la liste d'adjacence
+            foreach (var noeud in noeuds.Values)
             {
-                var voisinsIds = new List<int>();
-                foreach (var voisin in membre.Voisins)
+                if (!liste.ContainsKey(noeud))
                 {
-                    voisinsIds.Add(voisin.Id);
+                    liste[noeud] = new List<(Noeud<T>, double poids)>();
                 }
-                liste[membre.Id] = voisinsIds;
+            }
+
+            // Ajouter les liens aux nœuds correspondants
+            foreach (Lien<T> lien in liens)
+            {
+                Noeud<T> source = lien.Source;
+                Noeud<T> destination = lien.Destination;
+
+                if (!liste.ContainsKey(source))
+                {
+                    liste[source] = new List<(Noeud<T>, double poids)>();
+                }
+
+                liste[source].Add((destination, lien.Poids));
             }
 
             return liste;
         }
+
 
         /// <summary>
         /// Met à jour les propriétés du graphe
@@ -349,7 +390,7 @@ namespace PbSI
         /// <returns>true si le graphe est pondéré, false sinon</returns>
         private bool GetEstPondere()
         {
-            foreach (Lien lien in this.liens)
+            foreach (Lien<T> lien in this.liens)
             {
                 if (lien.Poids != 0 && lien.Poids != 1)
                 {
@@ -429,9 +470,17 @@ namespace PbSI
                 Console.WriteLine("Liste d'adjacence :");
                 foreach (var kvp in this.listeAdjacence)
                 {
-                    int nodeId = kvp.Key;
-                    List<int> voisins = kvp.Value;
-                    Console.WriteLine($"Noeud {nodeId} : [{string.Join(", ", voisins)}]");
+                    Noeud<T> node = kvp.Key; 
+                    var voisins = kvp.Value; 
+
+                    var voisinsFormates = new List<string>();
+                    foreach (var voisin in voisins)
+                    {
+                        voisinsFormates.Add($"{voisin.Item1.Id} (Poids: {voisin.Item2})");
+                    }
+
+                    string voisinsString = string.Join(", ", voisinsFormates);
+                    Console.WriteLine($"Noeud {node.Id} : [{voisinsString}]");
                 }
             }
             else
@@ -445,20 +494,33 @@ namespace PbSI
         /// </summary>
         public void AfficherMatriceAdjacence()
         {
-            if (matriceAdjacence != null)
+            if (this.matriceAdjacence != null)
             {
-                for (int i = 0; i < this.matriceAdjacence.GetLength(0); i++)
+                int taille = this.matriceAdjacence.GetLength(0);
+
+                var nodeIds = mapIdIndex.Keys.ToList();
+
+                Console.Write("      ");
+                foreach (var id in nodeIds)
                 {
-                    for (int j = 0; j < this.matriceAdjacence.GetLength(1); j++)
+                    Console.Write($"{id}  ");
+                }
+                Console.WriteLine();
+
+                for (int i = 0; i < taille; i++)
+                {
+                    Console.Write($"{nodeIds[i]}  ");
+
+                    for (int j = 0; j < taille; j++)
                     {
-                        Console.Write(this.matriceAdjacence[i, j] + " ");
+                        Console.Write($"{this.matriceAdjacence[i, j]:0.##}  ");
                     }
                     Console.WriteLine();
                 }
             }
             else
             {
-                Console.WriteLine("Matrice d'adjacence null");
+                Console.WriteLine("Liste d'adjacence null");
             }
         }
 
