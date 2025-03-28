@@ -59,6 +59,7 @@
             connexion bdd = new connexion();
             bdd.executerRequete("SELECT * FROM Cuisinier");
             bdd.afficherResultatRequete();
+            bdd.fermerConnexion();
 
 
         }
