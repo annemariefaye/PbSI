@@ -54,7 +54,7 @@
             AfficherSolutionMatrice(distances);
 
             bool connexe = dejaExplore.All(x => x);
-            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+            Console.WriteLine($"Le graphe est fortement connexe ? : {connexe}");
         }
 
 
@@ -109,7 +109,7 @@
             AfficherSolutionListe(distances, graphe.ListeAdjacence);
 
             bool connexe = dejaExplore.All(x => x);
-            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+            Console.WriteLine($"Le graphe est fortement connexe ? : {connexe}");
         }
 
         /// <summary>
@@ -161,7 +161,7 @@
             Console.WriteLine();
 
             bool connexe = dejaExplore.All(x => x);
-            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+            Console.WriteLine($"Le graphe est fortement connexe ? : {connexe}");
 
             AfficherSolutionMatrice(distances);
         }
@@ -220,7 +220,7 @@
             Console.WriteLine();
 
             bool connexe = dejaExplore.All(x => x);
-            Console.WriteLine($"Le graphe est connexe ? : {connexe}");
+            Console.WriteLine($"Le graphe est fortement connexe ? : {connexe}");
 
             AfficherSolutionListe(distances, graphe.ListeAdjacence);
         }
@@ -272,7 +272,7 @@
                         {
                             distances[n] = newDist;
                             parents[n] = indexMinDistance;
-                            Console.WriteLine($"Node : {n}, Poids : {matriceAdjacence[indexMinDistance, n]}, Distance totale : {distances[n]}");
+                            //Console.WriteLine($"Node : {n}, Poids : {matriceAdjacence[indexMinDistance, n]}, Distance totale : {distances[n]}");
                         }
                     }
                 }

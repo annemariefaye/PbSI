@@ -59,7 +59,7 @@ namespace PbSI
 
 
             RechercheStationProche recherche = new RechercheStationProche("55 Rue du Faubourg Saint-Honoré, 75008 Paris, France", graphe);
-            await recherche.InitialiserAsync(); // On attend la fin de l'initialisation
+            await recherche.InitialiserAsync(); 
 
             int depart;
             try
@@ -71,6 +71,23 @@ namespace PbSI
             {
                 Console.WriteLine($"Erreur : {e.Message}");
             }
+
+            Console.WriteLine();
+
+
+            RechercheStationProche recherche2 = new RechercheStationProche("59 Quai de la Marine, 93200 Saint-Denis", graphe);
+            await recherche2.InitialiserAsync(); 
+
+            try
+            {
+                depart = recherche2.IdStationProche;
+                RechercheChemin<StationMetro>.Dijkstra(graphe.MatriceAdjacence, depart, 1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erreur : {e.Message}");
+            }
+
             /*
             RechercheChemin<int>.DFS_Liste(graphe, 1);
             RechercheChemin<int>.DFS_Matrice(graphe, 1);
@@ -78,9 +95,9 @@ namespace PbSI
             */
 
 
-            connexion bdd = new connexion();
+            /*connexion bdd = new connexion();
             bdd.executerRequete("SELECT * FROM Cuisinier");
-            bdd.afficherResultatRequete();
+            bdd.afficherResultatRequete();*/
 
 
         }

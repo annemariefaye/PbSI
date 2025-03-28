@@ -55,7 +55,7 @@ namespace PbSI
                     {
                         double lat = Convert.ToDouble(data[0]["lat"]);
                         double lon = Convert.ToDouble(data[0]["lon"]);
-                        Console.WriteLine($"Coordonnées trouvées : {lat}, {lon}");
+                        //Console.WriteLine($"Coordonnées trouvées : {lat}, {lon}");
                         return (lon, lat);
                     }
                 }
@@ -75,10 +75,11 @@ namespace PbSI
             Console.WriteLine("Recherche de la station la plus proche..."); 
 
             double distanceMin = double.MaxValue;
+            string libelle = "";
 
             foreach (var noeud in this.graphe.Noeuds)
             {
-                Console.WriteLine(noeud.ToString());
+                //Console.WriteLine(noeud.ToString());
                 if (noeud is Noeud<StationMetro> station)
                 {
                     if(station.Contenu != null)
@@ -86,18 +87,19 @@ namespace PbSI
                         (double lon, double lat) coordonneesStation = (station.Contenu.Longitude, station.Contenu.Latitude);
                         double distance = CalculerDistance(coordonneesOriginelles.Value, coordonneesStation);
 
-                        Console.WriteLine("la distance est : " + distance);
+                        //Console.WriteLine("la distance est : " + distance);
 
                         if (distance < distanceMin)
                         {
                             distanceMin = distance;
                             this.idStationProche = station.Id;
+                            libelle = station.Contenu.Libelle;
                         }
                     }
                 }
             }
 
-            Console.WriteLine(this.idStationProche);
+            Console.WriteLine(libelle + " " + this.idStationProche);
         }
 
         public double CalculerDistance((double lon, double lat) origine, (double lon, double lat) destination)
