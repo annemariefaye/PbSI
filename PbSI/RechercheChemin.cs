@@ -10,12 +10,9 @@
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
         /// <param name="graphe">Graphe</param>
-        public static void BFS_Matrice(Graphe<T> graphe, T depart)
+        public static void BFS_Matrice(Graphe<T> graphe, int depart)
         {
             int nbNodes = graphe.Noeuds.Count;
-
-            Dictionary<T, int> idToIndex = graphe.MapIdIndex;
-
           
             int[] distances = new int[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
@@ -26,23 +23,21 @@
                 dejaExplore[i] = false;
             }
 
-            int startIndex = idToIndex[depart];
-            dejaExplore[startIndex] = true;
-            distances[startIndex] = 0;
+            dejaExplore[depart] = true;
+            distances[depart] = 0;
 
             Console.WriteLine($"On visite à partir du noeud {depart} :");
 
             Queue<int> queue = new Queue<int>();
-            queue.Enqueue(startIndex);
+            queue.Enqueue(depart);
 
             double[,] matriceAdjacente = graphe.MatriceAdjacence;
 
             while (queue.Count > 0)
             {
-                int enCoursIndex = queue.Dequeue();
-                T enCoursId = graphe.Noeuds.Values.ElementAt(enCoursIndex).Id;
+                int enCoursIndex = queue.Dequeue();    
 
-                Console.Write($"{enCoursId} ");
+                Console.Write($"{enCoursIndex} ");
 
                 for (int i = 0; i < nbNodes; i++)
                 {
@@ -56,7 +51,7 @@
             }
 
             Console.WriteLine("\n");
-            AfficherSolutionMatrice(distances, idToIndex);
+            AfficherSolutionMatrice(distances);
 
             bool connexe = dejaExplore.All(x => x);
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
@@ -69,11 +64,10 @@
         /// </summary>
         /// <param name="graph">Graphe sous forme de liste d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public static void BFS_Liste(Graphe<T> graphe, T depart)
+        public static void BFS_Liste(Graphe<T> graphe, int depart)
         {
             int nbNodes = graphe.Noeuds.Count;
 
-            Dictionary<T, int> idToIndex = graphe.MapIdIndex;
 
             int[] distances = new int[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
@@ -84,23 +78,21 @@
                 dejaExplore[i] = false; 
             }
 
-            int startIndex = idToIndex[depart];
-            dejaExplore[startIndex] = true; 
-            distances[startIndex] = 0; 
+            dejaExplore[depart] = true; 
+            distances[depart] = 0; 
 
             Console.WriteLine($"On visite à partir du noeud {depart} :");
 
             Queue<int> queue = new Queue<int>();
-            queue.Enqueue(startIndex); 
+            queue.Enqueue(depart); 
 
             double[,] matriceAdjacente = graphe.MatriceAdjacence;
 
             while (queue.Count > 0)
             {
                 int enCoursIndex = queue.Dequeue();  
-                T enCoursId = graphe.Noeuds.Values.ElementAt(enCoursIndex).Id;  
 
-                Console.Write($"{enCoursId} ");  
+                Console.Write($"{enCoursIndex} ");  
 
                 for (int i = 0; i < nbNodes; i++)
                 {
@@ -114,7 +106,7 @@
             }
 
             Console.WriteLine("\n");
-            AfficherSolutionListe(distances, graphe.ListeAdjacence, idToIndex);
+            AfficherSolutionListe(distances, graphe.ListeAdjacence);
 
             bool connexe = dejaExplore.All(x => x);
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
@@ -126,16 +118,9 @@
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
         /// <param name="graphe">Graphe</param>
-        public static void DFS_Matrice(Graphe<T> graphe, T depart)
+        public static void DFS_Matrice(Graphe<T> graphe, int depart)
         {
             int nbNodes = graphe.Noeuds.Count;
-            Dictionary<T, int> idToIndex = graphe.MapIdIndex;
-
-            if (!idToIndex.ContainsKey(depart))
-            {
-                Console.WriteLine("Erreur: Le noeud de départ n'existe pas dans le graphe.");
-                return;
-            }
 
             int[] distances = new int[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
@@ -146,22 +131,20 @@
                 dejaExplore[i] = false;
             }
 
-            int startIndex = idToIndex[depart];
-            dejaExplore[startIndex] = true;
-            distances[startIndex] = 0;
+            dejaExplore[depart] = true;
+            distances[depart] = 0;
 
             Console.WriteLine("On visite à partir du noeud " + depart + ":");
 
             Stack<int> stack = new Stack<int>();
-            stack.Push(startIndex);
+            stack.Push(depart);
             double[,] matriceAdjacente = graphe.MatriceAdjacence;
 
             while (stack.Count > 0)
             {
                 int nodeToVisitIndex = stack.Pop();
-                T nodeToVisitId = graphe.Noeuds.Values.ElementAt(nodeToVisitIndex).Id;
 
-                Console.Write(nodeToVisitId + " ");
+                Console.Write(nodeToVisitIndex + " ");
 
                 for (int i = 0; i < nbNodes; i++)
                 {
@@ -180,7 +163,7 @@
             bool connexe = dejaExplore.All(x => x);
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
 
-            AfficherSolutionMatrice(distances, idToIndex);
+            AfficherSolutionMatrice(distances);
         }
 
 
@@ -189,16 +172,9 @@
         /// </summary>
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public static void DFS_Liste(Graphe<T> graphe, T depart)
+        public static void DFS_Liste(Graphe<T> graphe, int depart)
         {
             int nbNodes = graphe.Noeuds.Count;
-            Dictionary<T, int> idToIndex = graphe.MapIdIndex;
-
-            if (!idToIndex.ContainsKey(depart))
-            {
-                Console.WriteLine("Erreur: Le noeud de départ n'existe pas dans le graphe.");
-                return;
-            }
 
             int[] distances = new int[nbNodes];
             bool[] dejaExplore = new bool[nbNodes];
@@ -209,20 +185,19 @@
                 dejaExplore[i] = false;
             }
 
-            int startIndex = idToIndex[depart];
-            dejaExplore[startIndex] = true;
-            distances[startIndex] = 0;
+            dejaExplore[depart] = true;
+            distances[depart] = 0;
 
             Console.WriteLine("On visite à partir du noeud " + depart + ":");
 
             Stack<int> stack = new Stack<int>();
-            stack.Push(startIndex);
+            stack.Push(depart);
 
             while (stack.Count > 0)
             {
                 int nodeToVisitIndex = stack.Pop();
-                Noeud<T> nodeToVisit = graphe.Noeuds.Values.ElementAt(nodeToVisitIndex);
-                T nodeToVisitId = nodeToVisit.Id; 
+                Noeud<T> nodeToVisit = graphe.Noeuds[nodeToVisitIndex];
+                int nodeToVisitId = nodeToVisit.Id; 
 
                 Console.Write(nodeToVisitId + " ");
 
@@ -230,7 +205,7 @@
 
                 foreach (var voisin in voisins)
                 {
-                    int voisinIndex = idToIndex[voisin.Item1.Id];
+                    int voisinIndex = voisin.Item1.Id;
 
                     if (!dejaExplore[voisinIndex])
                     {
@@ -247,7 +222,7 @@
             bool connexe = dejaExplore.All(x => x);
             Console.WriteLine($"Le graphe est connexe ? : {connexe}");
 
-            AfficherSolutionListe(distances, graphe.ListeAdjacence, idToIndex);
+            AfficherSolutionListe(distances, graphe.ListeAdjacence);
         }
 
 
@@ -260,7 +235,7 @@
         /// </summary>
         /// <param name="graph">Graphe sous forme de matrice d'adjacence</param>
         /// <param name="depart">Noeud de départ</param>
-        public static void Dijkstra(double[,] matriceAdjacence, T depart, T arrivee, Dictionary<T, int> mapIdIndex)
+        public static void Dijkstra(double[,] matriceAdjacence, int depart, int arrivee)
         {
             int nbNodes = matriceAdjacence.GetLength(0);
 
@@ -275,8 +250,8 @@
                 parents[i] = -1;
             }
 
-            int departIndex = mapIdIndex[depart];
-            int arriveeIndex = mapIdIndex[arrivee];
+            int departIndex = depart;
+            int arriveeIndex = arrivee;
 
             distances[departIndex] = 0;
 
@@ -297,14 +272,14 @@
                         {
                             distances[n] = newDist;
                             parents[n] = indexMinDistance;
-                            Console.WriteLine($"Node : {mapIdIndex.FirstOrDefault(x => x.Value == n).Key}, Poids : {matriceAdjacence[indexMinDistance, n]}, Distance totale : {distances[n]}");
+                            Console.WriteLine($"Node : {n}, Poids : {matriceAdjacence[indexMinDistance, n]}, Distance totale : {distances[n]}");
                         }
                     }
                 }
                 //Console.WriteLine();
             }
 
-            AfficherChemin(parents, departIndex, arriveeIndex, mapIdIndex);
+            AfficherChemin(parents, departIndex, arriveeIndex);
             Console.WriteLine($"Poids total du chemin de {depart} à {arrivee} : {distances[arriveeIndex]}");
         }
 
@@ -401,15 +376,13 @@
         /// </summary>
         /// <param name="distances">Distances depuis le noeud de départ</param>
         /// <param name="idToIndex">Dictionnaire associant les IDs à des indices</param>
-        private static void AfficherSolutionMatrice(int[] distances, Dictionary<T, int> idToIndex)
+        private static void AfficherSolutionMatrice(int[] distances)
         {
             Console.WriteLine("Distances depuis le départ :");
-            foreach (var kvp in idToIndex)
+
+            for(int i=0; i < distances.Length; i++)
             {
-                T nodeId = kvp.Key;
-                int nodeIndex = kvp.Value;
-                string distance = distances[nodeIndex].ToString();
-                Console.WriteLine($"Noeud {nodeId}: {distance}");
+                Console.WriteLine($"Noeud {i}: {distances[i]}");
             }
         }
 
@@ -418,33 +391,31 @@
         /// </summary>
         /// <param name="distances">Distances depuis le noeud de départ</param>
         /// <param name="graph">Graphe sous forme de liste d'adjacence</param>
-        private static void AfficherSolutionListe(int[] distances, Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> listeAdjacence, Dictionary<T, int> mapIdIndex)
+        private static void AfficherSolutionListe(int[] distances, Dictionary<Noeud<T>, List<(Noeud<T>, double poids)>> listeAdjacence)
         {
             Console.WriteLine("Distances depuis le départ :");
 
             foreach (var kvp in listeAdjacence)
             {
                 Noeud<T> node = kvp.Key;
-                T nodeId = node.Id; 
+                int nodeId = node.Id; 
 
-                int nodeIndex = mapIdIndex[nodeId]; 
-
-                string distance = distances[nodeIndex].ToString();  
+                string distance = distances[nodeId].ToString();  
                 Console.WriteLine($"Noeud {nodeId}: {distance}"); 
                    
             }
         }
 
 
-        private static void AfficherChemin(int[] parents, int departIndex, int arriveeIndex, Dictionary<T, int> mapIdIndex)
+        private static void AfficherChemin(int[] parents, int departIndex, int arriveeIndex)
         {
-            Stack<T> chemin = new Stack<T>();
+            Stack<int> chemin = new Stack<int>();
             for (int courant = arriveeIndex; courant != -1; courant = parents[courant])
             {
-                chemin.Push(mapIdIndex.FirstOrDefault(x => x.Value == courant).Key);
+                chemin.Push(courant);
             }
 
-            Console.Write("Chemin de " + mapIdIndex.FirstOrDefault(x => x.Value == departIndex).Key + " à " + mapIdIndex.FirstOrDefault(x => x.Value == arriveeIndex).Key + ": ");
+            Console.Write("Chemin de " + departIndex + " à " + arriveeIndex + ": ");
             while (chemin.Count > 0)
             {
                 Console.Write(chemin.Pop());
