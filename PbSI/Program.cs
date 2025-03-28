@@ -57,7 +57,7 @@ namespace PbSI
             //RechercheChemin<int>.DFS_Liste(graphe, 1);
             //RechercheChemin<int>.DFS_Matrice(graphe, 1);
 
-
+            /*
             RechercheStationProche recherche = new RechercheStationProche("55 Rue du Faubourg Saint-Honoré, 75008 Paris, France", graphe);
             await recherche.InitialiserAsync(); // On attend la fin de l'initialisation
 
@@ -71,16 +71,17 @@ namespace PbSI
             {
                 Console.WriteLine($"Erreur : {e.Message}");
             }
-            /*
+            
             RechercheChemin<int>.DFS_Liste(graphe, 1);
             RechercheChemin<int>.DFS_Matrice(graphe, 1);
-            RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 1, 300, graphe.MapIdIndex);
+            RechercheChemin<ibnt>.Dijkstra(graphe.MatriceAdjacence, 1, 300, graphe.MapIdIndex);
             */
 
 
-            connexion bdd = new connexion();
+            Connexion bdd = new Connexion();
             bdd.executerRequete("SELECT * FROM Cuisinier");
             bdd.afficherResultatRequete();
+            bdd.exporterResultatRequete();
             bdd.fermerConnexion();
 
 

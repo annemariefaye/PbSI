@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,14 +8,14 @@ using MySql.Data.MySqlClient;
 
 namespace PbSI
 {
-    internal class connexion
+    internal class Connexion
     {
 
         MySqlConnection maConnexion;
         MySqlDataReader reader;
         MySqlCommand requete;
 
-        public connexion()
+        public Connexion()
         {
             MySqlConnection maConnexion = null;
 
@@ -38,11 +39,11 @@ namespace PbSI
         {
             this.requete = this.maConnexion.CreateCommand();
             this. requete.CommandText = stringRequete;
-            this.reader = this.requete.ExecuteReader();
         }
 
         public void afficherResultatRequete()
         {
+            this.reader = this.requete.ExecuteReader();
             string[] valueString = new string[this.reader.FieldCount];
             while (this.reader.Read())
             {
@@ -55,11 +56,40 @@ namespace PbSI
             }
         }
 
+        public void exporterResultatRequete(string nomFichier="export")
+        {
+            try
+            {
+                // Vérifie si un DataReader est ouvert et le ferme avant d'utiliser un DataAdapter
+                if (this.reader != null && !this.reader.IsClosed)
+                    this.reader.Close();
+
+                string nomCompletFichier = "../export/"+nomFichier + ".xml";
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(this.requete))
+                {
+                    DataTable table = new DataTable(nomFichier);
+                    adapter.Fill(table);
+
+                    table.WriteXml(nomCompletFichier, XmlWriteMode.WriteSchema);
+
+                    Console.WriteLine($"Export terminé : {nomCompletFichier}");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erreur Export XML: " + e.Message);
+            }
+        }
+
+
         public void fermerConnexion()
         {
-            this.reader.Close();
-            this.requete.Dispose();
-            this.maConnexion.Close();
+            if (this.reader != null && !this.reader.IsClosed)
+                this.reader.Close();
+            if (this.requete != null)
+                this.requete.Dispose();
+            if (this.maConnexion != null)
+                this.maConnexion.Close();
         }
     }
 }
