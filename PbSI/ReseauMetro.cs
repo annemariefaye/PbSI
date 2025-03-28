@@ -10,65 +10,128 @@ namespace PbSI
     public class ReseauMetro
     {
         private readonly string chemin;
-        private readonly Graphe<int> graphe;
+        private readonly Graphe<StationMetro> graphe;
 
         public ReseauMetro(string chemin) 
         { 
             this.chemin = chemin;
-            this.graphe = new Graphe<int>();
+            this.graphe = new Graphe<StationMetro>();
             var donneesNoeuds = LireFeuilleNoeud();
             var stations = CreerStations(donneesNoeuds);
             var donneesArcs = LireFeuilleArc();
             CreerRelations(stations, donneesArcs);
-            CreerCorrespondances(donneesArcs);
+            CreerCorrespondances(stations, donneesArcs);
 
         }
 
-        public Graphe<int> Graphe { get { return this.graphe; } }
+        public Graphe<StationMetro> Graphe { get { return this.graphe; } }
 
-        private List<StationMetro> CreerStations(List<List<string>> donneesNoeuds)
+        private List<Noeud<StationMetro>> CreerStations(List<List<string>> donneesNoeuds)
         {
-            List<StationMetro> stations = new List<StationMetro>();
+            List<Noeud<StationMetro>> stations = new List<Noeud<StationMetro>>();
 
             foreach(var data in donneesNoeuds)
             {
-                stations.Add(StationMetro.Parse(data));
+                Noeud<StationMetro> n = new Noeud<StationMetro>(int.Parse(data[0]), StationMetro.Parse(data));
+                stations.Add(n);
             }
 
             return stations;
         }
 
-        private void CreerRelations(List<StationMetro> stations, List<List<string>> donneesArcs)
+        private int CompterLiensUniques(List<List<string>> donneesArcs)
         {
+            HashSet<(int, int)> liensUniques = new HashSet<(int, int)>();
 
-            foreach (var dataStation in donneesArcs) 
+            foreach (var dataStation in donneesArcs)
             {
-
-                int idStation = int.Parse(dataStation[0]);
-                int idStationPrecedente = int.Parse(dataStation[2]);
-                int idStationSuivante = int.Parse(dataStation[3]);
-                double temps = int.Parse(dataStation[4]);
-
-                if (dataStation[6] == "0")
+                if (dataStation[0] != "-1" && dataStation[2] != "-1")
                 {
-                    if (idStationPrecedente != 0)
+                    int idStation = int.Parse(dataStation[0]);
+                    int idStationPrecedente = int.Parse(dataStation[2]);
+                    int idStationSuivante = int.Parse(dataStation[3]);
+
+                    // Ajouter les liens
+                    liensUniques.Add((idStationPrecedente, idStation));
+                    liensUniques.Add((idStation, idStationPrecedente)); // Pour le lien inverse
+                }
+            }
+
+            return liensUniques.Count; 
+        }
+
+
+
+        private void CreerRelations(List<Noeud<StationMetro>> stations, List<List<string>> donneesArcs)
+        {
+            HashSet<(int, int)> relationsAjoutees = new HashSet<(int, int)>();
+
+            foreach (var dataStation in donneesArcs)
+            {
+                if (dataStation[0] != "-1" && dataStation[2] != "-1")
+                {
+                    int idStation = int.Parse(dataStation[0]);
+                    int idStationPrecedente = int.Parse(dataStation[2]);
+
+                    Noeud<StationMetro>? stationCurrent = TrouverNoeudParId(stations, idStation);
+                    Noeud<StationMetro>? stationPrecedente = TrouverNoeudParId(stations, idStationPrecedente);
+
+                    double temps = int.Parse(dataStation[4]);
+
+                    if (dataStation[6] == "-1")
                     {
-                        this.graphe.AjouterRelation(idStationPrecedente, idStation, temps);
-                        this.graphe.AjouterRelation(idStation, idStationPrecedente, temps);
+                        if (idStationPrecedente != -1 && stationCurrent != null && stationPrecedente != null)
+                        {
+                            var relation = (idStationPrecedente, idStation);
+                            if (!relationsAjoutees.Contains(relation))
+                            {
+                                //Console.WriteLine("Ajout de la relation entre " + stationPrecedente.Contenu.Libelle + " et " + stationCurrent.Contenu.Libelle + " en " + temps + " minutes");
+                                this.graphe.AjouterRelation(stationPrecedente, stationCurrent, temps);
+                                this.graphe.AjouterRelation(stationCurrent, stationPrecedente, temps);
+                                relationsAjoutees.Add(relation);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (idStationPrecedente != -1 && stationCurrent != null && stationPrecedente != null)
+                        {
+                            var relation = (idStationPrecedente, idStation);
+                            if (!relationsAjoutees.Contains(relation))
+                            {
+                                //Console.WriteLine("(SU) Ajout de la relation entre " + stationPrecedente.Contenu.Libelle + " et " + stationCurrent.Contenu.Libelle + " en " + temps + " minutes");
+                                this.graphe.AjouterRelation(stationPrecedente, stationCurrent, temps);
+                                relationsAjoutees.Add(relation);
+                            }
+                        }
                     }
                 }
-                else
+
+                // Ajout en dur des seuls noeuds qui sont dans ni précédent ni suivant
+                if (dataStation[0] == "44" || dataStation[0] == "69")
                 {
-                    if (idStationPrecedente != 0)
+                    int idStation = int.Parse(dataStation[0]);
+
+                    Noeud<StationMetro>? stationCurrent = TrouverNoeudParId(stations, idStation);
+                    Noeud<StationMetro>? stationSuivante = TrouverNoeudParId(stations, int.Parse(dataStation[3]));
+
+                    double temps = int.Parse(donneesArcs[idStation + 1][4]);
+
+                    var relation1 = (idStation, int.Parse(dataStation[3]));
+                    var relation2 = (int.Parse(dataStation[3]), idStation);
+                    if (!relationsAjoutees.Contains(relation1) && !relationsAjoutees.Contains(relation2))
                     {
-                        this.graphe.AjouterRelation(idStationPrecedente, idStation, temps);
+                        this.graphe.AjouterRelation(stationSuivante, stationCurrent, temps);
+                        this.graphe.AjouterRelation(stationCurrent, stationSuivante, temps);
+                        relationsAjoutees.Add(relation1);
+                        relationsAjoutees.Add(relation2);
                     }
                 }
-
             }
         }
 
-        private void CreerCorrespondances(List<List<string>> donneesArcs)
+
+        private void CreerCorrespondances(List<Noeud<StationMetro>> stations, List<List<string>> donneesArcs)
         {
             Dictionary<string, List<int>> correspondances = new Dictionary<string, List<int>>();
 
@@ -86,7 +149,7 @@ namespace PbSI
 
             foreach (var dataStation in donneesArcs)
             {
-                if (dataStation[5] != "0")
+                if (dataStation[5] != "-1" && dataStation[0] != "-1")
                 {
                     int idStation = int.Parse(dataStation[0]);
                     int temps = int.Parse(dataStation[5]);
@@ -98,8 +161,10 @@ namespace PbSI
                         {
                             if (idCorrespondance != idStation)
                             {
-                                this.graphe.AjouterRelation(idStation, idCorrespondance, temps);
-                                this.graphe.AjouterRelation(idCorrespondance, idStation, temps);
+                                Noeud<StationMetro> stationCurrent = TrouverNoeudParId(stations, int.Parse(dataStation[0]));
+                                Noeud<StationMetro> stationCorrespondance = TrouverNoeudParId(stations, idCorrespondance);
+
+                                this.graphe.AjouterRelation(stationCurrent, stationCorrespondance, temps);
                             }
                         }
                     }
@@ -107,6 +172,13 @@ namespace PbSI
             }
 
         }
+
+        private Noeud<StationMetro> TrouverNoeudParId(List<Noeud<StationMetro>> stations, int id)
+        {
+            return stations.FirstOrDefault(station => station.Id == id)
+                   ?? throw new KeyNotFoundException($"Aucun noeud trouvé avec l'ID {id}");
+        }
+
 
 
         private List<List<string>> LireFeuilleNoeud()
@@ -153,7 +225,7 @@ namespace PbSI
 
                         if (string.IsNullOrEmpty(valeurCellule))
                         {
-                            ligneDonnees.Add("0");
+                            ligneDonnees.Add("-1");
                         }
                         else
                         {

@@ -3,7 +3,7 @@
 
 namespace PbSI
 {
-    public class StationMetro : Noeud<int>
+    public class StationMetro
     {
         #region Attributs spécifiques
 
@@ -18,8 +18,7 @@ namespace PbSI
 
         #region Constructeur
 
-        public StationMetro(int id, string ligne, string libelle, double longitude, double latitude, string commune, int codeInsee)
-            : base(id) 
+        public StationMetro(string ligne, string libelle, double longitude, double latitude, string commune, int codeInsee)
         {
             this.libelle = libelle;  
             this.ligne = ligne;
@@ -92,7 +91,6 @@ namespace PbSI
 
         public static StationMetro Parse(List<string> data)
         {
-            int id = int.Parse(data[0]);
             string ligne = data[1];
             string libelle = data[2];
             double longitude = double.Parse(data[3], CultureInfo.InvariantCulture);
@@ -100,10 +98,10 @@ namespace PbSI
             string commune = data[5];
             int codeInsee = int.Parse(data[6]);
 
-            return new StationMetro(id, ligne, libelle, longitude, latitude, commune, codeInsee);
+            return new StationMetro(ligne, libelle, longitude, latitude, commune, codeInsee);
         }
 
 
     #endregion
-}
+    }
 }
