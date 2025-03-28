@@ -49,10 +49,16 @@
             //graphe.AfficherGraphe();
             //graphe.AfficherListeAdjacence();
 
+            /*
             RechercheChemin<int>.DFS_Liste(graphe, 1);
             RechercheChemin<int>.DFS_Matrice(graphe, 1);
             RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 1, 300, graphe.MapIdIndex);
+            */
 
+
+            connexion bdd = new connexion();
+            bdd.executerRequete("SELECT * FROM Cuisinier");
+            bdd.afficherResultatRequete();
 
 
         }
