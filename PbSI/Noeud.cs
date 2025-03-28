@@ -1,18 +1,15 @@
 ﻿namespace PbSI
 {
-    public class Noeud<T> where T : notnull
+    public class Noeud<T> : IEquatable<Noeud<T>> where T : notnull
     {
         #region Attributs
 
         /// <summary>
         /// Identifiant du noeud
         /// </summary>
-        private readonly T id;
+        private readonly int id;
 
-        /// <summary>
-        /// Hashset des noeuds voisins
-        /// </summary>
-        private readonly HashSet<Noeud<T>> voisins;
+        private readonly T contenu;
 
         #endregion
 
@@ -22,10 +19,15 @@
         /// Constructeur par défaut
         /// </summary>
         /// <param name="id">Identifiant du noeud</param>
-        public Noeud(T id)
+        public Noeud(int id, T contenu)
         {
             this.id = id;
-            this.voisins = new HashSet<Noeud<T>>();
+            this.contenu = contenu;
+        }
+
+        public Noeud(int id)
+        {
+            this.id = id;
         }
 
         #endregion
@@ -35,35 +37,23 @@
         /// <summary>
         /// Retourne l'identifiant du noeud
         /// </summary>
-        public T Id
+        public int Id
         {
-            get { return id; }
+            get { return this.id; }
         }
 
+        public T? Contenu
+        {
+            get { return this.contenu; }
+        }
 
         /// <summary>
         /// Retourne la liste des noeuds voisins
         /// </summary>
-        public HashSet<Noeud<T>> Voisins
-        {
-            get { return this.voisins; }
-        }
 
         #endregion
 
         #region Méthodes
-
-        /// <summary>
-        /// Ajoute un voisin au noeud
-        /// </summary>
-        /// <param name="voisin">Noeud voisin à ajouter</param>
-        public void AjouterVoisin(Noeud<T> voisin)
-        {
-            if (!this.voisins.Contains(voisin))
-            {
-                this.voisins.Add(voisin);
-            }
-        }
 
         /// <summary>
         /// Retourne une chaine de caractères représentant le noeud
@@ -75,5 +65,10 @@
         }
 
         #endregion
+
+        public bool Equals(Noeud<T> other)
+        {
+            return this.id.Equals(other.id);
+        }
     }
 }

@@ -1,8 +1,12 @@
-﻿namespace PbSI
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+namespace PbSI
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             /*LectureFichiers relations = new LectureFichiers("relations.mtx");
             List<int[]> tableauMembres = relations.Contenu;
@@ -42,20 +46,36 @@
             //graphe.AfficherProprietes();*/
 
             ReseauMetro reseau = new ReseauMetro("MetroParis.xlsx");
-            Graphe<int> graphe = reseau.Graphe;
+            Graphe<StationMetro> graphe = reseau.Graphe;
 
             double[,] m = graphe.MatriceAdjacence;
             var l = graphe.ListeAdjacence;
-            //graphe.AfficherGraphe();
-            //graphe.AfficherListeAdjacence();
 
-            RechercheChemin<int>.DFS_Liste(graphe, 1);
-            RechercheChemin<int>.DFS_Matrice(graphe, 1);
-            RechercheChemin<int>.Dijkstra(graphe.MatriceAdjacence, 1, 300, graphe.MapIdIndex);
+            //graphe.AfficherListeAdjacence();
+            //graphe.AfficherMatriceAdjacence();
+
+            //RechercheChemin<int>.DFS_Liste(graphe, 1);
+            //RechercheChemin<int>.DFS_Matrice(graphe, 1);
+
+
+            RechercheStationProche recherche = new RechercheStationProche("55 Rue du Faubourg Saint-Honoré, 75008 Paris, France", graphe);
+            await recherche.InitialiserAsync(); // On attend la fin de l'initialisation
+
+            int depart;
+            try
+            {
+                depart = recherche.IdStationProche;
+                RechercheChemin<StationMetro>.Dijkstra(graphe.MatriceAdjacence, depart, 1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erreur : {e.Message}");
+            }
 
 
 
         }
+        
 
         /*#region Méthodes d'instanciation
 

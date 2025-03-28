@@ -1,6 +1,8 @@
-﻿namespace PbSI
+﻿using System;
+
+namespace PbSI
 {
-    public class Lien<T> where T : notnull
+    public class Lien<T> : IEquatable<Lien<T>> where T : notnull 
     {
         #region Attributs
 
@@ -79,5 +81,25 @@
         }
 
         #endregion
+
+
+        public bool Equals(Lien<T> other)
+        {
+            return this.source.Equals(other.source) && this.destination.Equals(other.destination) && this.poids.Equals(other.poids);
+        }
+
+        public int GetHashCode(Lien<T> obj)
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + this.source.Id.GetHashCode();
+                hash = hash * 23 + this.destination.Id.GetHashCode();
+                hash = hash * 23 + this.poids.GetHashCode();
+
+                return hash;
+            }
+
+        }
     }
 }
